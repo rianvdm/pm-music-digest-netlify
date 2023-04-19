@@ -20,7 +20,7 @@ fetch('/.netlify/functions/getRecentTracks')
               <p class="track_name">${nowPlaying[0].artist['#text']}</p>
               <p class="track_album">${nowPlaying[0].album['#text']}</p>
             </div>
-          </a>
+            </a>
         </div>
     `;
     dataContainer.innerHTML = html;

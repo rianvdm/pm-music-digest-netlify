@@ -11,17 +11,23 @@
   <body>
     
     <h1>Rian’s music</h1>
-    <h2 >Now playing</h2>
+    <h2>▶️ Now playing</h2>
     <div class="js-now-playing recent-tracks">
       Loading...
     </div>
-    <h2>Top albums in the last 7 days</h2>
+    <h2>🏆 Top albums</h2>
+    <p style="text-align: center;">The top 3 albums I listened to over the past 7 days.</p>
     <div class="js-lastfm-top track-grid">
       Loading...
     </div>
-    <h2>Last 3 albums added to my physical collection</h2>
+    <h2>💿 Recent purchases</h2>
+    <p style="text-align: center;">The last 3 albums I added to my physical collection.</p>
     <div class="js-discogs-added track-grid">
       Loading...
+    </div>
+  
+    <div class="footer">
+       <p>This is a side project for my music. It pulls data from <a href="https://www.last.fm/user/bordesak">my Last.fm activity</a> and <a href="https://www.discogs.com/user/elezea-records/collection">my Discogs collection</a>. It's a basic Javascript site hosted on Github and deployed via <a href="https://www.netlify.com">Netlify</a>.
     </div>
 
   <script src="now-playing.js"></script>

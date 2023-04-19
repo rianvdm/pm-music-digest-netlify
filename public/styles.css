@@ -13,6 +13,13 @@ body {
   color: var(--c-base);
 }
 
+p {
+  color: var(--c-base);
+  margin: 1em auto;
+  line-height: 1.5em;
+  max-width: 800px;
+}
+
 a {
   color: var(--c-accent);
 }
@@ -30,9 +37,9 @@ h1 span {
 }
 
 h2 {
-  color: var(--c-accent);
+  color: var(--c-base);
   text-align: center;
-  margin: 2em 0 2em;
+  margin: 3em 0 1em;
   position: relative;
 }
 
@@ -58,6 +65,7 @@ h2 {
   gap: 35px;
   max-width: 800px;
   margin: 0 auto;
+  justify-items: center;
 }
 
 @media (min-width: 600px) {
@@ -115,4 +123,12 @@ h2 {
   transform: translateY(-5px) rotate(-5deg);
 }
 
+.footer {
+  color: var(--c-base);
+  font-size:20px;
+  position: block;
+  margin: 5em auto 10em;
+  line-height: 1.5em;
+  max-width: 800px;
+}
 
