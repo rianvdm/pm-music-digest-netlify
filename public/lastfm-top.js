@@ -10,16 +10,12 @@ fetch('/.netlify/functions/getTopAlbums')
             <img src="${album.image[3]['#text']}" class="track_image">
             <div class="track_content">
               <h2 class="track_artist">${album.name}</h2>
-              <p class="track_name">${album.artist.name}</p>
+              <p class="track_name">${album.artist.name}</p></a>
               <p class="track_album">${album.playcount} songs played</p>
             </div>
-          </a>
         </div>
       `).join('');
       dataContainer.innerHTML = html;
   
   })
   .catch(error => console.error(error));
-
-
-

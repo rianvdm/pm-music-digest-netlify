@@ -10,7 +10,7 @@ fetch('/.netlify/functions/getRecentTracks')
            <p> <a href="${track.url}" target="_blank" class="track_link">${track.name}</a> by ${track.artist['#text']}</p>
         </div>
       `).join('');
-      dataContainer.innerHTML = html;
+//      dataContainer.innerHTML = html;
     } else {
       const html = `
         <div class="track">
