@@ -8,7 +8,6 @@ fetch('/.netlify/functions/getRecentTracks')
       const html = recentTracks.map(track => `
         <div class="track">
            <p> <a href="${track.url}" target="_blank" class="track_link">${track.name}</a> by ${track.artist['#text']}</p>
-          </a>
         </div>
       `).join('');
       dataContainer.innerHTML = html;

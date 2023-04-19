@@ -11,6 +11,7 @@ fetch('/.netlify/functions/getTopAlbums')
             <div class="track_content">
               <h2 class="track_artist">${album.name}</h2>
               <p class="track_name">${album.artist.name}</p>
+              <p class="track_album">${album.playcount} songs played</p>
             </div>
           </a>
         </div>
