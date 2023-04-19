@@ -28,7 +28,7 @@ fetch('/.netlify/functions/getRecentTracks')
 
     const html = `
         <div class="track">
-              <h2 class="track_artist">Nothing is playing right now. It's all very very quiet.</h2>
+              <h4 style="text-align:center">Sadly, I'm not listening to anything right now. It's all very very quiet.</h2>
         </div>
     `;
     dataContainer.innerHTML = html;
