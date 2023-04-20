@@ -6,7 +6,7 @@ const DiscogsUser = 'elezea-records';
 const fetch = require('node-fetch');
 
 const handler = async () => {
-  const url = `https://api.discogs.com/users/${DiscogsUser}/collection/folders/0/releases?token=${DiscogsToken}&sort=added&sort_order=desc&per_page=3`
+  const url = `https://api.discogs.com/users/${DiscogsUser}/collection/folders/0/releases?token=${DiscogsToken}&sort=added&sort_order=desc&per_page=6`
   const results = await fetch(url);
 
   // If there was an error

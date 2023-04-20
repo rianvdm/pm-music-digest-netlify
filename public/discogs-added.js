@@ -5,7 +5,7 @@ fetch('/.netlify/functions/getDiscogsCollection')
   .then(response => response.json())
   .then(data => {
     const dataContainer = document.querySelector('.js-discogs-added');
-    const discogsAdded = data.releases.slice(0, 3);
+    const discogsAdded = data.releases.slice(0, 6);
 
       const html = discogsAdded.map(releases => {
       const dateAdded = releases.date_added;
