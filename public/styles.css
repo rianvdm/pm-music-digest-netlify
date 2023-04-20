@@ -16,8 +16,8 @@ body {
 p {
   color: var(--c-base);
   margin: 1em auto;
-  line-height: 1.5em;
-  max-width: 750px;
+  line-height: 1.4em;
+  max-width: 800px;
 }
 
 a {
@@ -126,6 +126,13 @@ h2 {
 .track:hover .track_image {
   transition: all 180ms ease-in-out;
   transform: translateY(-5px) rotate(-5deg);
+}
+
+.track_ul {
+  margin: 0.5em auto;
+  font-size: 18px;
+  line-height: 1.4em;
+  max-width: 800px;
 }
 
 .footer {
