@@ -7,13 +7,27 @@ fetch('/.netlify/functions/getRecentTracks')
     const dataContainer = document.querySelector('.js-now-playing');
     const nowPlaying = [data.recenttracks.track[0]];
 
+
+    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+    const optionsTime = { hour: 'numeric', minute: 'numeric', hour12: true };
+    const pacificTimezone = 'America/Los_Angeles';
+
+    const formattedDateNow = new Date().toLocaleString('en-US', {
+      ...optionsDate,
+      timeZone: pacificTimezone
+    });
+    const formattedTimeNow = new Date().toLocaleString('en-US', {
+      ...optionsTime,
+      timeZone: pacificTimezone
+    });
+
     if (nowPlaying[0].hasOwnProperty('@attr') && 
         nowPlaying[0]['@attr'].hasOwnProperty('nowplaying') && 
         nowPlaying[0]['@attr'].nowplaying === 'true') {
 
     const html = `
         <div class="track_none">
-          <p style="text-align: center;">The song I am streaming right now.</p>
+          <p style="text-align: center;">The song I am streaming right now at ${formattedTimeNow} Pacific Time on ${formattedDateNow}.</p>
         </div>
         <div class="track">
           <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
@@ -30,9 +44,9 @@ fetch('/.netlify/functions/getRecentTracks')
   } else {
 
     const utsDate = data.recenttracks.track[0].date.uts;
-    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-    const optionsTime = { hour: 'numeric', minute: 'numeric', hour12: true };
-    const pacificTimezone = 'America/Los_Angeles';
+//    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+//    const optionsTime = { hour: 'numeric', minute: 'numeric', hour12: true };
+//    const pacificTimezone = 'America/Los_Angeles';
 
     const formattedDate = new Date(utsDate * 1000).toLocaleString('en-US', {
       ...optionsDate,
