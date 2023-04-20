@@ -9,7 +9,9 @@ fetch('/.netlify/functions/getDiscogsCollection')
 
       const html = discogsAdded.map(releases => {
       const dateAdded = releases.date_added;
-      const formattedDate = new Date(dateAdded).toISOString().split('T')[0];
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      const formattedDate = new Date(dateAdded).toLocaleDateString('en-US', options);
+
       return `
         <div class="track">
           <a href="https://www.discogs.com/release/${releases.basic_information.id}" target="_blank" class="track_link">

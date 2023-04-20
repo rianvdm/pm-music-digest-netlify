@@ -26,9 +26,24 @@ fetch('/.netlify/functions/getRecentTracks')
     dataContainer.innerHTML = html;
   } else {
 
+    const utsDate = data.recenttracks.track[0].date.uts;
+    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+    const optionsTime = { hour: 'numeric', minute: 'numeric', hour12: true };
+    const pacificTimezone = 'America/Los_Angeles';
+
+    const formattedDate = new Date(utsDate * 1000).toLocaleString('en-US', {
+      ...optionsDate,
+      timeZone: pacificTimezone
+    });
+    const formattedTime = new Date(utsDate * 1000).toLocaleString('en-US', {
+      ...optionsTime,
+      timeZone: pacificTimezone
+    });
+
     const html = `
-        <div class="track">
-              <h4 style="text-align:center">Sadly, I'm not listening to anything right now. It's all very very quiet.</h2>
+        <div class="track_none">
+            <h4 style="text-align:center">Sadly, I'm not listening to anything right now. It's all very very quiet.</h4>
+            <p>The last song I listened to was <a href="${nowPlaying[0].url}">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
         </div>
     `;
     dataContainer.innerHTML = html;
@@ -36,4 +51,5 @@ fetch('/.netlify/functions/getRecentTracks')
   }
   })
   .catch(error => console.error(error));
+
 

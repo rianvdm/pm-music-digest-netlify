@@ -56,8 +56,7 @@ h2 {
 }
 
 .recent-tracks {
-  max-width: 200px;
-  margin: 0 auto;
+
 }
 
 .track-grid {
@@ -84,6 +83,8 @@ h2 {
   border-radius: 5px;
   position: relative;
   z-index: 1;
+  margin: 0 auto;
+  max-width: 200px;
 }
 
 .track_content {
@@ -108,6 +109,10 @@ h2 {
   font-size: 12px;
   margin: 0;
   font-style: italic;
+}
+.track_none {
+  margin: 0 auto;
+  max-width: 800px;
 }
 .track_image {
   position: relative;
