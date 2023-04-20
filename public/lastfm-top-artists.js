@@ -22,8 +22,10 @@ fetch('/.netlify/functions/getTopArtists')
             tag2: data.artist.tags.tag.length > 0 ? data.artist.tags.tag[1].name : '',
             similarArtist1: data.artist.similar.artist.length > 0 ? data.artist.similar.artist[0].name : '',
             similarArtist2: data.artist.similar.artist.length > 0 ? data.artist.similar.artist[1].name : '',
+            similarArtist3: data.artist.similar.artist.length > 0 ? data.artist.similar.artist[2].name : '',
             similarArtist1URL: data.artist.similar.artist.length > 0 ? data.artist.similar.artist[0].url : '',
             similarArtist2URL: data.artist.similar.artist.length > 0 ? data.artist.similar.artist[1].url : '',
+            similarArtist3URL: data.artist.similar.artist.length > 0 ? data.artist.similar.artist[2].url : '',
           };
         })
         .catch(error => {
@@ -47,8 +49,8 @@ fetch('/.netlify/functions/getTopArtists')
             return `
               <div class="track_ul">
                   ${artist['@attr'].rank}. <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays). 
-                  Their primary genres are <strong>${artists[i].tag1}</strong> and <strong>${artists[i].tag2}</strong>. 
-                  They are similar to <a href="${artists[i].similarArtist1URL}" target="_blank" class="track_link">${artists[i].similarArtist1}</a> and <a href="${artists[i].similarArtist2URL}" target="_blank" class="track_link">${artists[i].similarArtist2}</a>.
+                  Primary genres are <strong>${artists[i].tag1}</strong> and <strong>${artists[i].tag2}</strong>. 
+                  Similar artists include <a href="${artists[i].similarArtist1URL}" target="_blank" class="track_link">${artists[i].similarArtist1}</a>, <a href="${artists[i].similarArtist2URL}" target="_blank" class="track_link">${artists[i].similarArtist2}</a>, and <a href="${artists[i].similarArtist3URL}" target="_blank" class="track_link">${artists[i].similarArtist3}</a>.
               </div>
             `;
           }

@@ -72,7 +72,7 @@ fetch(`/.netlify/functions/getArtistInfo?mbid=${nowPlaying[0].artist['mbid']}`)
         </div>
         <div class="track_none">
           <p style="text-align: center;">If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
-          They are similar to <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>. Here's a bit more info about them:</p>
+          Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>. Here’s a bit more information about them:</p>
           <p style="text-align: center;">${bio}</p>
         </div>
       `;
@@ -137,7 +137,7 @@ fetch(`/.netlify/functions/getArtistInfo?mbid=${nowPlaying[0].artist['mbid']}`)
             </div>
             <p style="text-align: center;">The last song I listened to was <a href="${nowPlaying[0].url}">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
             <p style="text-align: center;">If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
-              They are similar to <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>. Here's a bit more info about them:</p>
+              Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>. Here’s a bit more information about them:</p>
             <p style="text-align: center;">${bio}</p>
             </div>
           `;
