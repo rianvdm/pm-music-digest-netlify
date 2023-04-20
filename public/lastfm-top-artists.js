@@ -47,8 +47,8 @@ fetch('/.netlify/functions/getTopArtists')
             return `
               <div class="track_ul">
                   ${artist['@attr'].rank}. <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays). 
-                  Their primary genres are <strong>${artists[i].tag1}</strong> and <strong>${artists[i].tag2}</strong>, 
-                  and you might like them if you are into <a href="${artists[i].similarArtist1URL}" target="_blank" class="track_link">${artists[i].similarArtist1}</a> or <a href="${artists[i].similarArtist2URL}" target="_blank" class="track_link">${artists[i].similarArtist2}</a>.
+                  Their primary genres are <strong>${artists[i].tag1}</strong> and <strong>${artists[i].tag2}</strong>. 
+                  They are similar to <a href="${artists[i].similarArtist1URL}" target="_blank" class="track_link">${artists[i].similarArtist1}</a> and <a href="${artists[i].similarArtist2URL}" target="_blank" class="track_link">${artists[i].similarArtist2}</a>.
               </div>
             `;
           }
