@@ -34,10 +34,12 @@ fetch('/.netlify/functions/getRecentTracks')
             <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">
             <div class="track_content">
               <h2 class="track_artist">${nowPlaying[0].name}</h2>
-              <p class="track_name">${nowPlaying[0].artist['#text']}</p>
+              <p class="track_name">${nowPlaying[0].artist['#text']}</p></a>
               <p class="track_album">${nowPlaying[0].album['#text']}</p>
             </div>
-            </a>
+        </div>
+          <div class="track_none">
+          <p style="text-align: center;">There is a full history of songs on <a href="https://www.last.fm/user/bordesak">my Last.fm activity page</a>.</p>
         </div>
     `;
     dataContainer.innerHTML = html;
@@ -60,7 +62,7 @@ fetch('/.netlify/functions/getRecentTracks')
     const html = `
         <div class="track_none">
             <h4 style="text-align:center">Sadly, I'm not listening to anything right now. It's all very very quiet.</h4>
-            <p>The last song I listened to was <a href="${nowPlaying[0].url}">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
+            <p>The last song I listened to was <a href="${nowPlaying[0].url}">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}. There is a full history of songs on <a href="https://www.last.fm/user/bordesak">my Last.fm activity page</a>.</p>
         </div>
     `;
     dataContainer.innerHTML = html;
