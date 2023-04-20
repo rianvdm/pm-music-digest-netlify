@@ -12,6 +12,9 @@ fetch('/.netlify/functions/getRecentTracks')
         nowPlaying[0]['@attr'].nowplaying === 'true') {
 
     const html = `
+        <div class="track_none">
+          <p style="text-align: center;">The song I am streaming right now.</p>
+        </div>
         <div class="track">
           <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
             <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">

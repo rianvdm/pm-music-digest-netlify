@@ -1,7 +1,7 @@
 fetch('/.netlify/functions/getTopAlbums')
   .then(response => response.json())
   .then(data => {
-    const dataContainer = document.querySelector('.js-lastfm-top');
+    const dataContainer = document.querySelector('.js-lastfm-top-albums');
     const topAlbums = data.topalbums.album.slice(0, 3);
 
       const html = topAlbums.map(album => `
