@@ -13,6 +13,7 @@
   <body>
     
     <h1>Rian’s music</h1>
+
     <h2>▶️ Now playing</h2>
     <div class="js-now-playing recent-tracks">
       Loading...
@@ -29,13 +30,17 @@
     </div>
   
     <div class="footer">
-       <h3>Hello 👋</h3>
-       <p>My name is <a href="https://elezea.com">Rian</a>. This is a side project for my music. It pulls live data from <a href="https://www.last.fm/user/bordesak">my Last.fm activity</a> and <a href="https://www.discogs.com/user/elezea-records/collection">my Discogs collection</a> via their respective APIs. It's a basic Javascript site hosted on Github and deployed via <a href="https://www.netlify.com">Netlify</a>.
+    <h3>Hello 👋</h3>
+    <div class="js-user-info recent-tracks">
+      Loading...
+    </div>
+    <p>This is a side project for my music. It pulls live data from <a href="https://www.last.fm/user/bordesak">my Last.fm activity</a> and <a href="https://www.discogs.com/user/elezea-records/collection">my Discogs collection</a> via their respective APIs. It's a basic Javascript site hosted on Github and deployed via <a href="https://www.netlify.com">Netlify</a>.
     </div>
 
   <script src="now-playing.js"></script>
   <script src="lastfm-recent.js"></script>
   <script src="lastfm-top-albums.js"></script>
+  <script src="lastfm-user-info.js"></script>
   <script src="discogs-added.js"></script>
 </body>
 </html>
