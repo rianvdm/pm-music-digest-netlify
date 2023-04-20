@@ -4,7 +4,7 @@ fetch('/.netlify/functions/getTopArtists')
     const dataContainer = document.querySelector('.js-lastfm-top-artists');
     const topArtists = data.topartists.artist.slice(0, 5);
 
-    // Create an array of promises for each artist's summary and first tag
+    // Create an array of promises for each artist's data
     const artistPromises = topArtists.map(artist => {
       return fetch(`/.netlify/functions/getArtistInfo?mbid=${artist.mbid}`)
         .then(response => response.json())
@@ -12,11 +12,11 @@ fetch('/.netlify/functions/getTopArtists')
           // Check for error property in Last.fm API response
           if (data.error) {
             return {
-              summary: 'Last.fm unfortunately does not have additional information on this artist.',
+              summary: 'Last.fm unfortunately does not have any additional information on this artist.',
             };
           }
 
-          // Return the summary and first tag if they exist
+          // Return the data if it exists
           return {
             tag1: data.artist.tags.tag.length > 0 ? data.artist.tags.tag[0].name : '',
             tag2: data.artist.tags.tag.length > 0 ? data.artist.tags.tag[1].name : '',
