@@ -1,5 +1,5 @@
 # Music mini-site using Netlify + Last.fm + Discogs
-This example site illustrates how to show what you're listening to on [Last.fm](https://last.fm), as well as some collection information from [Discogs](https://discogs.com). It makes use of Netlify’s [serverless functions](https://docs.netlify.com/functions/overview/).
+This site shows what you're listening to on [Last.fm](https://last.fm), as well as some collection information from [Discogs](https://discogs.com). It makes use of Netlify’s [serverless functions](https://docs.netlify.com/functions/overview/). You'll need API keys from both Last.fm and Discogs to make it work.
 
 The front-end HTML, CSS, and javascript inside of the `public` directory are all vanilla. No fancy frameworks here, so feel free to integrate this into whatever frameworks you’re comfortable with.
 
@@ -25,7 +25,7 @@ Follow these steps to deploy your site to Netlify and get this up and running on
     1. `DISCOGS_API_TOKEN` - Enter your Discogs API token as the value
 1. Now let's trigger a deploy so that your site will load the new environment variables. Go to `Deploys` from the top menu
 1. Then `Trigger deploy` -> `Deploy site`
-1. Once the deployment is finished, select the `Preview` button. You should see that all of the recent tracks are loaded. Also make sure to send a digest email to yourself to make sure the Postmark integration is working.
+1. Once the deployment is finished, select the `Preview` button. You should see that all of the recent tracks are loaded.
 
 ### Set up your local dev environment
 
@@ -41,6 +41,6 @@ You're all set! You can now make edits to the site. Run `netlify deploy --prod` 
 ## Helpful thingys
 - `netlify build` - Build your site locally to make sure that you don’t run into any snags during deployment
 - `netlify deploy` - Deploys a private staging instance of the site so that you can preview your changes. Add the `--prod` flag to deploy to production.
-- By default Netlify uses your environment variables for Postmark and Last.fm from your Netlify config. If you'd prefer to override these locally, rename `.env.example` to `.env` and update your tokens. Be sure not to commit the `.env` file to your repo.
+- By default Netlify uses your environment variables for Last.fm and Discogs from your Netlify config. If you'd prefer to override these locally, rename `.env.example` to `.env` and update your tokens. Be sure not to commit the `.env` file to your repo.
 
 
