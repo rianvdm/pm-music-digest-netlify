@@ -21,17 +21,18 @@ fetch('/.netlify/functions/getRecentTracks')
       timeZone: pacificTimezone
     });
 
+// Check if something is currently playing. If it is, show current date and time and some "right now" text at the top.
 
     if (nowPlaying[0].hasOwnProperty('@attr') && 
         nowPlaying[0]['@attr'].hasOwnProperty('nowplaying') && 
         nowPlaying[0]['@attr'].nowplaying === 'true') {
 
 
-// Get the data for the  artist
+// Get the data for the artist
 fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}`)
   .then(response => response.json())
   .then(data => {
-    // Check if artist exists on Last.fm
+    // Check if artist exists on Last.fm. If it doesn't, don't show artist details.
     if (typeof data.artist.tags.tag[0] === 'undefined') {
       const html = `
         <div class="track_none">
@@ -51,12 +52,12 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
         </div>
       `;
       dataContainer.innerHTML = html;
+
+      // Show genre and bio if the artist exists on Last.fm
     } else {
-      // Get details about the artist
       const tags = data.artist.tags.tag.map(tag => tag.name);
       const similar = data.artist.similar.artist.map(artist => artist.name);
       const bio = data.artist.bio.summary;
-
       const html = `
         <div class="track_none">
           <p style="text-align: center;">What I’m listening to right now (${formattedTimeNow} Pacific Time on ${formattedDateNow}):</p>
@@ -80,8 +81,7 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
     }
   })
 
-
-
+// If nothing is currently playing, change the text at the top to indicate the last track and when it was played.
   } else {
 
     const utsDate = data.recenttracks.track[0].date.uts;
@@ -95,7 +95,7 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
       timeZone: pacificTimezone
     });
 
-    // Get the data for the artist
+    // Check if artist exists on Last.fm. If it doesn't, don't show artist details.
     fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}`)
       .then(response => response.json())
       .then(data => {
@@ -115,12 +115,12 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
             </div>
           `;
           dataContainer.innerHTML = html;
+
+      // Show genre and bio if the artist exists on Last.fm
         } else {
-          // Get details about the artist
           const tags = data.artist.tags.tag.map(tag => tag.name);
           const similar = data.artist.similar.artist.map(artist => artist.name);
           const bio = data.artist.bio.summary;
-
           const html = `
             <div class="track_none">
             <p style="text-align: center;">Sadly, I’m not listening to anything right now. The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
