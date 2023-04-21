@@ -31,8 +31,8 @@ fetch('/.netlify/functions/getRecentTracks')
 fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}`)
   .then(response => response.json())
   .then(data => {
-    // Check for error property in Last.fm API response
-    if (data.error) {
+    // Check if artist exists on Last.fm
+    if (typeof data.artist.tags.tag[0] === 'undefined') {
       const html = `
         <div class="track_none">
           <p style="text-align: center;">What I’m listening to right now (${formattedTimeNow} Pacific Time on ${formattedDateNow}):</p>
@@ -99,8 +99,8 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
     fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}`)
       .then(response => response.json())
       .then(data => {
-        // Check for error property in Last.fm API response
-        if (data.error) {
+        // Check if artist exists on Last.fm
+        if (typeof data.artist.tags.tag[0] === 'undefined') {
           const html = `
         <div class="track_none">
             <h4 style="text-align:center">Sadly, I’m not listening to anything right now. It’s all very very quiet.</h4>
