@@ -95,26 +95,24 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
       timeZone: pacificTimezone
     });
 
-    // Get the data for the  artist
+    // Get the data for the artist
     fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}`)
       .then(response => response.json())
       .then(data => {
         // Check if artist exists on Last.fm
         if (typeof data.artist.tags.tag[0] === 'undefined') {
           const html = `
-        <div class="track_none">
-            <h4 style="text-align:center">Sadly, I’m not listening to anything right now. It’s all very very quiet.</h4>
-          <div class="track">
+            <div class="track_none">
+            <p style="text-align: center;">Sadly, I’m not listening to anything right now. The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
+              <div class="track">
               <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
               <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">
-              <div class="track_content">
                 <h2 class="track_artist">${nowPlaying[0].name}</h2>
                 <p class="track_name">${nowPlaying[0].artist['#text']}</p></a>
                 <p class="track_album">${nowPlaying[0].album['#text']}</p>
               </div>
+            <p style="text-align: center;">Last.fm unfortunately does not have any additional information on ${nowPlaying[0].artist['#text']}.</p>
             </div>
-            <p style="text-align: center;">The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
-        </div>
           `;
           dataContainer.innerHTML = html;
         } else {
@@ -125,17 +123,14 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
 
           const html = `
             <div class="track_none">
-            <h4 style="text-align:center">Sadly, I’m not listening to anything right now. It’s all very very quiet.</h4>
-            <div class="track">
+            <p style="text-align: center;">Sadly, I’m not listening to anything right now. The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
+              <div class="track">
               <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
               <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">
-              <div class="track_content">
                 <h2 class="track_artist">${nowPlaying[0].name}</h2>
                 <p class="track_name">${nowPlaying[0].artist['#text']}</p></a>
                 <p class="track_album">${nowPlaying[0].album['#text']}</p>
               </div>
-            </div>
-            <p style="text-align: center;">The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
             <p style="text-align: center;">If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
               Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>.</p>
             <p style="text-align: center;">${bio}</p>
