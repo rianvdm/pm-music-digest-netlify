@@ -6,11 +6,11 @@ fetch('/.netlify/functions/getRecentTracks')
 
     if (recentTracks.length > 0) {
       const html = recentTracks.map(track => `
-      <div class="track_recent">
-        &rarr; <a href="${track.url}" target="_blank" class="track_link">${track.name}</a> by ${track.artist['#text']}
-      </div>
+      <li class="track_recent">
+         <a href="${track.url}" target="_blank" class="track_link">${track.name}</a> by ${track.artist['#text']}
+      </li>
       `).join('');
-      dataContainer.innerHTML = html;
+      dataContainer.innerHTML = `<ul>${html}</ul>`;
     } else {
       const html = `
         <div class="track">
