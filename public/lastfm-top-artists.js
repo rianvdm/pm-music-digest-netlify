@@ -6,7 +6,7 @@ fetch('/.netlify/functions/getTopArtists')
 
     // Create an array of promises for each artist's data
     const artistPromises = topArtists.map(artist => {
-      return fetch(`/.netlify/functions/getArtistInfo?mbid=${artist.mbid}`)
+      return fetch(`/.netlify/functions/getArtistInfo?artist=${artist.name}`)
         .then(response => response.json())
         .then(data => {
           // Check for error property in Last.fm API response

@@ -28,7 +28,7 @@ fetch('/.netlify/functions/getRecentTracks')
 
 
 // Get the data for the  artist
-fetch(`/.netlify/functions/getArtistInfo?mbid=${nowPlaying[0].artist['mbid']}`)
+fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}`)
   .then(response => response.json())
   .then(data => {
     // Check for error property in Last.fm API response
@@ -96,7 +96,7 @@ fetch(`/.netlify/functions/getArtistInfo?mbid=${nowPlaying[0].artist['mbid']}`)
     });
 
     // Get the data for the  artist
-    fetch(`/.netlify/functions/getArtistInfo?mbid=${nowPlaying[0].artist['mbid']}`)
+    fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}`)
       .then(response => response.json())
       .then(data => {
         // Check for error property in Last.fm API response

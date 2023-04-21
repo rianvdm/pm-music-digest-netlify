@@ -2,11 +2,12 @@ const lastFMToken = process.env.LAST_FM_API_TOKEN;
 const fetch = require('node-fetch');
 
 const handler = async (event) => {
-  // Get mbid from query parameters
-  const mbid = event.queryStringParameters.mbid;
+  // const mbid = event.queryStringParameters.mbid;
+  const artist = event.queryStringParameters.artist;
 
   // Make request to Last.fm API
-  const url = `http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&mbid=${mbid}&api_key=${lastFMToken}&format=json`;
+  // const url = `http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&mbid=${mbid}&api_key=${lastFMToken}&format=json`;
+  const url = `http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artist}&api_key=${lastFMToken}&format=json`;
   const results = await fetch(url);
 
   // If there was an error
