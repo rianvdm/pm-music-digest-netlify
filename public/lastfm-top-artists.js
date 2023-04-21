@@ -10,7 +10,7 @@ fetch('/.netlify/functions/getTopArtists')
         .then(response => response.json())
         .then(data => {
           // Check for error property in Last.fm API response
-          if (data.error) {
+          if (typeof data.artist.tags.tag[0] === 'undefined') {
             return {
               summary: 'Last.fm unfortunately does not have any additional information on this artist.',
             };
@@ -40,22 +40,22 @@ fetch('/.netlify/functions/getTopArtists')
         const html = topArtists.map((artist, i) => {
           if (artists[i].summary) {
             return `
-              <div class="track_ul">
-                  ${artist['@attr'].rank}. <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays). 
+              <li class="track_ul">
+                  <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays). 
                   ${artists[i].summary}
-              </div>
+              </li>
             `;
           } else {
             return `
-              <div class="track_ul">
-                  ${artist['@attr'].rank}. <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays). 
+              <li class="track_ul">
+                  <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays). 
                   Primary genres are <strong>${artists[i].tag1}</strong> and <strong>${artists[i].tag2}</strong>. 
                   Similar artists include <a href="${artists[i].similarArtist1URL}" target="_blank" class="track_link">${artists[i].similarArtist1}</a>, <a href="${artists[i].similarArtist2URL}" target="_blank" class="track_link">${artists[i].similarArtist2}</a>, and <a href="${artists[i].similarArtist3URL}" target="_blank" class="track_link">${artists[i].similarArtist3}</a>.
-              </div>
+              </li>
             `;
           }
         }).join('');
-        dataContainer.innerHTML = html;
+        dataContainer.innerHTML = `<ol>${html}</ol>`;
       })
       .catch(error => console.error(error));
 
