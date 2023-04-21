@@ -21,8 +21,8 @@ Follow these steps to deploy your site to Netlify and get this up and running on
 1. Go to `Site settings` from the top menu
 1. Go to `Environment variables` from the menu on the left
 1. Add a single environment variable with these key names. Ensure that `All scopes` and `Same value for all deploy contexts` are selected.
-1. `LAST_FM_API_TOKEN` - Enter your Last.fm API token as the value
-1. `DISCOGS_API_TOKEN` - Enter your Discogs API token as the value (if you don't want to use Discogs, just delete the `Recent purchases` section from `index.html`)
+    1.  `LAST_FM_API_TOKEN` - Enter your Last.fm API token as the value
+    1. `DISCOGS_API_TOKEN` - Enter your Discogs API token as the value (if you don't want to use Discogs, just delete the `Recent purchases` section from `index.html`)
 1. Make sure you change `lastFMUser` in the all the functions to your username
 1. Oh, also change the footer text in `index.html`
 1. Now let's trigger a deploy so that your site will load the new environment variables. Go to `Deploys` from the top menu
