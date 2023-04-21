@@ -113,7 +113,7 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
                 <p class="track_album">${nowPlaying[0].album['#text']}</p>
               </div>
             </div>
-            <p style="text-align: center;">The last song I listened to was <a href="${nowPlaying[0].url}">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
+            <p style="text-align: center;">The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
         </div>
           `;
           dataContainer.innerHTML = html;
@@ -135,7 +135,7 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
                 <p class="track_album">${nowPlaying[0].album['#text']}</p>
               </div>
             </div>
-            <p style="text-align: center;">The last song I listened to was <a href="${nowPlaying[0].url}">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
+            <p style="text-align: center;">The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
             <p style="text-align: center;">If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
               Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>.</p>
             <p style="text-align: center;">${bio}</p>

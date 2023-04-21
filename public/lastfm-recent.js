@@ -2,15 +2,15 @@ fetch('/.netlify/functions/getRecentTracks')
   .then(response => response.json())
   .then(data => {
     const dataContainer = document.querySelector('.js-lastfm-recent');
-    const recentTracks = data.recenttracks.track.slice(0, 5);
+    const recentTracks = data.recenttracks.track.slice(1, 6);
 
     if (recentTracks.length > 0) {
       const html = recentTracks.map(track => `
-        <div class="track">
-           <p> <a href="${track.url}" target="_blank" class="track_link">${track.name}</a> by ${track.artist['#text']}</p>
-        </div>
+      <div class="track_recent">
+        <a href="${track.url}" target="_blank" class="track_link">${track.name}</a> by ${track.artist['#text']}
+      </div>
       `).join('');
-//      dataContainer.innerHTML = html;
+      dataContainer.innerHTML = html;
     } else {
       const html = `
         <div class="track">

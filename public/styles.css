@@ -43,6 +43,13 @@ h2 {
   position: relative;
 }
 
+h3 {
+  color: var(--c-base);
+  text-align: center;
+  margin: 3em 0 1em;
+  position: relative;
+}
+
 .button,
 .button:visited {
   display: inline-block;
@@ -133,9 +140,16 @@ h2 {
 }
 
 .track_ul {
-  margin: 0.5em auto;
+  margin: 0.4em auto;
   font-size: 18px;
   line-height: 1.4em;
+  max-width: 800px;
+}
+
+.track_recent {
+  margin: 0.2em auto;
+  font-size: 16px;
+  line-height: 1.2em;
   max-width: 800px;
 }
 
