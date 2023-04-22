@@ -17,6 +17,7 @@ p {
   color: var(--c-base);
   margin: 1em auto;
   line-height: 1.4em;
+  font-size: 18px;
   max-width: 800px;
 }
 
@@ -39,7 +40,7 @@ h1 span {
 h2 {
   color: var(--c-base);
   text-align: center;
-  margin: 3em 0 1em;
+  margin: 2.5em 0 1em;
   position: relative;
 }
 
@@ -114,12 +115,13 @@ h3 {
   color: var(--c-accent);
 }
 .track_album {
-  font-size: 12px;
+  font-size: 14px;
   margin: 0;
   font-style: italic;
 }
 .track_none {
   margin: 0 auto;
+  font-size: 18px;
   max-width: 800px;
 }
 .track_image {
@@ -145,7 +147,7 @@ h3 {
 
 .track_recent {
   margin: 0.2em auto;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.2em;
   max-width: 800px;
 }

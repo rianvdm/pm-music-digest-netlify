@@ -2,7 +2,7 @@ fetch('/.netlify/functions/getTopArtists')
   .then(response => response.json())
   .then(data => {
     const dataContainer = document.querySelector('.js-lastfm-top-artists');
-    const topArtists = data.topartists.artist.slice(0, 5);
+    const topArtists = data.topartists.artist.slice(0, 6);
 
     // Create an array of promises for each artist's data
     const artistPromises = topArtists.map(artist => {

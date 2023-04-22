@@ -103,7 +103,7 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
         if (typeof data.artist.tags.tag[0] === 'undefined') {
           const html = `
             <div class="track_none">
-            <p style="text-align: center;">Sadly, I’m not listening to anything right now. The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
+            <p style="text-align: center;">Nothing is playing right now. The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
               <div class="track">
               <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
               <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">
@@ -123,7 +123,7 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
           const bio = data.artist.bio.summary;
           const html = `
             <div class="track_none">
-            <p style="text-align: center;">Sadly, I’m not listening to anything right now. The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
+            <p style="text-align: center;">Nothing is playing right now. The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
               <div class="track">
               <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
               <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">
