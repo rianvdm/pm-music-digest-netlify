@@ -1,5 +1,5 @@
-# Music mini-site using Netlify + Last.fm + Discogs
-This site shows what you're listening to on [Last.fm](https://last.fm), as well as some collection information from [Discogs](https://discogs.com). It makes use of Netlify’s [serverless functions](https://docs.netlify.com/functions/overview/). You'll need API keys from both Last.fm and Discogs to make it work.
+# Music mini-site using Netlify + Last.fm + Discogs + YouTube
+This site shows what you're listening to on [Last.fm](https://last.fm), as well as some collection information from [Discogs](https://discogs.com). It makes use of Netlify’s [serverless functions](https://docs.netlify.com/functions/overview/). It also searches YouTube and embeds a video of the latest track. You'll need API keys from Last.fm, Discogs, and YouTube to make it work.
 
 The front-end HTML, CSS, and javascript inside of the `public` directory are all vanilla. No fancy frameworks here, so feel free to integrate this into whatever frameworks you’re comfortable with.
 
@@ -22,7 +22,8 @@ Follow these steps to deploy your site to Netlify and get this up and running on
 1. Go to `Environment variables` from the menu on the left
 1. Add a single environment variable with these key names. Ensure that `All scopes` and `Same value for all deploy contexts` are selected.
     1.  `LAST_FM_API_TOKEN` - Enter your Last.fm API token as the value
-    1. `DISCOGS_API_TOKEN` - Enter your Discogs API token as the value (if you don't want to use Discogs, just delete the `Recent purchases` section from `index.html`)
+    1.  `YOUTUBE_API_TOKEN` - Enter your YouTube API token as the value
+    1.  `DISCOGS_API_TOKEN` - Enter your Discogs API token as the value (if you don't want to use Discogs, just delete the `Recent purchases` section from `index.html`)
 1. Make sure you change `lastFMUser` in the all the functions to your username
 1. Oh, also change the footer text in `index.html`
 1. Now let's trigger a deploy so that your site will load the new environment variables. Go to `Deploys` from the top menu
