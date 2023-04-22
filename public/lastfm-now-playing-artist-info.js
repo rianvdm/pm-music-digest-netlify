@@ -28,10 +28,7 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
         <div class="track_none">
           <p>If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
           Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>.</p>
-            <div class="js-lastfm-top-albums-by-artist">
-             <p style="text-align: center;">Loading...</p>
-            </div>
-        <p>${bio}</p>
+          <p>${bio}</p>
         </div>
       `;
       dataContainer.innerHTML = html;
