@@ -107,13 +107,13 @@ h3 {
 .track_artist {
   color: var(--c-accent);
   text-align: left;
-  font-size: 1rem;
+  font-size: 16px;
   margin: 0;
 }
 .track_name {
-  font-size: 14px;
+  font-size: 15px;
   margin: 0;
-  color: var(--c-accent);
+  color: var(--c-base);
 }
 .track_album {
   font-size: 14px;

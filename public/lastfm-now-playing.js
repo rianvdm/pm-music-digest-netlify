@@ -36,8 +36,8 @@ fetch('/.netlify/functions/getRecentTracks')
           <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
             <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">
             <div class="track_content">
-              <h2 class="track_artist">${nowPlaying[0].name}</h2>
-              <p class="track_name">${nowPlaying[0].artist['#text']}</p></a>
+              <h2 class="track_artist">${nowPlaying[0].name}</h2></a>
+              <p class="track_name">${nowPlaying[0].artist['#text']}</p>
               <p class="track_album">${nowPlaying[0].album['#text']}</p>
             </div>
         </div>

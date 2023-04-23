@@ -36,12 +36,10 @@ fetch('/.netlify/functions/getTopArtists')
     Promise.all(artistPromises)
       .then(artists => {
         const html = topArtists.map((artist, i) => {
-
-
           if (artists[i].summary) {
             return `
               <li class="track_ul">
-                  <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays)
+                  <strong><a href="${artist.url}" target="_blank">${artist.name}</a></strong> (${artist.playcount} plays)
                   <br>${artists[i].summary}
               </li>
             `;
@@ -50,8 +48,8 @@ fetch('/.netlify/functions/getTopArtists')
               <li class="track_ul">
                   <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays)
                   <br>Genres: ${artists[i].tags[0].name} and ${artists[i].tags[1].name}.
-                  <br>Most popular albums: <a href="${artists[i].topAlbums[0].url}">${artists[i].topAlbums[0].name}</a> and <a href="${artists[i].topAlbums[1].url}">${artists[i].topAlbums[1].name}</a>.
-                  <br>Similar artists: <a href="${artists[i].similarArtist[0].url}" target="_blank" class="track_link">${artists[i].similarArtist[0].name}</a>, <a href="${artists[i].similarArtist[1].url}" target="_blank" class="track_link">${artists[i].similarArtist[1].name}</a>, and <a href="${artists[i].similarArtist[2].url}" target="_blank" class="track_link">${artists[i].similarArtist[2].name}</a>.
+                  <br>Most popular albums: <a href="${artists[i].topAlbums[0].url}" target="_blank">${artists[i].topAlbums[0].name}</a> and <a href="${artists[i].topAlbums[1].url}" target="_blank">${artists[i].topAlbums[1].name}</a>.
+                  <br>Similar artists: <a href="${artists[i].similarArtist[0].url}" target="_blank"">${artists[i].similarArtist[0].name}</a>, <a href="${artists[i].similarArtist[1].url}" target="_blank"">${artists[i].similarArtist[1].name}</a>, and <a href="${artists[i].similarArtist[2].url}" target="_blank">${artists[i].similarArtist[2].name}</a>.
               </li>
             `;
           }
@@ -59,7 +57,6 @@ fetch('/.netlify/functions/getTopArtists')
         dataContainer.innerHTML = `<ol>${html}</ol>`;
       })
       .catch(error => console.error(error));
-
 
   })
   .catch(error => console.error(error));
