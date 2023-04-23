@@ -48,9 +48,8 @@ fetch('/.netlify/functions/getTopArtists')
           } else {
             return `
               <li class="track_ul">
-                  <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays). 
-                  Primary genres are <strong>${artists[i].tag1}</strong> and <strong>${artists[i].tag2}</strong>. 
-                  Similar artists include <a href="${artists[i].similarArtist1URL}" target="_blank" class="track_link">${artists[i].similarArtist1}</a>, <a href="${artists[i].similarArtist2URL}" target="_blank" class="track_link">${artists[i].similarArtist2}</a>, and <a href="${artists[i].similarArtist3URL}" target="_blank" class="track_link">${artists[i].similarArtist3}</a>.
+                  <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong>: ${artist.playcount} plays (${artists[i].tag1} / ${artists[i].tag2}). 
+                  Similar artists: <a href="${artists[i].similarArtist1URL}" target="_blank" class="track_link">${artists[i].similarArtist1}</a>, <a href="${artists[i].similarArtist2URL}" target="_blank" class="track_link">${artists[i].similarArtist2}</a>, and <a href="${artists[i].similarArtist3URL}" target="_blank" class="track_link">${artists[i].similarArtist3}</a>.
               </li>
             `;
           }

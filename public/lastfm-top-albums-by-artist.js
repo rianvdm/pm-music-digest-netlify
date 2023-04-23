@@ -28,8 +28,8 @@ fetch(`/.netlify/functions/getTopAlbumsByArtist?artist=${nowPlaying[0].artist['#
 
       const html = `
         <div class="track_none">
-          <p>${nowPlaying[0].artist['#text']}’s most popular album is <a href="${topArtistAlbumsURLs[0]}" target="_blank" class="track_link">${topArtistAlbums[0]}</a> with ${new Intl.NumberFormat().format(playcount[0])} total plays worldwide. 
-          Also check out <a href="${topArtistAlbumsURLs[1]}" target="_blank" class="track_link">${topArtistAlbums[1]}</a>, which has ${new Intl.NumberFormat().format(playcount[1])} total plays worldwide.</p>
+          <p>${nowPlaying[0].artist['#text']}’s most popular album is <a href="${topArtistAlbumsURLs[0]}" target="_blank" class="track_link">${topArtistAlbums[0]}</a> with ${new Intl.NumberFormat().format(playcount[0])} total plays on Last.fm. 
+          Also check out <a href="${topArtistAlbumsURLs[1]}" target="_blank" class="track_link">${topArtistAlbums[1]}</a>, which has ${new Intl.NumberFormat().format(playcount[1])} total plays.</p>
         </div>
       `;
       dataContainer.innerHTML = html;
