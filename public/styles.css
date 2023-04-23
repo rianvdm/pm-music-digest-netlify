@@ -23,6 +23,7 @@ p {
 
 a {
   color: var(--c-accent);
+  text-decoration: none;
 }
 
 h1 {
