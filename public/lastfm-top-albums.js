@@ -12,6 +12,7 @@ fetch('/.netlify/functions/getTopAlbums')
               <h2 class="track_artist">${album.name}</h2></a>
               <p class="track_name">${album.artist.name}</p>
               <p class="track_album">${album.playcount} songs played
+              <br><a href="https://songwhip.com/create?q=${album.name} ${album.artist.name}" target="_blank">Stream now</a></p>
             </div>
         </div>
       `).join('');
