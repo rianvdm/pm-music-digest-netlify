@@ -50,8 +50,9 @@ fetch('/.netlify/functions/getLovedTracks')
               });
             return `
               <li class="track_ul">
-                <strong><a href="https://songwhip.com/create?q=${q}" target="_blank">${track.name}</strong></a> by ${track.artist.name} (liked on ${formattedDate})
-                <br>If you like <strong>${tracks[i].tags[0].name} / ${tracks[i].tags[1].name}</strong> music from artists like ${tracks[i].similarArtist[0].name}, ${tracks[i].similarArtist[1].name}, and ${tracks[i].similarArtist[2].name}.
+                <strong>${track.name}</strong></a> by <strong>${track.artist.name}</strong> (liked on ${formattedDate})
+                <br><a href="https://songwhip.com/create?q=${q}" target="_blank">Stream now</a> if you like ${tracks[i].tags[0].name} / ${tracks[i].tags[1].name} music 
+                from artists like ${tracks[i].similarArtist[0].name}, ${tracks[i].similarArtist[1].name}, and ${tracks[i].similarArtist[2].name}.
               </li>
             `;
           }
