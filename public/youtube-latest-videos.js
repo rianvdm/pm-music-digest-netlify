@@ -20,6 +20,9 @@ fetch(`/.netlify/functions/getRecentTracks`)
         const youtubeVideo = data.items[0];
 
         const html = `
+          <div class="track_recent">
+            <p style="text-align: center;">You can listen to this track on YouTube below, or <a href="https://songwhip.com/https://www.youtube.com/watch?v=${youtubeVideo.id.videoId}" target="_blank">click here</a> to listen on your favorite streaming service.
+          </div>
           <div class="videoWrapper">
             <p><iframe src="https://www.youtube.com/embed/${youtubeVideo.id.videoId}"
             frameborder="0"
