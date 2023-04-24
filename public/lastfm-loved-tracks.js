@@ -18,7 +18,9 @@ fetch('/.netlify/functions/getLovedTracks')
 
           // Return the data if it exists
           return {
-            tags: data.artist.tags.tag.slice(0, 3),
+            tags: data.artist.tags.tag
+              .filter(tag => tag.name !== "seen live")
+              .slice(0, 3),
             similarArtist: data.artist.similar.artist.slice(0,3),
           };
         })

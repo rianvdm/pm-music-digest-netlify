@@ -21,14 +21,26 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
       // Show genre and bio if the artist exists on Last.fm
     } else {
       const dataContainer = document.querySelector('.js-lastfm-artist-info');
-      const tags = data.artist.tags.tag.map(tag => tag.name);
+      const tags = data.artist.tags.tag
+        .map(tag => tag.name)
+        .filter(tag => tag !== "seen live");
       const similar = data.artist.similar.artist.map(artist => artist.name);
       const bio = data.artist.bio.summary;
+        let firstThreeSentences = bio;
+        const firstPeriodIndex = bio.indexOf('.');
+        const secondPeriodIndex = bio.indexOf('.', firstPeriodIndex + 1);
+        const thirdPeriodIndex = bio.indexOf('.', secondPeriodIndex + 1);
+        if (secondPeriodIndex !== -1) {
+          firstThreeSentences = bio.substring(0, secondPeriodIndex + 1);
+        }
+        if (thirdPeriodIndex !== -1) {
+          firstThreeSentences = bio.substring(0, thirdPeriodIndex + 1);
+        }
       const html = `
         <div class="track_none">
           <p>If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
           Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>.</p>
-          <p>${bio}</p>
+          <p>${firstThreeSentences}</p>
         </div>
       `;
       dataContainer.innerHTML = html;
