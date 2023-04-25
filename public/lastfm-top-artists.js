@@ -21,7 +21,7 @@ fetch('/.netlify/functions/getTopArtists')
           const albumData = await albumResults.json();
 
           const bioSentences = data.artist.bio.summary.split('. ');
-          const bio = bioSentences.length >= 2 ? `${bioSentences[0]}. ${bioSentences[1]}` : data.artist.bio.summary; // Get the first two sentences of the bio if they exist, otherwise show the original bio in full
+          const bio = bioSentences[0] + '.'; // Get the first sentence of the bio
 
           return {
             tags: data.artist.tags.tag
@@ -53,7 +53,7 @@ fetch('/.netlify/functions/getTopArtists')
             return `
               <li class="track_ul">
                   <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays).
-                  <br>${artists[i].bio}.
+                  <br>${artists[i].bio}
                   <br><strong>Genres:</strong> ${artists[i].tags[0].name} and ${artists[i].tags[1].name}.
                   <br><strong>Most popular albums:</strong> <a href="${artists[i].topAlbums[0].url}" target="_blank">${artists[i].topAlbums[0].name}</a> and <a href="${artists[i].topAlbums[1].url}" target="_blank">${artists[i].topAlbums[1].name}</a>.
                   <br><strong>Similar artists:</strong> <a href="${artists[i].similarArtist[0].url}" target="_blank"">${artists[i].similarArtist[0].name}</a>, <a href="${artists[i].similarArtist[1].url}" target="_blank"">${artists[i].similarArtist[1].name}</a>, and <a href="${artists[i].similarArtist[2].url}" target="_blank">${artists[i].similarArtist[2].name}</a>.
