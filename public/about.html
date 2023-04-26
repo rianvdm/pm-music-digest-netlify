@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Rian van der Merwe">
+    <link href="styles.css" rel="stylesheet">
+
+    <!-- HTML Meta Tags -->
+    <title>About Rian's music</title>
+    <meta name="description" content="A mini-site that displays real-time data about my music collection and what I'm listening to.">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://music.elezea.com/about">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="About Rian's music">
+    <meta property="og:description" content="A mini-site that displays real-time data about my music collection and what I'm listening to.">
+    <meta property="og:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="music.elezea.com">
+    <meta property="twitter:url" content="https://music.elezea.com/about">
+    <meta name="twitter:title" content="About Rian's music">
+    <meta name="twitter:description" content="A mini-site that displays real-time data about my music collection and what I'm listening to.">
+    <meta name="twitter:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
+
+  </head>
+
+  <body>
+
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/history.html">History</a></li>
+        <li class="active"><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+
+    
+    <h1>Rian’s music</h1>
+
+    <h3>Hello 👋</h3>
+    <p>My name is <a href="https://elezea.com" target="_blanks">Rian</a> and this is a side project about the music I listen to. It pulls live data from <a href="https://www.last.fm/user/bordesak">my Last.fm activity</a>, <a href="https://www.discogs.com/user/elezea-records/collection">my Discogs collection</a>, and YouTube via their respective APIs. It also use some basic <a href="https://songwhip.com">Songwhip</a> search here and there to generate universal streaming links.</p>
+    <p>It’s a basic Javascript site deployed via <a href="https://www.netlify.com">Netlify</a>. You can read more about the development process <a href="https://elezea.com/2023/04/building-a-music-mini-site-with-data-from-last-fm-discogs-and-youtube/">on the blog</a>. You can <a href="https://elezea.com/contact/" target="_blank">contact me here</a>.</p>
+
+    <div class="js-user-info recent-tracks">
+      <p style="text-align: center;">Loading...</p>
+    </div>
+
+    <div class="footer">
+      <p><a href="https://youtu.be/cNtprycno14?t=9032">There’s a fire that’s been burning right outside my door.</a></p>
+    </div>
+
+  <script src="lastfm-user-info.js"></script>
+</body>
+</html>
