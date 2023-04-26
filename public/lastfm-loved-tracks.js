@@ -2,7 +2,7 @@ fetch('/.netlify/functions/getLovedTracks')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-loved-tracks');
-    const lovedTracks = data.lovedtracks.track.slice(0, 5);
+    const lovedTracks = data.lovedtracks.track.slice(0, 6);
 
     // Create an array of promises for each artist's data
     const trackPromises = lovedTracks.map(track => {
