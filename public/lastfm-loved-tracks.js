@@ -2,7 +2,7 @@ fetch('/.netlify/functions/getLovedTracks')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-loved-tracks');
-    const lovedTracks = data.lovedtracks.track.slice(0, 5);
+    const lovedTracks = data.lovedtracks.track.slice(0, 6);
 
     // Create an array of promises for each artist's data
     const trackPromises = lovedTracks.map(track => {
@@ -52,7 +52,7 @@ fetch('/.netlify/functions/getLovedTracks')
               });
             return `
               <li class="track_ul">
-                <strong>${track.name}</strong></a> by <strong>${track.artist.name}</strong> (liked on ${formattedDate})
+                <strong>${track.name}</strong></a> by <strong>${track.artist.name}</strong> (liked on ${formattedDate}).
                 <br><a href="https://songwhip.com/create?q=${q}" target="_blank">Stream now</a> if you like ${tracks[i].tags[0].name} / ${tracks[i].tags[1].name} music 
                 from artists like ${tracks[i].similarArtist[0].name}, ${tracks[i].similarArtist[1].name}, and ${tracks[i].similarArtist[2].name}.
               </li>
