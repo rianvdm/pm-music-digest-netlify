@@ -25,22 +25,18 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
         .map(tag => tag.name)
         .filter(tag => tag !== "seen live");
       const similar = data.artist.similar.artist.map(artist => artist.name);
-      const bio = data.artist.bio.summary;
-        let firstThreeSentences = bio;
-        const firstPeriodIndex = bio.indexOf('.');
-        const secondPeriodIndex = bio.indexOf('.', firstPeriodIndex + 1);
-        const thirdPeriodIndex = bio.indexOf('.', secondPeriodIndex + 1);
-        if (secondPeriodIndex !== -1) {
-          firstThreeSentences = bio.substring(0, secondPeriodIndex + 1);
-        }
-        if (thirdPeriodIndex !== -1) {
-          firstThreeSentences = bio.substring(0, thirdPeriodIndex + 1);
-        }
+
+      const bioSentences = data.artist.bio.summary.split('. ');
+      const bio = bioSentences[0] + '. ' + bioSentences[1] + '.'; // Get the first two sentences of the bio
+
+      // const bioSentences = data.artist.bio.summary.split('. ');
+      // const bio = bioSentences[0] + '. ' + bioSentences[1] + '. ' + bioSentences[2] + '.'; // Get the first three sentences of the bio
+      
       const html = `
         <div class="track_none">
           <p>If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
           Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>.</p>
-          <p>${firstThreeSentences}</p>
+          <p>${bio}</p>
         </div>
       `;
       dataContainer.innerHTML = html;
