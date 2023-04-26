@@ -26,11 +26,11 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
         .filter(tag => tag !== "seen live");
       const similar = data.artist.similar.artist.map(artist => artist.name);
 
-      const bioSentences = data.artist.bio.summary.split('. ');
-      const bio = bioSentences[0] + '. ' + bioSentences[1] + '.'; // Get the first two sentences of the bio
-
-      // const bioSentences = data.artist.bio.summary.split('. ');
-      // const bio = bioSentences[0] + '. ' + bioSentences[1] + '. ' + bioSentences[2] + '.'; // Get the first three sentences of the bio
+          const bioSentences = data.artist.bio.summary.split('. ');
+          let bio = bioSentences[0] + '. '; // Get the first sentence of the bio
+          if (bioSentences.length > 1) {
+            bio += bioSentences[1] + '.'; // Add the second sentence if it exists
+          }
       
       const html = `
         <div class="track_none">
