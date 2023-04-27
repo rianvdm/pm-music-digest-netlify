@@ -18,28 +18,37 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
       `;
       dataContainer.innerHTML = html;
 
-      // Show genre and bio if the artist exists on Last.fm
+      // Show genre and similar artists if the artist exists on Last.fm
     } else {
       const dataContainer = document.querySelector('.js-lastfm-artist-info');
       const tags = data.artist.tags.tag
-        .map(tag => tag.name)
+        .map(tag => tag.name.toLowerCase())
         .filter(tag => tag !== "seen live");
       const similar = data.artist.similar.artist.map(artist => artist.name);
 
-          const bioSentences = data.artist.bio.summary.split('. ');
-          let bio = bioSentences[0] + '. '; // Get the first sentence of the bio
-          if (bioSentences.length > 1) {
-            bio += bioSentences[1] + '.'; // Add the second sentence if it exists
-          }
+
+            // Get the data for the artist's top albums
+      fetch(`/.netlify/functions/getTopAlbumsByArtist?artist=${nowPlaying[0].artist['#text']}`)
+        .then(response => response.json())
+        .then(data => {
+
+            const dataContainer = document.querySelector('.js-lastfm-now-playing-artist-info');
+            const topArtistAlbums = data.topalbums.album.map(album => album.name);
+            const topArtistAlbumsURLs = data.topalbums.album.map(album => album.url);
+            const playcount = data.topalbums.album.map(album => album.playcount);
+            const playcount0 = new Intl.NumberFormat().format(playcount[0]);
       
       const html = `
         <div class="track_none">
           <p>If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
-          Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>.</p>
-          <p>${bio}</p>
+          Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>.
+          ${nowPlaying[0].artist['#text']}’s most popular album is <a href="${topArtistAlbumsURLs[0]}" target="_blank">${topArtistAlbums[0]}</a> with ${new Intl.NumberFormat().format(playcount[0])} total plays on Last.fm. 
+          Also check out <a href="${topArtistAlbumsURLs[1]}" target="_blank">${topArtistAlbums[1]}</a>, which has ${new Intl.NumberFormat().format(playcount[1])} total plays.</p>
         </div>
       `;
       dataContainer.innerHTML = html;
+      })
+
     }
   })
 
