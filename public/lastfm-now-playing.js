@@ -30,22 +30,14 @@ fetch('/.netlify/functions/getRecentTracks')
 
       const html = `
         <div class="track_none">
-          <p style="text-align: center;">What I’m listening to right now (${formattedTimeNow} Pacific Time on ${formattedDateNow}):</p>
-        </div>
-        <div class="track">
-          <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
-            <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">
-            <div class="track_content">
-              <h2 class="track_artist">${nowPlaying[0].name}</h2></a>
-              <p class="track_name">${nowPlaying[0].artist['#text']}</p>
-              <p class="track_album">${nowPlaying[0].album['#text']}</p>
-            </div>
+          <p>Right now (${formattedTimeNow} Pacific Time on ${formattedDateNow}) I am listening to <strong>${nowPlaying[0].name}</strong> by <strong>${nowPlaying[0].artist['#text']}</strong>.</p>
         </div>
       `;
       dataContainer.innerHTML = html;
 
 
 // If nothing is currently playing, change the text at the top to indicate the last track and when it was played.
+
   } else {
 
     const utsDate = data.recenttracks.track[0].date.uts;
@@ -61,13 +53,8 @@ fetch('/.netlify/functions/getRecentTracks')
 
     const html = `
       <div class="track_none">
-      <p style="text-align: center;">Nothing is playing right now. The last song I listened to was <a href="${nowPlaying[0].url}" target="_blank" class="track_link">${nowPlaying[0].name}</a> by ${nowPlaying[0].artist['#text']} at ${formattedTime} Pacific Time on ${formattedDate}.</p>
-        <div class="track">
-        <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
-        <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">
-          <h2 class="track_artist">${nowPlaying[0].name}</h2>
-          <p class="track_name">${nowPlaying[0].artist['#text']}</p></a>
-          <p class="track_album">${nowPlaying[0].album['#text']}</p>
+        <p>Nothing is playing right now. The last song I listened to was <strong>${nowPlaying[0].name}</strong> by <strong>${nowPlaying[0].artist['#text']}</strong> at ${formattedTime} Pacific Time on ${formattedDate}.</p>
+      </div>
           `;
           dataContainer.innerHTML = html;
           
@@ -76,4 +63,13 @@ fetch('/.netlify/functions/getRecentTracks')
 
 .catch(error => console.error(error));
 
-
+        // Code to display the Last.fm details
+        // <div class="track">
+        //   <a href="${nowPlaying[0].url}" target="_blank" class="track_link">
+        //     <img src="${nowPlaying[0].image[3]['#text']}" class="track_image">
+        //     <div class="track_content">
+        //       <h2 class="track_artist">${nowPlaying[0].name}</h2></a>
+        //       <p class="track_name">${nowPlaying[0].artist['#text']}</p>
+        //       <p class="track_album">${nowPlaying[0].album['#text']}</p>
+        //     </div>
+        // </div>

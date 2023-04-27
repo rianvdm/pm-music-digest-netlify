@@ -234,7 +234,7 @@ nav li.active a {
     max-height: 338px;
 }
 
-.spotify-iframe {
+.streaming-iframe {
   max-width: 600px;
   margin: 0 auto;
   display: block;

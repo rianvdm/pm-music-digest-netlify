@@ -7,7 +7,8 @@ const nowPlaying = [data.recenttracks.track[0]];
 
 const artist = nowPlaying[0].artist['#text'];
 const title = nowPlaying[0].name;
-const q = `${artist} ${title}`;
+const album = nowPlaying[0].album['#text'];
+const q = `${artist} ${title} ${album}`;
 
 fetch(`/.netlify/functions/getSpotifySong?q=${q}`)
   .then(response => {
@@ -23,8 +24,8 @@ fetch(`/.netlify/functions/getSpotifySong?q=${q}`)
 
     const html = `
       <div class="track_recent">
-        <p style="text-align: center;">Listen to this track on your favorite streaming service.</p>
-        <p><iframe class="spotify-iframe" style="border-radius:10px" width="100%" height="152" src="https://embed.odesli.co/?url=${spotifyUrl}&theme=dark" frameborder="0" allowtransparency allowfullscreen sandbox="allow-same-origin allow-scripts allow-presentation allow-popups allow-popups-to-escape-sandbox"></iframe></p>
+        <p style="text-align: center;">Listen to this track on your favorite streaming service:</p>
+        <p><iframe class="streaming-iframe" style="border-radius:12px" width="100%" height="300" src="https://embed.odesli.co/?url=${spotifyUrl}&theme=dark" frameborder="0" allowtransparency allowfullscreen sandbox="allow-same-origin allow-scripts allow-presentation allow-popups allow-popups-to-escape-sandbox"></iframe></p>
       </div>
     `;
     dataContainer.innerHTML = html;
@@ -42,7 +43,7 @@ fetch(`/.netlify/functions/getSpotifySong?q=${q}`)
   })
 .catch(error => console.error(error));
 
-
+// Code for direct Spotify embed
 // <p style="text-align: center;">You can listen to this track on Spotify below, or <a href="https://songwhip.com/${spotifyUrl}" target="_blank">click here</a> to listen on your favorite streaming service.</p>
-// <p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyID}"
+// <p><iframe class="streaming-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyID}"
 // width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></p>
