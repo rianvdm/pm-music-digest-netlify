@@ -46,9 +46,9 @@ Promise.all(trackPromises)
 
       if (tracks[i].summary) {
         return `
-          <li class="track_ul">
+          <div class="track_ul">
             ${tracks[i].summary}
-          </li>
+          </div>
         `;
       } else {
         const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -59,17 +59,17 @@ Promise.all(trackPromises)
           timeZone: pacificTimezone
         });
         return `
-          <li class="track_ul">
+          <div class="track_ul">
             <img src="${spotifyImgUrl}">
             <div class="no-wrap-text">
               <strong>${track.name}</strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
               <br><a href="https://songwhip.com/${spotifyUrl}" target="_blank">Stream now</a> if you like ${tracks[i].tags[0].name} / ${tracks[i].tags[1].name} music from artists like ${tracks[i].similarArtist[0].name}, ${tracks[i].similarArtist[1].name}, and ${tracks[i].similarArtist[2].name}.
             </div>
-          </li>
+          </div>
         `;
       }
     }));
-    dataContainer.innerHTML = `<ol>${html.join('')}</ol>`;
+    dataContainer.innerHTML = `${html.join('')}`;
   })
   .catch(error => console.error(error));
 
