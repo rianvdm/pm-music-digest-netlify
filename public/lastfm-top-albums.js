@@ -16,7 +16,7 @@ fetch('/.netlify/functions/getTopAlbums')
               <h2 class="track_artist">${album.name}</h2></a>
               <p class="track_name">${album.artist.name}</p>
               <p class="track_album">${album.playcount} songs played</p>
-              <a href="https://songwhip.com/${spotifyAlbumUrl}" target="_blank" class="track_album">Stream now</a>
+              <a href="https://odesli.co/${spotifyAlbumUrl}" target="_blank" class="track_album">Stream now</a>
             </div>
           </div>
       `;

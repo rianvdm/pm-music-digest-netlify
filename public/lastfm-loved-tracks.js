@@ -63,7 +63,7 @@ Promise.all(trackPromises)
             <img src="${spotifyImgUrl}">
             <div class="no-wrap-text">
               <strong>${track.name}</strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
-              <br><a href="https://songwhip.com/${spotifyUrl}" target="_blank">Stream now</a> if you like ${tracks[i].tags[0].name} / ${tracks[i].tags[1].name} music from artists like ${tracks[i].similarArtist[0].name}, ${tracks[i].similarArtist[1].name}, and ${tracks[i].similarArtist[2].name}.
+              <br><a href="https://odesli.co/${spotifyUrl}" target="_blank">Stream now</a> if you like ${tracks[i].tags[0].name} / ${tracks[i].tags[1].name} music from artists like ${tracks[i].similarArtist[0].name}, ${tracks[i].similarArtist[1].name}, and ${tracks[i].similarArtist[2].name}.
             </div>
           </div>
         `;
