@@ -23,7 +23,7 @@ fetch(`/.netlify/functions/getSpotifySong?q=${q}`)
 
     const html = `
       <div class="track_recent">
-        <p style="text-align: center;">Listen to this track on on your favorite streaming service.</p>
+        <p style="text-align: center;">Listen to this track on your favorite streaming service.</p>
         <p><iframe class="spotify-iframe" style="border-radius:10px" width="100%" height="152" src="https://embed.odesli.co/?url=${spotifyUrl}&theme=dark" frameborder="0" allowtransparency allowfullscreen sandbox="allow-same-origin allow-scripts allow-presentation allow-popups allow-popups-to-escape-sandbox"></iframe></p>
       </div>
     `;
