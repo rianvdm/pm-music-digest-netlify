@@ -30,7 +30,7 @@ fetch('/.netlify/functions/getRecentTracks')
 
       const html = `
         <div class="track_none">
-          <p style="text-align: center;">Right now (${formattedTimeNow} Pacific Time on ${formattedDateNow}) I am listening to <strong>${nowPlaying[0].name}</strong> by <strong>${nowPlaying[0].artist['#text']}</strong>.</p>
+          <p style="text-align: center;">Right now (${formattedTimeNow} Pacific Time on ${formattedDateNow}) I am listening to <strong>${nowPlaying[0].name}</strong> by <strong>${nowPlaying[0].artist['#text']}</strong> off the album <strong>${nowPlaying[0].album['#text']}</strong>.</p>
         </div>
       `;
       dataContainer.innerHTML = html;
@@ -53,7 +53,7 @@ fetch('/.netlify/functions/getRecentTracks')
 
     const html = `
       <div class="track_none">
-        <p style="text-align: center;">Nothing is playing right now. The last song I listened to was <strong>${nowPlaying[0].name}</strong> by <strong>${nowPlaying[0].artist['#text']}</strong> at ${formattedTime} Pacific Time on ${formattedDate}.</p>
+        <p style="text-align: center;">Nothing is playing right now. The last song I listened to at ${formattedTime} Pacific Time on ${formattedDate} was <strong>${nowPlaying[0].name}</strong> by <strong>${nowPlaying[0].artist['#text']}</strong> off the album <strong>${nowPlaying[0].album['#text']}</strong>.</p>
       </div>
           `;
           dataContainer.innerHTML = html;
