@@ -168,19 +168,29 @@ nav li.active a {
   border-radius: 10px;
   z-index: 2;
 }
-.track:hover {
-  z-index: 5;
-}
-.track:hover .track_image {
+
+.track_image:hover {
   transition: all 180ms ease-in-out;
   transform: translateY(-5px) rotate(-5deg);
 }
 
 .track_ul {
-  margin: 0.4em auto;
+  margin: 0.4em auto 1.5em;
   font-size: 18px;
   line-height: 1.4em;
   max-width: 800px;
+  overflow: auto
+}
+
+.track_ul img {
+  float: left;
+  max-width: 125px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+.no-wrap-text {
+    overflow: hidden;
 }
 
 .track_recent {
@@ -224,3 +234,8 @@ nav li.active a {
     max-height: 338px;
 }
 
+.spotify-iframe {
+  max-width: 500px;
+  margin: 0 auto;
+  display: block;
+}

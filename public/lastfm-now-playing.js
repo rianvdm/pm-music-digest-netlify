@@ -70,8 +70,7 @@ fetch('/.netlify/functions/getRecentTracks')
           <p class="track_album">${nowPlaying[0].album['#text']}</p>
           `;
           dataContainer.innerHTML = html;
-
-
+          
   }
   })
 

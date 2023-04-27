@@ -40,8 +40,17 @@ fetch('/.netlify/functions/getTopArtists')
 
     // Resolve all artist promises and create HTML
     Promise.all(artistPromises)
-      .then(artists => {
-        const html = topArtists.map((artist, i) => {
+      .then(async artists => {
+        const html = await Promise.all(topArtists.map(async (artist, i) => {
+
+
+          const q = `${artist.name}`;
+          const spotifyResponse = await fetch(`/.netlify/functions/getSpotifyArtist?q=${encodeURIComponent(q)}`);
+          const spotifyData = await spotifyResponse.json();
+          const spotifyArtistID = spotifyData.artists.items[0].id;
+          const spotifyArtistImgUrl = spotifyData.artists.items[0].images[1].url;
+          const spotifyGenres = spotifyData.artists.items[0].genres.slice(0, 2);
+
           if (artists[i].summary) {
             return `
               <li class="track_ul">
@@ -52,18 +61,22 @@ fetch('/.netlify/functions/getTopArtists')
           } else {
             return `
               <li class="track_ul">
-                  <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays).
-                  <br>${artists[i].bio}
-                  <br><strong>Genres:</strong> ${artists[i].tags[0].name} and ${artists[i].tags[1].name}.
-                  <br><strong>Most popular albums:</strong> <a href="${artists[i].topAlbums[0].url}" target="_blank">${artists[i].topAlbums[0].name}</a> and <a href="${artists[i].topAlbums[1].url}" target="_blank">${artists[i].topAlbums[1].name}</a>.
-                  <br><strong>Similar artists:</strong> <a href="${artists[i].similarArtist[0].url}" target="_blank"">${artists[i].similarArtist[0].name}</a>, <a href="${artists[i].similarArtist[1].url}" target="_blank"">${artists[i].similarArtist[1].name}</a>, and <a href="${artists[i].similarArtist[2].url}" target="_blank">${artists[i].similarArtist[2].name}</a>.
-              </li>
+                  <img src="${spotifyArtistImgUrl}">
+                  <div class="no-wrap-text">
+                    <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays).
+                    <br>${artists[i].bio}
+                    <br><strong>Genres:</strong> ${artists[i].tags[0].name} and ${artists[i].tags[1].name}. 
+                    <br><strong>Most popular albums:</strong> <a href="${artists[i].topAlbums[0].url}" target="_blank">${artists[i].topAlbums[0].name}</a> and <a href="${artists[i].topAlbums[1].url}" target="_blank">${artists[i].topAlbums[1].name}</a>.
+                    <br><strong>Similar artists:</strong> <a href="${artists[i].similarArtist[0].url}" target="_blank"">${artists[i].similarArtist[0].name}</a>, <a href="${artists[i].similarArtist[1].url}" target="_blank"">${artists[i].similarArtist[1].name}</a>, and <a href="${artists[i].similarArtist[2].url}" target="_blank">${artists[i].similarArtist[2].name}</a>.
+                  </div>
+                  </li>
             `;
           }
-        }).join('');
-        dataContainer.innerHTML = `<ol>${html}</ol>`;
+        }));
+        dataContainer.innerHTML = `<ol>${html.join('')}</ol>`;
       })
       .catch(error => console.error(error));
 
   })
   .catch(error => console.error(error));
+

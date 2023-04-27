@@ -20,9 +20,9 @@ fetch('/.netlify/functions/getDiscogsCollection')
               <h2 class="track_artist">${releases.basic_information.title}</h2>
               <p class="track_name">${releases.basic_information.artists[0].name}</p></a>
               <p class="track_album">${releases.basic_information.formats[0].name} added on ${formattedDate}.</p>
-              <p class="track_album">It is a ${releases.basic_information.genres[0]} album 
-              on the ${releases.basic_information.labels[0].name} label and it
-              ${releases.basic_information.year != 0 ? `was released in ${releases.basic_information.year}.` : `has an unknown release date.`}</p>
+              <p class="track_album">${releases.basic_information.genres[0]} album 
+              on the ${releases.basic_information.labels[0].name} label, 
+              ${releases.basic_information.year != 0 ? `released in ${releases.basic_information.year}.` : `unknown release date.`}</p>
             </div>
         </div>
       `;

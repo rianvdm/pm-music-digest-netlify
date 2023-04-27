@@ -41,6 +41,8 @@ Promise.all(trackPromises)
       const spotifyData = await spotifyResponse.json();
       const spotifyUrl = spotifyData.tracks.items[0].external_urls.spotify;
       const spotifyID = spotifyData.tracks.items[0].id;
+      const spotifyArtistID = spotifyData.tracks.items[0].artists.id;
+      const spotifyImgUrl = spotifyData.tracks.items[0].album.images[1].url;
 
       if (tracks[i].summary) {
         return `
@@ -58,8 +60,11 @@ Promise.all(trackPromises)
         });
         return `
           <li class="track_ul">
-            <strong>${track.name}</strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
-            <br><a href="https://songwhip.com/${spotifyUrl}" target="_blank">Stream now</a> if you like ${tracks[i].tags[0].name} / ${tracks[i].tags[1].name} music from artists like ${tracks[i].similarArtist[0].name}, ${tracks[i].similarArtist[1].name}, and ${tracks[i].similarArtist[2].name}.
+            <img src="${spotifyImgUrl}">
+            <div class="no-wrap-text">
+              <strong>${track.name}</strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
+              <br><a href="https://songwhip.com/${spotifyUrl}" target="_blank">Stream now</a> if you like ${tracks[i].tags[0].name} / ${tracks[i].tags[1].name} music from artists like ${tracks[i].similarArtist[0].name}, ${tracks[i].similarArtist[1].name}, and ${tracks[i].similarArtist[2].name}.
+            </div>
           </li>
         `;
       }
