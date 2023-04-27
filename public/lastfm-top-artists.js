@@ -73,7 +73,7 @@ fetch('/.netlify/functions/getTopArtists')
             `;
           }
         }));
-        dataContainer.innerHTML = `<ol>${html.join('')}</ol>`;
+        dataContainer.innerHTML = `${html.join('')}`;
       })
       .catch(error => console.error(error));
 
