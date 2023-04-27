@@ -40,7 +40,7 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${nowPlaying[0].artist['#text']}
       
       const html = `
         <div class="track_none">
-          <p>If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
+          <p style="text-align: center;">If you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> you might enjoy ${nowPlaying[0].artist['#text']}.
           Similar artists include <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>.
           ${nowPlaying[0].artist['#text']}’s most popular album is <a href="${topArtistAlbumsURLs[0]}" target="_blank">${topArtistAlbums[0]}</a> with ${new Intl.NumberFormat().format(playcount[0])} total plays on Last.fm. 
           Also check out <a href="${topArtistAlbumsURLs[1]}" target="_blank">${topArtistAlbums[1]}</a>, which has ${new Intl.NumberFormat().format(playcount[1])} total plays.</p>

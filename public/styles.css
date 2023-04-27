@@ -218,6 +218,7 @@ nav li.active a {
   padding-bottom: 56.25%; /* 16:9 */
   height: 0;
 }
+
 .videoWrapper iframe {
   position: absolute;
   top: 0;
@@ -234,8 +235,3 @@ nav li.active a {
     max-height: 338px;
 }
 
-.streaming-iframe {
-  max-width: 600px;
-  margin: 0 auto;
-  display: block;
-}
