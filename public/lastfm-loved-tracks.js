@@ -6,11 +6,17 @@ fetch('/.netlify/functions/getLovedTracks')
 
     // Create an array of promises for each artist's data
     const trackPromises = lovedTracks.map(track => {
-      return fetch(`/.netlify/functions/getArtistInfo?artist=${track.artist.name}`)
+
+      const artistName = track.artist.name
+        .replace(/&/g, '%26')
+        .replace(/\+/g, '%2B');
+      const encodedName = encodeURIComponent(artistName);
+
+      return fetch(`/.netlify/functions/getArtistInfo?artist=${encodedName}`)
         .then(response => response.json())
         .then(async data => {
           // Check for error property in Last.fm API response
-          if (typeof data.artist.tags.tag[0] === 'undefined') {
+          if (typeof data.artist.tags.tag[0] === 'undefined' || data.artist.similar.artist.length === 0) {
             return {
               summary: 'Last.fm unfortunately does not have any additional information on this artist.',
             };
@@ -44,20 +50,26 @@ Promise.all(trackPromises)
       const spotifyArtistID = spotifyData.tracks.items[0].artists.id;
       const spotifyImgUrl = spotifyData.tracks.items[0].album.images[1].url;
 
+      const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+      const pacificTimezone = 'America/Los_Angeles';
+      const utsDate = track.date.uts;
+      const formattedDate = new Date(utsDate * 1000).toLocaleString('en-US', {
+        ...optionsDate,
+        timeZone: pacificTimezone
+      });
+
       if (tracks[i].summary) {
         return `
           <div class="track_ul">
-            ${tracks[i].summary}
+            <a href="https://odesli.co/${spotifyUrl}" target="_blank"><img src="${spotifyImgUrl}"></a>
+            <div class="no-wrap-text">
+              <strong>${track.name}</strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
+              <br><a href="https://odesli.co/${spotifyUrl}" target="_blank">Stream now</a>.
+              <br>${tracks[i].summary}
+            </div>
           </div>
         `;
       } else {
-        const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-        const pacificTimezone = 'America/Los_Angeles';
-        const utsDate = track.date.uts;
-        const formattedDate = new Date(utsDate * 1000).toLocaleString('en-US', {
-          ...optionsDate,
-          timeZone: pacificTimezone
-        });
         return `
           <div class="track_ul">
             <a href="https://odesli.co/${spotifyUrl}" target="_blank"><img src="${spotifyImgUrl}"></a>
