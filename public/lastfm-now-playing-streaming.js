@@ -1,4 +1,4 @@
-fetch(`/.netlify/functions/getRecentTracks`)
+fetch(`/.netlify/functions/getLastfmData?type=getMyRecentTracks`)
 
 .then(response => response.json())
 .then(data => {
@@ -26,7 +26,7 @@ fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
       <div class="track_recent">
           <div style="max-width:600px; margin: 0 auto;">
             <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
-              <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${spotifyUrl}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-presentation allow-popups allow-popups-to-escape-sandbox"></iframe>
+              <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${spotifyUrl}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
             </div>
           </div>
        </div>

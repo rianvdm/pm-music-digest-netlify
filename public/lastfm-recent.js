@@ -1,8 +1,8 @@
-fetch('/.netlify/functions/getRecentTracks')
+fetch('/.netlify/functions/getLastfmData?type=getMyRecentTracks')
   .then(response => response.json())
   .then(data => {
     const dataContainer = document.querySelector('.js-lastfm-recent');
-    const recentTracks = data.recenttracks.track.slice(0, 20);
+    const recentTracks = data.recenttracks.track.slice(0, 10);
 
     if (recentTracks.length > 0) {
       const html = recentTracks.map(track => `

@@ -13,18 +13,21 @@ exports.handler = async function(event, context) {
     const tokenResponse = await fetch(getTokenUrl);
     const { access_token } = await tokenResponse.json();
 
-    if (dataType === 'getTrack' && query) {
-      url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track`;
-    } else if (dataType === 'getAlbum' && query) {
-      url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=album`;
-    } else if (dataType === 'getArtist' && query) {
-      url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=artist`;
-    } else {
-    return {
-      statusCode: 400,
-      body: 'Invalid request. Please provide a valid data type and query.'
+    const urlTemplates = {
+      getTrack: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track`,
+      getAlbum: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=album`,
+      getArtist: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=artist`
     };
-  }
+
+    if (urlTemplates.hasOwnProperty(dataType) && query) {
+      url = urlTemplates[dataType](query);
+    } else {
+      return {
+        statusCode: 400,
+        body: 'Invalid request. Please provide a valid data type and query.'
+      };
+    }
+
 
     // Send a GET request to the Spotify API to search for the song
     const response = await fetch(url, {

@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getArtistAndTopAlbumInfo?type=topArtists')
+fetch('/.netlify/functions/getLastfmData?type=topArtists')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-artists');
@@ -6,7 +6,7 @@ fetch('/.netlify/functions/getArtistAndTopAlbumInfo?type=topArtists')
 
     // Create an array of promises for each artist's data
     const artistPromises = topArtists.map(artist => {
-      return fetch(`/.netlify/functions/getArtistAndTopAlbumInfo?&type=getArtistInfo&artist=${artist.name}`)
+      return fetch(`/.netlify/functions/getLastfmData?&type=getArtistInfo&artist=${artist.name}`)
         .then(response => response.json())
         .then(async data => {
           // Check for error property in Last.fm API response
@@ -17,7 +17,7 @@ fetch('/.netlify/functions/getArtistAndTopAlbumInfo?type=topArtists')
           }
 
           // Return the data if it exists
-          const albumResults = await fetch(`/.netlify/functions/getArtistAndTopAlbumInfo?type=topAlbumsByArtist&artist=${artist.name}`);
+          const albumResults = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${artist.name}`);
           const albumData = await albumResults.json();
 
           const fullbio = data.artist.bio.summary;
@@ -47,7 +47,6 @@ fetch('/.netlify/functions/getArtistAndTopAlbumInfo?type=topArtists')
 
 
           const q = `${artist.name}`;
-     //     const spotifyResponse = await fetch(`/.netlify/functions/getSpotifyArtist?q=${encodeURIComponent(q)}`);
           const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(q)}`);
           const spotifyData = await spotifyResponse.json();
           const spotifyArtistID = spotifyData.data.items[0].id;

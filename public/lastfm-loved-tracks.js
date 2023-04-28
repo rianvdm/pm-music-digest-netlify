@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getLovedTracks')
+fetch('/.netlify/functions/getLastfmData?type=getMyLovedTracks')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-loved-tracks');
@@ -12,7 +12,7 @@ fetch('/.netlify/functions/getLovedTracks')
         .replace(/\+/g, '%2B');
       const encodedName = encodeURIComponent(artistName);
 
-      return fetch(`/.netlify/functions/getArtistAndTopAlbumInfo?type=getArtistInfo&artist=${encodedName}`)
+      return fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedName}`)
         .then(response => response.json())
         .then(async data => {
           // Check for error property in Last.fm API response
@@ -43,7 +43,6 @@ Promise.all(trackPromises)
     const html = await Promise.all(lovedTracks.map(async (track, i) => {
 
       const q = `${track.name} ${track.artist.name}`;
-  //    const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySong?q=${encodeURIComponent(q)}`);
       const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${encodeURIComponent(q)}`);
       const spotifyData = await spotifyResponse.json();
       const spotifyUrl = spotifyData.data.items[0].external_urls.spotify;
