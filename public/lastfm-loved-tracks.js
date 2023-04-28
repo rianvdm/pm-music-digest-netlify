@@ -47,8 +47,15 @@ Promise.all(trackPromises)
       const spotifyData = await spotifyResponse.json();
       const spotifyUrl = spotifyData.tracks.items[0].external_urls.spotify;
       const spotifyID = spotifyData.tracks.items[0].id;
-      const spotifyArtistID = spotifyData.tracks.items[0].artists.id;
+      const spotifyArtistID = spotifyData.tracks.items[0].artists[0].id;
       const spotifyImgUrl = spotifyData.tracks.items[0].album.images[1].url;
+
+      const spotifyResponseReco = await fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${tracks[i].tags[0].name}, ${tracks[i].tags[1].name}&seed_tracks=${spotifyID}`);
+      const spotifyDataReco = await spotifyResponseReco.json();
+      const spotifyTrackReco = spotifyDataReco.tracks.slice(0, 3).map(track => track.name);
+      const spotifyArtistReco = spotifyDataReco.tracks.slice(0, 3).map(track => track.artists[0].name);
+      const spotifyUrlsReco = spotifyDataReco.tracks.slice(0, 3).map(track => track.external_urls.spotify);
+
 
       const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
       const pacificTimezone = 'America/Los_Angeles';
@@ -76,6 +83,8 @@ Promise.all(trackPromises)
             <div class="no-wrap-text">
               <strong>${track.name}</strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
               <br><a href="https://odesli.co/${spotifyUrl}" target="_blank">Stream now</a> if you like ${tracks[i].tags[0].name} / ${tracks[i].tags[1].name} music from artists like ${tracks[i].similarArtist[0].name}, ${tracks[i].similarArtist[1].name}, and ${tracks[i].similarArtist[2].name}.
+              <br>Also try <a href="https://odesli.co/${spotifyUrlsReco[0]}" target="_blank">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
+              and <a href="https://odesli.co/${spotifyUrlsReco[1]}" target="_blank">${spotifyTrackReco[1]}</a> by ${spotifyArtistReco[1]}.
             </div>
           </div>
         `;
