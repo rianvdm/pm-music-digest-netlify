@@ -5,9 +5,9 @@ fetch('/.netlify/functions/getTopAlbums')
     const topAlbums = data.topalbums.album.slice(0, 6);
 
     const htmlPromises = topAlbums.map(async album => {
-      const response = await fetch(`/.netlify/functions/getSpotifyAlbum?q=${encodeURIComponent(`${album.name} ${album.artist.name}`)}`);
-      const { albums } = await response.json();
-      const spotifyAlbumUrl = albums.items[0].external_urls.spotify;
+      const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getAlbum&q=${encodeURIComponent(`${album.name} ${album.artist.name}`)}`);
+      const spotifyData = await spotifyResponse.json();
+      const spotifyAlbumUrl = spotifyData.data.items[0].external_urls.spotify;
       return `
         <div class="track">
           <a href="${album.url}" target="_blank" class="track_link">

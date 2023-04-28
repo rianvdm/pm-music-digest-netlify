@@ -10,7 +10,7 @@ const artistName = nowPlaying[0].artist['#text']
   .replace(/\+/g, '%2B');
 const encodedName = encodeURIComponent(artistName);
 
-fetch(`/.netlify/functions/getArtistInfo?artist=${encodedName}`)
+fetch(`/.netlify/functions/getArtistAndTopAlbumInfo?type=getArtistInfo&artist=${encodedName}`)
   .then(response => response.json())
   .then(data => {
     // Check if artist exists on Last.fm. If it doesn't, don't show artist details.
@@ -32,7 +32,7 @@ fetch(`/.netlify/functions/getArtistInfo?artist=${encodedName}`)
       const similar = data.artist.similar.artist.map(artist => artist.name);
 
             // Get the data for the artist's top albums
-      fetch(`/.netlify/functions/getTopAlbumsByArtist?artist=${encodedName}`)
+      fetch(`/.netlify/functions/getArtistAndTopAlbumInfo?type=topAlbumsByArtist&artist=${encodedName}`)
         .then(response => response.json())
         .then(data => {
 

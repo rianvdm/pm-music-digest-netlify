@@ -12,7 +12,7 @@ fetch('/.netlify/functions/getLovedTracks')
         .replace(/\+/g, '%2B');
       const encodedName = encodeURIComponent(artistName);
 
-      return fetch(`/.netlify/functions/getArtistInfo?artist=${encodedName}`)
+      return fetch(`/.netlify/functions/getArtistAndTopAlbumInfo?type=getArtistInfo&artist=${encodedName}`)
         .then(response => response.json())
         .then(async data => {
           // Check for error property in Last.fm API response
@@ -43,12 +43,13 @@ Promise.all(trackPromises)
     const html = await Promise.all(lovedTracks.map(async (track, i) => {
 
       const q = `${track.name} ${track.artist.name}`;
-      const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySong?q=${encodeURIComponent(q)}`);
+  //    const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySong?q=${encodeURIComponent(q)}`);
+      const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${encodeURIComponent(q)}`);
       const spotifyData = await spotifyResponse.json();
-      const spotifyUrl = spotifyData.tracks.items[0].external_urls.spotify;
-      const spotifyID = spotifyData.tracks.items[0].id;
-      const spotifyArtistID = spotifyData.tracks.items[0].artists[0].id;
-      const spotifyImgUrl = spotifyData.tracks.items[0].album.images[1].url;
+      const spotifyUrl = spotifyData.data.items[0].external_urls.spotify;
+      const spotifyID = spotifyData.data.items[0].id;
+      const spotifyArtistID = spotifyData.data.items[0].artists[0].id;
+      const spotifyImgUrl = spotifyData.data.items[0].album.images[1].url;
 
       const spotifyResponseReco = await fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${tracks[i].tags[0].name}, ${tracks[i].tags[1].name}&seed_tracks=${spotifyID}`);
       const spotifyDataReco = await spotifyResponseReco.json();

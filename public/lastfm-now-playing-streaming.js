@@ -10,7 +10,7 @@ const title = encodeURIComponent(nowPlaying[0].name.replace('&', ''));
 const album = encodeURIComponent(nowPlaying[0].album['#text'].replace('&', ''));
 const q = `${artist} ${title} ${album}`;
 
-fetch(`/.netlify/functions/getSpotifySong?q=${q}`)
+fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
   .then(response => {
     if (!response.ok) {
       throw new Error('Failed to fetch Spotify song');
@@ -19,8 +19,8 @@ fetch(`/.netlify/functions/getSpotifySong?q=${q}`)
   })
   .then(data => {
     const dataContainer = document.querySelector('.js-spotify-song');
-    const spotifyUrl = data.tracks.items[0].external_urls.spotify;
-    const spotifyID = data.tracks.items[0].id;
+    const spotifyUrl = data.data.items[0].external_urls.spotify;
+    const spotifyID = data.data.items[0].id;
 
     const html = `
       <div class="track_recent">
