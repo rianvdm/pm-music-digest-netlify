@@ -8,12 +8,19 @@ fetch(`/.netlify/functions/getRecentTracks`)
 const artistName = nowPlaying[0].artist['#text']
   .replace(/&/g, '%26')
   .replace(/\+/g, '%2B');
-const encodedName = encodeURIComponent(artistName);
+const encodedArtist = encodeURIComponent(artistName);
+const trackName = nowPlaying[0].name
+  .replace(/&/g, '%26')
+  .replace(/\+/g, '%2B');
+const encodedName = encodeURIComponent(trackName);
+
 
 // Call OpenAI to generate a summary
-const prompt = `Write a summary of the artist ${encodedName}. The summary should be 2 sentences long and include the artist's main genres.`;
+// const prompt = `Write a summary of the artist ${encodedName}. The summary should be 2 sentences long and include the artist's main genres.`;
+const prompt = `Write a summary to help someone decide if they might like the song ${encodedName} by ${encodedArtist}. Include information about the song/artist’s genres as well as similar artists. Write no more than two sentences.`;
+const max_tokens = 100;
 
-fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}`)
+fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
 
   .then(response => response.json())
   .then(data => {

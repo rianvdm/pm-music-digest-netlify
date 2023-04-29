@@ -3,6 +3,7 @@ const fetch = require("node-fetch");
 exports.handler = async function(event, context) {
   try {
     const prompt = event.queryStringParameters.prompt; // Get the prompt from the URL query parameters
+    const max_tokens = parseInt(event.queryStringParameters.max_tokens) // Get the max_tokens from the URL query parameters or default to 100 if not provided
     const access_token = process.env.OPENAI_API_TOKEN; // 
 
     // Check if the prompt is defined and not empty
@@ -20,7 +21,7 @@ exports.handler = async function(event, context) {
       body: JSON.stringify({
         model: "text-davinci-003",
         prompt: prompt,
-        max_tokens: 100,
+        max_tokens: max_tokens,
         n: 1,
         temperature: 1,
       }),

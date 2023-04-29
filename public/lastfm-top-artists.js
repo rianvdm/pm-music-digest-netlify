@@ -20,9 +20,9 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
           const albumResults = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${artist.name}`);
           const albumData = await albumResults.json();
 
-          const fullbio = data.artist.bio.summary;
-          const bioSentences = fullbio.split(/(?<!\b\w\.)\s*[.?!](?=\s*(\b\w|[A-Z]))/);
-          const bio = bioSentences[0];
+          // const fullbio = data.artist.bio.summary;
+          // const bioSentences = fullbio.split(/(?<!\b\w\.)\s*[.?!](?=\s*(\b\w|[A-Z]))/);
+          // const bio = bioSentences[0];
 
 
           return {
@@ -31,7 +31,7 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
               .slice(0, 3),
             similarArtist: data.artist.similar.artist.slice(0,3),
             topAlbums: albumData.topalbums.album.slice(0, 2),
-            bio: bio
+            // bio: bio
           };
         })
         .catch(error => {
@@ -66,7 +66,7 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
                 <img src="${spotifyArtistImgUrl}">
                 <div class="no-wrap-text">
                   <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays).
-                  <br>${artists[i].bio}.
+                  <!-- <br>${artists[i].bio}. -->
                   <br><strong>Genres:</strong> ${artists[i].tags[0].name} and ${artists[i].tags[1].name}. 
                   <br><strong>Most popular albums:</strong> <a href="${artists[i].topAlbums[0].url}" target="_blank">${artists[i].topAlbums[0].name}</a> and <a href="${artists[i].topAlbums[1].url}" target="_blank">${artists[i].topAlbums[1].name}</a>.
                   <br><strong>Similar artists:</strong> <a href="${artists[i].similarArtist[0].url}" target="_blank"">${artists[i].similarArtist[0].name}</a>, <a href="${artists[i].similarArtist[1].url}" target="_blank"">${artists[i].similarArtist[1].name}</a>, and <a href="${artists[i].similarArtist[2].url}" target="_blank">${artists[i].similarArtist[2].name}</a>.
