@@ -5,8 +5,9 @@ const lastFMUser = 'bordesak';
 
 const fetch = require('node-fetch');
 
-const handler = async () => {
-  const url = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${lastFMUser}&api_key=${lastFMToken}&period=7day&format=json`
+const handler = async (event) => {
+  const period = event.queryStringParameters.period;
+  const url = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${lastFMUser}&api_key=${lastFMToken}&period=${period}&format=json`;
   const results = await fetch(url);
 
   // If there was an error
