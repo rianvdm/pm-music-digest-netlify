@@ -11,7 +11,7 @@ const artistName = nowPlaying[0].artist['#text']
 const encodedName = encodeURIComponent(artistName);
 
 // Call OpenAI to generate a summary
-const prompt = `Write a summary of the artist ${encodedName}. The summary should be 2 sentences long and include their genres.`;
+const prompt = `Write a summary of the artist ${encodedName}. The summary should be 2 sentences long and include the artist's main genres.`;
 
 fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}`)
 
