@@ -1,8 +1,28 @@
+function generatePlaceholderHTML(track, spotifyImgUrl, spotifyUrl) {
+  const placeholderText = 'Fetching summary...';
+
+  return `
+    <div class="track_ul">
+      <a href="https://odesli.co/${spotifyUrl}" target="_blank"><img src="${spotifyImgUrl}"></a>
+      <div class="no-wrap-text">
+        <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <strong>${track.artist.name}</strong>.
+        <br>${placeholderText}
+      </div>
+    </div>
+  `;
+}
+
+function replacePlaceholderWithResponse(trackIndex, openaiTextResponse) {
+  const trackContainer = document.querySelectorAll('.track_ul .no-wrap-text')[trackIndex];
+  trackContainer.innerHTML = trackContainer.innerHTML.replace('Fetching summary...', openaiTextResponse);
+}
+
+
 fetch('/.netlify/functions/getLovedTracks')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-loved-tracks');
-    const lovedTracks = data.lovedtracks.track.slice(0, 5);
+    const lovedTracks = data.lovedtracks.track.slice(0, 6);
 
     // Create an array of promises for each artist's data
     const trackPromises = lovedTracks.map(track => {
@@ -28,7 +48,7 @@ fetch('/.netlify/functions/getLovedTracks')
             tags: data.artist.tags.tag
               .filter(tag => tag.name.toLowerCase() !== "seen live")
               .slice(0, 3),
-            // similarArtist: data.artist.similar.artist.slice(0,3),
+            similarArtist: data.artist.similar.artist.slice(0,3),
           };
         })
         .catch(error => {
@@ -59,9 +79,21 @@ Promise.all(trackPromises)
       const prompt = `Write a summary to help someone decide if they might like the song ${encodeURIComponent(track.name)} by ${encodeURIComponent(track.artist.name)}. Include information about the song/artist’s genres as well as similar artists. Write no more than one sentence.`;
       const max_tokens = 80;
 
-      const openaiResponse = await fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
-      const openaiDataResponse = await openaiResponse.json();
-      const openaiTextResponse = openaiDataResponse.data.choices[0].text;
+
+          // Generate the placeholder HTML
+          const placeholderHTML = generatePlaceholderHTML(track, spotifyImgUrl, spotifyUrl);
+          dataContainer.innerHTML += placeholderHTML;
+
+          // Fetch the OpenAI summary and replace the placeholder text with the actual response
+          const openaiResponse = await fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
+          const openaiDataResponse = await openaiResponse.json();
+          const openaiTextResponse = openaiDataResponse.data.choices[0].text;
+
+          replacePlaceholderWithResponse(i, openaiTextResponse);
+
+      // const openaiResponse = await fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
+      // const openaiDataResponse = await openaiResponse.json();
+      // const openaiTextResponse = openaiDataResponse.data.choices[0].text;
 
 
       const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
