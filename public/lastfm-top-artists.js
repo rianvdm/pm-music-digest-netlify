@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getTopArtists')
+fetch('/.netlify/functions/getTopArtists?period=7day')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-artists');
