@@ -79,7 +79,7 @@ Promise.all(trackPromises)
             <div class="no-wrap-text">
               <strong>${track.name}</strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
               <br><a href="https://odesli.co/${spotifyUrl}" target="_blank">Stream now</a>.
-              <br>${tracks[i].summary}
+              <br>${openaiTextResponse}
             </div>
           </div>
         `;
