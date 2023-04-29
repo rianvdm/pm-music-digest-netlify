@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getLastfmData?type=getMyLovedTracks')
+fetch('/.netlify/functions/getLovedTracks')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-loved-tracks');

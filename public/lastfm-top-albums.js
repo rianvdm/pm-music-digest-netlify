@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getLastfmData?type=getMyTopAlbums&period=7day')
+fetch('/.netlify/functions/getTopAlbums')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-albums');

@@ -1,4 +1,3 @@
-// fetch('/.netlify/functions/getLastfmData?type=topArtists')
 fetch('/.netlify/functions/getTopArtists')
   .then(response => response.json())
   .then(async data => {

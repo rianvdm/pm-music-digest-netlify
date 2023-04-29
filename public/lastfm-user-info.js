@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getLastfmData?type=getMyUserInfo')
+fetch('/.netlify/functions/getUserInfo')
   .then(response => response.json())
   .then(data => {
     const dataContainer = document.querySelector('.js-user-info');
