@@ -33,21 +33,20 @@
     <nav>
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/recommendations">Recommendations</a></li>
+        <li class="active" ><a href="/recommendations">Recommendations</a></li>
         <li><a href="/about">About</a></li>
       </ul>
     </nav>
 
-    <h1>Rian’s music</h1>
+    <h1>Rian’s recommendations</h1>
 
-    <h2>Top 10 Tracks</h2>
-    <p style="text-align:center">Here are the songs I have listened to the most in the past <strong>3 months</strong>. Click on the track name to listen on your favorite streaming service.</p>
-    <div class="js-lastfm-top10-tracks">
-      <p style="text-align: center;">Loading... (please be patient, this happens in real-time so it might take a few seconds)</p>
+    <p style="text-align: center;"><strong>Here are some songs I recently liked on Last.fm, as well as some related recommendations from Spotify. Click the track title to listen on your favorite streaming service.</strong></p>
+    <div class="js-lastfm-loved-tracks recent-tracks">
+      <p style="text-align: center;">Generating summaries and related tracks via ChatGPT and Spotify... (this might take a few seconds)</p>
     </div>
 
     <div class="footer">
       <p><a href="https://youtu.be/cNtprycno14?t=9032">There’s a fire that’s been burning right outside my door.</a></p>
     </div>
 
-<script src="/lastfm-top10-tracks.js"></script>
+<script src="/lastfm-loved-tracks.js"></script>
