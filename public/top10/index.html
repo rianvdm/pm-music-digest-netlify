@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Rian van der Merwe">
+    <link href="styles.css" rel="stylesheet">
+
+    <!-- HTML Meta Tags -->
+    <title>Rian's Top 10</title>
+    <meta name="description" content="A mini-site that displays real-time data about my music collection and what I'm listening to.">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://music.elezea.com/history">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Rian's music">
+    <meta property="og:description" content="A mini-site that displays real-time data about my music collection and what I'm listening to.">
+    <meta property="og:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="music.elezea.com">
+    <meta property="twitter:url" content="https://music.elezea.com/history">
+    <meta name="twitter:title" content="Rian's music">
+    <meta name="twitter:description" content="A mini-site that displays real-time data about my music collection and what I'm listening to.">
+    <meta name="twitter:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
+
+  </head>
+
+  <body>
+
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li class="active"><a href="/top10">Top 10</a></li>
+        <li><a href="about">About</a></li>
+      </ul>
+    </nav>
+
+    <h1>Rian’s music</h1>
+
+    <h2>Top 10 Tracks</h2>
+    <p style="text-align:center">Here are the songs I have listened to the most in the past <strong>3 months</strong>. Click on the track name to listen on your favorite streaming service.</p>
+    <div class="js-lastfm-top10-tracks">
+      <p style="text-align: center;">Loading... (please be patient, this happens in real-time so it might take a few seconds)</p>
+    </div>
+
+    <div class="footer">
+      <p><a href="https://youtu.be/cNtprycno14?t=9032">There’s a fire that’s been burning right outside my door.</a></p>
+    </div>
+
+<script src="lastfm-top10-tracks.js"></script>

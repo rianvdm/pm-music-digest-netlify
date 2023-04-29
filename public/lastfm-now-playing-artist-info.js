@@ -1,7 +1,7 @@
 fetch(`/.netlify/functions/getRecentTracks`)
   .then(response => response.json())
   .then(data => {
-    const dataContainer = document.querySelector('.js-now-playing');
+    // const dataContainer = document.querySelector('.js-now-playing');
     const nowPlaying = [data.recenttracks.track[0]]; 
 
 // Get the data for the artist
