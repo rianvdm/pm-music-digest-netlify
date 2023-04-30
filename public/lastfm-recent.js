@@ -10,7 +10,7 @@ fetch('/.netlify/functions/getRecentTracks')
       Speculate on what mood I am in, and recommend one or two similar albums I might want to listen to next.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
-      const max_tokens = 2500;
+      const max_tokens = 600;
 
       const openaiResponse = await fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`);
       const openaiDataResponse = await openaiResponse.json();
