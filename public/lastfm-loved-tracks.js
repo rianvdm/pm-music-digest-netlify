@@ -16,7 +16,7 @@ fetch('/.netlify/functions/getLovedTracks')
         .then(response => response.json())
         .then(async data => {
           // Check for error property in Last.fm API response
-          if (typeof data.artist.tags.tag[0] === 'undefined' || data.artist.similar.artist.length === 0) {
+          if (!data.artist.tags.tag || data.artist.tags.tag.length < 2 || data.artist.similar.artist.length === 0) {
             return {
               summary: 'Last.fm unfortunately does not have any additional information on this artist.',
             };
@@ -27,7 +27,7 @@ fetch('/.netlify/functions/getLovedTracks')
           return {
             tags: data.artist.tags.tag
               .filter(tag => tag.name.toLowerCase() !== "seen live")
-              .slice(0, 3),
+              .slice(0, 2),
             // similarArtist: data.artist.similar.artist.slice(0,3),
           };
         })
@@ -49,8 +49,11 @@ Promise.all(trackPromises)
       const spotifyID = spotifyData.data.items[0].id;
       const spotifyArtistID = spotifyData.data.items[0].artists[0].id;
       const spotifyImgUrl = spotifyData.data.items[0].album.images[1].url;
+      const spotifyGenres = (tracks[i]?.tags && (tracks[i].tags[0]?.name || tracks[i].tags[1]?.name))
+        ? `${tracks[i].tags[0]?.name || ""}, ${tracks[i].tags[1]?.name || ""}`
+        : "rock";
 
-      const spotifyResponseReco = await fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${tracks[i].tags[0].name}, ${tracks[i].tags[1].name}&seed_tracks=${spotifyID}`);
+      const spotifyResponseReco = await fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`);
       const spotifyDataReco = await spotifyResponseReco.json();
       const spotifyTrackReco = spotifyDataReco.tracks.slice(0, 3).map(track => track.name);
       const spotifyArtistReco = spotifyDataReco.tracks.slice(0, 3).map(track => track.artists[0].name);
@@ -77,9 +80,9 @@ Promise.all(trackPromises)
           <div class="track_ul">
             <a href="https://odesli.co/${spotifyUrl}" target="_blank"><img src="${spotifyImgUrl}"></a>
             <div class="no-wrap-text">
-              <strong>${track.name}</strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
-              <br><a href="https://odesli.co/${spotifyUrl}" target="_blank">Stream now</a>.
+              <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
               <br>${openaiTextResponse}
+              <br><em>Related songs:</em> not available for this track.
             </div>
           </div>
         `;
