@@ -12,7 +12,7 @@ fetch('/.netlify/functions/getRecentTracks')
 
       const openaiResponse = await fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`);
       const openaiDataResponse = await openaiResponse.json();
-      const openaiTextResponse = openaiDataResponse.data.choices[0].text;
+      const openaiTextResponse = openaiDataResponse.data.choices[0].message['content'];
 
       const html = recentTracks.map(track => `
         <li class="track_recent">

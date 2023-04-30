@@ -12,15 +12,15 @@ exports.handler = async function(event, context) {
       }
 
     // Send a POST request to the OpenAI API to generate text
-    const response = await fetch("https://api.openai.com/v1/completions", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${access_token}`,
       },
       body: JSON.stringify({
-        model: "text-davinci-003",
-        prompt: prompt,
+        model: "gpt-3.5-turbo",
+        messages:  [{role: "user", content: prompt}],
         max_tokens: max_tokens,
         n: 1,
         temperature: 1,

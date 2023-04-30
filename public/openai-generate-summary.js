@@ -26,7 +26,7 @@ fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
   .then(data => {
     // Check if artist exists on Last.fm. If it doesn't, don't show artist details.
       const dataContainer = document.querySelector('.js-openai-summary');
-      const summary = data.data.choices[0].text;
+      const summary = data.data.choices[0].message['content'];
       const html = `
         <div class="track_none">
           <p style="text-align: center;">
