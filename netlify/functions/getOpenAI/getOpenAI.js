@@ -19,8 +19,12 @@ exports.handler = async function(event, context) {
         Authorization: `Bearer ${access_token}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages:  [{role: "user", content: prompt}],
+        model: "gpt-3.5-turbo-0301",
+        // model: "gpt-3.5-turbo",
+        messages: [
+          {role: "user", content: prompt},
+          // {role: "system", content: "You are a friendly, helpful assistant who wants to help people find music they will love."}
+        ],
         max_tokens: max_tokens,
         n: 1,
         temperature: 1,
