@@ -7,18 +7,24 @@ fetch('/.netlify/functions/getLovedTracks')
     const trackPromises = lovedTracks.map(async track => {
       const artistName = track.artist.name
         .replace(/&/g, '%26')
-        .replace(/\+/g, '%2B');
-      const encodedName = encodeURIComponent(artistName);
+        .replace(/\+/g, '%2B')
+        .replace(/\./g, '%2E');
+      const encodedArtist = encodeURIComponent(artistName);
+      const trackName = track.name
+        .replace(/&/g, '%26')
+        .replace(/\+/g, '%2B')
+        .replace(/\./g, '%2E');
+      const encodedTrack = encodeURIComponent(trackName);
 
-      const lastfmPromise = fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedName}`)
+      const lastfmPromise = fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedArtist}`)
         .then(response => response.json())
         .catch(error => {
           console.error(error);
           return null;
         });
 
-      const q = `${track.name} ${track.artist.name}`;
-      const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${encodeURIComponent(q)}`)
+      const q = `${encodedTrack} ${encodedArtist}`;
+      const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
         .then(response => response.json());
 
       const [lastfmData, spotifyData] = await Promise.allSettled([lastfmPromise, spotifySearchPromise]);
