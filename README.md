@@ -1,11 +1,13 @@
 # Music mini-site using Netlify + Last.fm + Discogs + YouTube
-This site shows what you're listening to on [Last.fm](https://last.fm), as well as some collection information from [Discogs](https://discogs.com). It makes use of Netlify’s [serverless functions](https://docs.netlify.com/functions/overview/). It also searches YouTube and embeds a video of the latest track. You'll need API keys from Last.fm, Discogs, and YouTube to make it work.
+This site shows what you're listening to on [Last.fm](https://last.fm), as well as some collection information from [Discogs](https://discogs.com). It makes use of Netlify’s [serverless functions](https://docs.netlify.com/functions/overview/). It also uses the Spotify and OpenAI APIs to do a bunch of stuff. You'll need API keys from all those sites to make this work.
 
 The front-end HTML, CSS, and javascript inside of the `public` directory are all vanilla. No fancy frameworks here, so feel free to integrate this into whatever frameworks you’re comfortable with.
 
 ## Instructions
 
 Follow these steps to deploy your site to Netlify and get this up and running on your local dev environment.
+
+**Now that this use Spotify and OpenAI as well, the instructions are out of date. I hope to come back to at some point...**
 
 ### Requirements
 - [Node.js 16+](https://nodejs.org/en/download)
