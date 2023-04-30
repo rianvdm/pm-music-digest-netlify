@@ -24,12 +24,12 @@ exports.handler = async function(event, context) {
         messages: [
           {role: "user", content: prompt},
           {role: "system", content: "You are a friendly, helpful assistant who wants to help people find music they will love."}
-          // {role: "system", content: "Respond in an overly enthusiastic tone with too many exclamation points."}
+          // {role: "system", content: "Respond in an annoying, overly enthusiastic tone with too many exclamation points."}
         ],
         max_tokens: max_tokens,
         n: 1,
         temperature: 1,
-        // temperature: 1.4,
+        // temperature: 1.5,
       }),
     });
 
