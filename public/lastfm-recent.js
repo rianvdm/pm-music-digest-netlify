@@ -53,7 +53,6 @@ fetch('/.netlify/functions/getRecentTracks')
 
           const content = `
             <div class="openai-response">
-              <p>${openaiTextResponse}</p>
               <p>${formattedResponse}</p>
               <p>Here are the 10 most recent tracks, for reference:</p>
               <ul>
