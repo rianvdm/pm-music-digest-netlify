@@ -8,8 +8,7 @@ fetch('/.netlify/functions/getRecentTracks')
     if (recentTracks.length > 0) {
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
       const prompt = `Analyze the last 10 songs I listened to, listed below. 
-      Speculate on what mood I am in, 
-      then recommend up to two similar albums (listed as 1. and 2. ) that I might want to listen to next.
+      Recommend up to two similar albums that I might want to listen to next. 
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
       const max_tokens = 500;
@@ -25,6 +24,7 @@ fetch('/.netlify/functions/getRecentTracks')
         })
         .then(openaiDataResponse => {
           const openaiTextResponse = openaiDataResponse.data.choices[0].message['content'];
+          const openaiTokensUsed = openaiDataResponse.data.usage.total_tokens;
 
           // Find the position of the numbering
           const listStartRegex = /^(1\. )/m;
@@ -58,6 +58,7 @@ fetch('/.netlify/functions/getRecentTracks')
               <ul>
                 ${html}
               </ul>
+              <p>Dev note: ${openaiTokensUsed} tokens used for this response.</p>
           `;
 
           dataContainer.innerHTML = content;
