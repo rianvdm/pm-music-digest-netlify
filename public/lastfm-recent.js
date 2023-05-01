@@ -8,7 +8,8 @@ fetch('/.netlify/functions/getRecentTracks')
     if (recentTracks.length > 0) {
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
       const prompt = `Analyze the last 10 songs I listened to, listed below. 
-      Recommend up to two similar albums that I might want to listen to next. 
+      Speculate on what kind of music I am in the mood for, then recommend up to two similar albums that I might want to listen to next.
+      List the albums in the format 1. and 2.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
       const max_tokens = 500;
@@ -54,11 +55,14 @@ fetch('/.netlify/functions/getRecentTracks')
           const content = `
             <div class="openai-response">
               <p>${formattedResponse}</p>
+              <p>---</p>
               <p>Here are the 10 most recent tracks, for reference:</p>
               <ul>
                 ${html}
               </ul>
-              <p>Dev note: ${openaiTokensUsed} tokens used for this response.</p>
+              <p>---</p>
+              <p><em>Dev note: ${openaiTokensUsed} OpenAI tokens used for this responses.</em></p>
+            </div>
           `;
 
           dataContainer.innerHTML = content;
@@ -68,7 +72,7 @@ fetch('/.netlify/functions/getRecentTracks')
           const errorMessage = `
             <div class="error-message">
               <p>Oops, it looks like the OpenAI API timed out. Please try again.
-              <br><br>PS. I need a paid Netlify account to increase the timeout above 10s, which is why this sometimes happens. Ugh. 
+              <br><br>PS. I need a paid Netlify account to increase the timeout above 10s, which is why this sometimes happens. 
             </div>
           `;
           dataContainer.innerHTML = errorMessage;
