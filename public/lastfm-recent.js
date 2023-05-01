@@ -8,7 +8,8 @@ fetch('/.netlify/functions/getRecentTracks')
     if (recentTracks.length > 0) {
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
       const prompt = `Analyze the last 10 songs I listened to, listed below. 
-      Speculate on what mood I am in, and recommend up to two similar albums I might want to listen to next.
+      Speculate on what mood I am in, 
+      then recommend up to two similar albums (listed as 1. and 2. ) that I might want to listen to next.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
       const max_tokens = 500;
@@ -25,6 +26,25 @@ fetch('/.netlify/functions/getRecentTracks')
         .then(openaiDataResponse => {
           const openaiTextResponse = openaiDataResponse.data.choices[0].message['content'];
 
+          // Find the position of the numbering
+          const listStartRegex = /^(1\. )/m;
+          const listStartIndex = openaiTextResponse.search(listStartRegex);
+
+          // Split the text into two parts: before and after the numbering
+          const textBeforeList = openaiTextResponse.substring(0, listStartIndex);
+          const listText = openaiTextResponse.substring(listStartIndex);
+
+          // Convert the numbered list into an ordered list
+          const listItemsRegex = /^(\d+\. )((.|\n)+?)(?=\n\d+\. |$)/gm;
+          const orderedList = listText.replace(listItemsRegex, (match, number, content) => {
+            const listItemContent = content.replace(/\n/g, ' ');
+            return `<li>${listItemContent}</li>`;
+          });
+          const wrappedOrderedList = `<ol class="track_ol">${orderedList}</ol>`;
+
+          // Combine the text and the ordered list, and insert into the data container
+          const formattedResponse = `${textBeforeList}${wrappedOrderedList}`;
+
           const html = recentTracks.map(track => `
             <li class="track_recent">
               <a href="${track.url}" target="_blank" class="track_link">${track.name}</a> by ${track.artist['#text']}
@@ -34,6 +54,7 @@ fetch('/.netlify/functions/getRecentTracks')
           const content = `
             <div class="openai-response">
               <p>${openaiTextResponse}</p>
+              <p>${formattedResponse}</p>
               <p>Here are the 10 most recent tracks, for reference:</p>
               <ul>
                 ${html}
