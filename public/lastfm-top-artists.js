@@ -4,20 +4,29 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
     const dataContainer = document.querySelector('.js-lastfm-top-artists');
     const topArtists = data.topartists.artist.slice(0, 6);
 
+
     // Create an array of promises for each artist's data
     const artistPromises = topArtists.map(artist => {
-      return fetch(`/.netlify/functions/getLastfmData?&type=getArtistInfo&artist=${artist.name}`)
+
+      const artistName = artist.name
+        .replace(/&/g, '%26')
+        .replace(/\+/g, '%2B')
+        .replace(/\./g, '%2E');
+      const encodedArtist = encodeURIComponent(artistName);
+
+
+      return fetch(`/.netlify/functions/getLastfmData?&type=getArtistInfo&artist=${encodedArtist}`)
         .then(response => response.json())
         .then(async data => {
           // Check for error property in Last.fm API response
-          if (typeof data.artist.tags.tag[1] === 'undefined') {
+          if (typeof data.artist.tags.tag[0] === 'undefined') {
             return {
               summary: 'Last.fm unfortunately does not have any additional information on this artist.',
             };
           }
 
           // Return the data if it exists
-          const albumResults = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${artist.name}`);
+          const albumResults = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${encodedArtist}`);
           const albumData = await albumResults.json();
 
           // const fullbio = data.artist.bio.summary;
@@ -68,8 +77,16 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
                   <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays).
                   <!-- <br>${artists[i].bio}. -->
                   <br><strong>Genres:</strong> ${artists[i].tags[0].name} and ${artists[i].tags[1].name}. 
-                  <br><strong>Most popular albums:</strong> <a href="${artists[i].topAlbums[0].url}" target="_blank">${artists[i].topAlbums[0].name}</a> and <a href="${artists[i].topAlbums[1].url}" target="_blank">${artists[i].topAlbums[1].name}</a>.
-                  <br><strong>Similar artists:</strong> <a href="${artists[i].similarArtist[0].url}" target="_blank"">${artists[i].similarArtist[0].name}</a>, <a href="${artists[i].similarArtist[1].url}" target="_blank"">${artists[i].similarArtist[1].name}</a>, and <a href="${artists[i].similarArtist[2].url}" target="_blank">${artists[i].similarArtist[2].name}</a>.
+                  <br><strong>Most popular albums:</strong> ${
+                    artists[i].topAlbums && artists[i].topAlbums.length >= 2
+                      ? `<a href="${artists[i].topAlbums[0].url}" target="_blank">${artists[i].topAlbums[0].name}</a> and <a href="${artists[i].topAlbums[1].url}" target="_blank">${artists[i].topAlbums[1].name}</a>`
+                      : "unknown"
+                  }.
+                  <br><strong>Similar artists:</strong> ${
+                      artists[i].similarArtist && artists[i].similarArtist.length >= 3
+                        ? `<a href="${artists[i].similarArtist[0].url}" target="_blank"">${artists[i].similarArtist[0].name}</a>, <a href="${artists[i].similarArtist[1].url}" target="_blank"">${artists[i].similarArtist[1].name}</a>, and <a href="${artists[i].similarArtist[2].url}" target="_blank">${artists[i].similarArtist[2].name}</a>`
+                        : "unknown"
+                    }.
                 </div>
               </div>
             `;
