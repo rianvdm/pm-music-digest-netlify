@@ -1,5 +1,18 @@
-fetch('/.netlify/functions/getLovedTracks')
-  .then(response => response.json())
+function fetchWithErrorHandling(url, dataContainerSelector) {
+  return fetch(url).then(response => {
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    return response.json();
+  }).catch(error => {
+    console.error(error);
+    const dataContainer = document.querySelector(dataContainerSelector);
+    dataContainer.innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+    throw error;
+  });
+}
+
+fetchWithErrorHandling('/.netlify/functions/getLovedTracks', '.js-lastfm-loved-tracks')
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-loved-tracks');
     const lovedTracks = data.lovedtracks.track.slice(0, 5);
@@ -15,17 +28,10 @@ fetch('/.netlify/functions/getLovedTracks')
         .replace(/\+/g, '%2B')
         .replace(/\./g, '%2E');
       const encodedTrack = encodeURIComponent(trackName);
-
-      const lastfmPromise = fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedArtist}`)
-        .then(response => response.json())
-        .catch(error => {
-          console.error(error);
-          return null;
-        });
-
       const q = `${encodedTrack} ${encodedArtist}`;
-      const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
-        .then(response => response.json());
+
+      const lastfmPromise = fetchWithErrorHandling(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedArtist}`, '.js-lastfm-loved-tracks');
+      const spotifySearchPromise = fetchWithErrorHandling(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`, '.js-lastfm-loved-tracks');
 
       const [lastfmData, spotifyData] = await Promise.allSettled([lastfmPromise, spotifySearchPromise]);
 
@@ -41,14 +47,12 @@ fetch('/.netlify/functions/getLovedTracks')
         ? `${lastfmTags[0]?.name || ""}, ${lastfmTags[1]?.name || ""}`
         : "rock";
 
-      const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
-        .then(response => response.json());
+      const spotifyRecoPromise = fetchWithErrorHandling(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`, '.js-lastfm-loved-tracks');
 
       const prompt = `Write a summary to help someone decide if they might like the song ${encodeURIComponent(track.name)} by ${encodeURIComponent(track.artist.name)}. Include information about the song/artist’s genres as well as similar artists. Write no more than one sentence.`;
       const max_tokens = 80;
 
-      const openaiPromise = fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
-        .then(response => response.json());
+      const openaiPromise = fetchWithErrorHandling(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`, '.js-lastfm-loved-tracks');
 
       const [spotifyRecoData, openaiData] = await Promise.allSettled([spotifyRecoPromise, openaiPromise]);
 
