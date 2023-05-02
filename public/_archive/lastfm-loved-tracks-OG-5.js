@@ -48,9 +48,9 @@ async function fetchAndDisplayLovedTracks() {
     const trackData = await Promise.all(trackPromises);
 
     const html = trackData.map(({ track, spotifyUrl, spotifyID, spotifyImgUrl, spotifyRecoData, openaiData }) => {
-      const spotifyTrackReco = spotifyRecoData.tracks.slice(0, 2).map(track => track.name);
-      const spotifyArtistReco = spotifyRecoData.tracks.slice(0, 2).map(track => track.artists[0].name);
-      const spotifyUrlsReco = spotifyRecoData.tracks.slice(0, 2).map(track => track.external_urls.spotify);
+      const spotifyTrackReco = spotifyRecoData.tracks.slice(0, 3).map(track => track.name);
+      const spotifyArtistReco = spotifyRecoData.tracks.slice(0, 3).map(track => track.artists[0].name);
+      const spotifyUrlsReco = spotifyRecoData.tracks.slice(0, 3).map(track => track.external_urls.spotify);
 
       const openaiTextResponse = openaiData.choices[0].message['content'];
 
