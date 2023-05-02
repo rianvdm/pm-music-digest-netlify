@@ -16,30 +16,18 @@ fetch('/.netlify/functions/getLovedTracks')
         .replace(/\./g, '%2E');
       const encodedTrack = encodeURIComponent(trackName);
 
-      const lastfmPromise = fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedArtist}`)
-        .then(response => response.json())
-        .catch(error => {
-          console.error(error);
-          return null;
-        });
-
       const q = `${encodedTrack} ${encodedArtist}`;
+
       const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
         .then(response => response.json());
 
-      const [lastfmData, spotifyData] = await Promise.allSettled([lastfmPromise, spotifySearchPromise]);
-
-      const lastfmTags = lastfmData.value && lastfmData.value.artist.tags.tag
-        .filter(tag => tag.name.toLowerCase() !== "seen live")
-        .slice(0, 2);
+      const [spotifyData] = await Promise.allSettled([spotifySearchPromise]);
 
       const spotifyUrl = spotifyData.value.data.items[0].external_urls.spotify;
       const spotifyID = spotifyData.value.data.items[0].id;
       const spotifyArtistID = spotifyData.value.data.items[0].artists[0].id;
       const spotifyImgUrl = spotifyData.value.data.items[0].album.images[1].url;
-      const spotifyGenres = (lastfmTags && (lastfmTags[0]?.name || lastfmTags[1]?.name))
-        ? `${lastfmTags[0]?.name || ""}, ${lastfmTags[1]?.name || ""}`
-        : "rock";
+      const spotifyGenres = "indie, jazz, rock";
 
       const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
         .then(response => response.json());
@@ -54,7 +42,6 @@ fetch('/.netlify/functions/getLovedTracks')
 
       return {
         track,
-        lastfmTags,
         spotifyUrl,
         spotifyID,
         spotifyImgUrl,
@@ -65,7 +52,7 @@ fetch('/.netlify/functions/getLovedTracks')
 
     const trackData = await Promise.all(trackPromises);
 
-    const html = trackData.map(({ track, lastfmTags, spotifyUrl, spotifyID, spotifyImgUrl, spotifyRecoData, openaiData }) => {
+    const html = trackData.map(({ track, spotifyUrl, spotifyID, spotifyImgUrl, spotifyRecoData, openaiData }) => {
       const spotifyTrackReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.name);
       const spotifyArtistReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.artists[0].name);
       const spotifyUrlsReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.external_urls.spotify);
