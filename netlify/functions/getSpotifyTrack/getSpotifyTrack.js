@@ -2,9 +2,7 @@ const fetch = require("node-fetch");
 
 exports.handler = async function(event, context) {
   try {
-    const seed_artists = event.queryStringParameters.seed_artists;
-    const seed_genres = event.queryStringParameters.seed_genres;
-    const seed_tracks = event.queryStringParameters.seed_tracks;
+    const spotifyID = event.queryStringParameters.spotifyID;
 
     // Get the URL of the getSpotifyToken function from an environment variable
     const getTokenUrl = process.env.GET_SPOTIFY_TOKEN_URL;
@@ -14,7 +12,7 @@ exports.handler = async function(event, context) {
     const { access_token } = await tokenResponse.json();
 
     // Construct the request URL with the necessary query parameters
-    const requestUrl = `https://api.spotify.com/v1/recommendations?limit=10&seed_artists=${seed_artists}&seed_genres=${seed_genres}&seed_tracks=${seed_tracks}&limit=2`;
+    const requestUrl = `https://api.spotify.com/v1/tracks/${spotifyID}`;
 
     // Make the request to the Spotify API with the access token
     const response = await fetch(requestUrl, {

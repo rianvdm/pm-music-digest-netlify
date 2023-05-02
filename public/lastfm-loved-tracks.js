@@ -31,9 +31,9 @@ fetch('/.netlify/functions/getLovedTracks')
       const spotifyID = spotifyData.value.data.items[0].id;
       const spotifyArtistID = spotifyData.value.data.items[0].artists[0].id;
       const spotifyImgUrl = spotifyData.value.data.items[0].album.images[1].url;
-      const spotifyGenres = (lastfmTags && (lastfmTags[0]?.name || lastfmTags[1]?.name))
-        ? `${lastfmTags[0]?.name || ""}, ${lastfmTags[1]?.name || ""}`
-        : "rock, indie, jazz";
+      const spotifyGenres = (lastfmTags && lastfmTags[0]?.name)
+          ? lastfmTags[0]?.name
+          : "rock";
 
       const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
         .then(response => response.json());
@@ -53,13 +53,14 @@ fetch('/.netlify/functions/getLovedTracks')
         spotifyID,
         spotifyImgUrl,
         spotifyRecoData,
-        openaiData
+        openaiData,
+        spotifyGenres
       };
     });
 
     const trackData = await Promise.all(trackPromises);
 
-    const html = trackData.map(({ track, lastfmTags, spotifyUrl, spotifyID, spotifyImgUrl, spotifyRecoData, openaiData }) => {
+    const html = trackData.map(({ track, lastfmTags, spotifyUrl, spotifyID, spotifyImgUrl, spotifyRecoData, openaiData, spotifyGenres }) => {
       const spotifyTrackReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.name);
       const spotifyArtistReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.artists[0].name);
       const spotifyUrlsReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.external_urls.spotify);
@@ -80,7 +81,7 @@ fetch('/.netlify/functions/getLovedTracks')
           <div class="no-wrap-text">
             <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
             <br>${openaiTextResponse}
-            <br><em>Related songs:</em> <a href="https://odesli.co/${spotifyUrlsReco[0]}" target="_blank">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
+            <br><em>Related ${spotifyGenres} songs:</em> <a href="https://odesli.co/${spotifyUrlsReco[0]}" target="_blank">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
             and <a href="https://odesli.co/${spotifyUrlsReco[1]}" target="_blank">${spotifyTrackReco[1]}</a> by ${spotifyArtistReco[1]}.
           </div>
         </div>

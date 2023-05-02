@@ -14,9 +14,9 @@ exports.handler = async function(event, context) {
     const { access_token } = await tokenResponse.json();
 
     const urlTemplates = {
-      getTrack: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track`,
-      getAlbum: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=album`,
-      getArtist: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=artist`
+      getTrack: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=1`,
+      getAlbum: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=album&limit=1`,
+      getArtist: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=artist&limit=1`
     };
 
     if (urlTemplates.hasOwnProperty(dataType) && query) {
