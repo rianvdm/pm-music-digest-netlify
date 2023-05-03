@@ -81,6 +81,19 @@ nav li.active a {
   font-weight: bold;
 }
 
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+  }
+
+  nav li {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
 .button,
 .button:visited {
   display: inline-block;
