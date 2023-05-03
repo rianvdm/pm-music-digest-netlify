@@ -81,17 +81,24 @@ nav li.active a {
   font-weight: bold;
 }
 
-/* Media query for smaller screens */
 @media (max-width: 768px) {
   nav {
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+  }
+
+  nav ul {
+    text-align: center;
   }
 
   nav li {
-    width: 100%;
-    text-align: center;
+    display: inline-block;
+    margin: 10px;
   }
 }
+
 
 
 .button,
