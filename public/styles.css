@@ -262,3 +262,7 @@ nav li.active a {
   margin: 0 auto;
 }
 
+.error-message {
+  color: red;
+  text-align: center;
+}

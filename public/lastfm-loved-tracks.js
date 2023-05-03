@@ -31,6 +31,7 @@ fetch('/.netlify/functions/getLovedTracks')
       const spotifyID = spotifyData.value.data.items[0].id;
       const spotifyArtistID = spotifyData.value.data.items[0].artists[0].id;
       const spotifyImgUrl = spotifyData.value.data.items[0].album.images[1].url;
+//      const spotifyReleased = spotifyData.value.data.items[0].album.release_date;
       const spotifyGenres = (lastfmTags && lastfmTags[0]?.name)
           ? lastfmTags[0]?.name
           : "rock";
@@ -55,6 +56,7 @@ fetch('/.netlify/functions/getLovedTracks')
         spotifyRecoData,
         openaiData,
         spotifyGenres
+//        spotifyReleased
       };
     });
 
