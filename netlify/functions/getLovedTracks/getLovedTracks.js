@@ -6,7 +6,7 @@ const lastFMUser = 'bordesak';
 const fetch = require('node-fetch');
 
 const handler = async () => {
-  const url = `http://ws.audioscrobbler.com/2.0/?method=user.getlovedtracks&user=${lastFMUser}&api_key=${lastFMToken}&format=json&limit=10`
+  const url = `http://ws.audioscrobbler.com/2.0/?method=user.getlovedtracks&user=${lastFMUser}&api_key=${lastFMToken}&format=json&limit=20`
   const results = await fetch(url);
 
   // If there was an error

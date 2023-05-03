@@ -33,6 +33,7 @@
     <nav>
       <ul>
         <li class="active"><a href="/">Home</a></li>
+        <li><a href="/recommendations">Recommendations</a></li>
         <li><a href="/forme">For Me</a></li>
         <li><a href="/about">About</a></li>
       </ul>
@@ -50,9 +51,6 @@
     <div class="js-openai-summary">
       <p style="text-align: center;">Generating summary...</p>
     </div>
-<!--     <div class="js-lastfm-now-playing-artist-info">
-      <p style="text-align: center;">Loading...</p>
-    </div> -->
     <div class="js-spotify-song">
         <p style="text-align: center;">Loading...</p>
     </div>
@@ -62,6 +60,7 @@
       <p style="text-align: center;">Generating summaries and getting related tracks...
         <br><br><em>If you see this message for more than a few seconds, there was likely an API timeout somewhere. Please reload the page to try again.</em></p>
     </div>
+    <p style="text-align: center;"><a href="/recommendations">View more recommendations...</a>
     <h2>🏆 Top albums</h2>
     <p style="text-align: center;">The top 6 albums I listened to in the past 7 days. Click “Stream now” to listen on your favorite streaming service.</p>
     <div class="js-lastfm-top-albums track-grid">
@@ -84,7 +83,6 @@
     </div>
 
   <script src="lastfm-now-playing.js"></script>
-  <!-- <script src="lastfm-now-playing-artist-info.js"></script> -->
   <script src="lastfm-now-playing-streaming.js"></script>
   <script src="lastfm-loved-tracks.js?v=7"></script>
   <script src="lastfm-top-albums.js"></script>
