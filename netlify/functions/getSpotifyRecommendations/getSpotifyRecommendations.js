@@ -37,9 +37,6 @@ exports.handler = async function (event, context) {
       console.log(expires_at);
     }
 
-    console.log('Quitting Redis client');
-    await client.quit();
-
     const requestUrl = `https://api.spotify.com/v1/recommendations?limit=10&seed_artists=${seed_artists}&seed_genres=${seed_genres}&seed_tracks=${seed_tracks}&limit=2`;
 
     const response = await fetch(requestUrl, {
@@ -61,5 +58,8 @@ exports.handler = async function (event, context) {
       statusCode: 500,
       body: JSON.stringify({ error: "Internal Server Error" }),
     };
+  } finally {
+    console.log('Quitting Redis client');
+    await client.quit();
   }
 };
