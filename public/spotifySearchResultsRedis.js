@@ -1,17 +1,47 @@
 const fetch = require("node-fetch");
+const Redis = require("ioredis");
 
-exports.handler = async function(event, context) {
+exports.handler = async function (event, context) {
   try {
-    const query = event.queryStringParameters.q; // Get the search query from the URL query parameters
-    const dataType = event.queryStringParameters.type; // Get the dataType from the URL query parameters
+    const query = event.queryStringParameters.q;
+    const dataType = event.queryStringParameters.type;
     let url;
 
-    // Get the URL of the getSpotifyToken function from an environment variable
     const getTokenUrl = process.env.GET_SPOTIFY_TOKEN_URL;
 
-    // Call the getSpotifyToken function to retrieve an access token
-    const tokenResponse = await fetch(getTokenUrl);
-    const { access_token } = await tokenResponse.json();
+    console.log('Creating Redis client');
+    const client = new Redis(process.env.REDIS_URL, {
+      connectTimeout: 10000, // 10 seconds
+    });
+
+    client.on('error', (error) => {
+      console.error('Error in Redis client:', error);
+    });
+
+    console.log('Retrieving access token and expiration time from Redis');
+    let access_token = await client.get("spotify_access_token");
+    let expires_at = await client.get("spotify_expires_at");
+
+    if (!access_token || !expires_at || Date.now() >= expires_at) {
+      console.log('Fetching new access token');
+      const tokenResponse = await fetch(getTokenUrl);
+      const tokenData = await tokenResponse.json();
+      access_token = tokenData.access_token;
+      expires_at = Date.now() + tokenData.expires_in * 1000;
+
+      console.log('Storing new access token and expiration time in Redis');
+      await client.set("spotify_access_token", access_token);
+      await client.set("spotify_expires_at", expires_at);
+    } else {
+        console.log('Using existing access token from Redis');
+    }
+
+    console.log('Quitting Redis client');
+    await client.quit();
+
+    // // Call the getSpotifyToken function to retrieve an access token
+    // const tokenResponse = await fetch(getTokenUrl);
+    // const { access_token } = await tokenResponse.json();
 
     const urlTemplates = {
       getTrack: (query) => `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=20`,
