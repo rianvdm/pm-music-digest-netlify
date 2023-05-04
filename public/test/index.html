@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Rian van der Merwe">
+    <link href="/styles.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+
+    <!-- HTML Meta Tags -->
+    <title>Rian's music</title>
+    <meta name="description" content="A mini-site that displays real-time data about my music collection and what I'm listening to.">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://music.elezea.com/history">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Rian's music">
+    <meta property="og:description" content="A mini-site that displays real-time data about my music collection and what I'm listening to.">
+    <meta property="og:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="music.elezea.com">
+    <meta property="twitter:url" content="https://music.elezea.com/history">
+    <meta name="twitter:title" content="Rian's music">
+    <meta name="twitter:description" content="A mini-site that displays real-time data about my music collection and what I'm listening to.">
+    <meta name="twitter:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
+
+  </head>
+
+  <body>
+
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li class="active" ><a href="/recommendations">Recommendations</a></li>
+        <li><a href="/forme">For Me</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+
+    <h1>Rian’s recommendations</h1>
+
+    <p style="text-align: center;"><strong>Here are some songs I recently liked on Last.fm, as well as some related recommendations from Spotify. Click the track title to listen on your favorite streaming service.</strong></p>
+    <div class="js-lastfm-loved-history recent-tracks">
+      <p style="text-align: center;">Loading... (this might take a few seconds)</p>
+    </div>
+
+    <div class="footer">
+      <p><a href="https://youtu.be/cNtprycno14?t=9032">There’s a fire that’s been burning right outside my door.</a></p>
+    </div>
+
+<script src="/lastfm-loved-history-redis.js"></script>
