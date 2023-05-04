@@ -14,6 +14,10 @@ exports.handler = async function (event, context) {
       connectTimeout: 10000, // 10 seconds
     });
 
+    client.on('error', (error) => {
+      console.error('Error in Redis client:', error);
+    });
+
     console.log('Retrieving access token and expiration time from Redis');
     let access_token = await client.get("spotify_access_token");
     let expires_at = await client.get("spotify_expires_at");
@@ -28,6 +32,8 @@ exports.handler = async function (event, context) {
       console.log('Storing new access token and expiration time in Redis');
       await client.set("spotify_access_token", access_token);
       await client.set("spotify_expires_at", expires_at);
+    } else {
+        console.log('Using existing access token from Redis');
     }
 
     console.log('Quitting Redis client');
