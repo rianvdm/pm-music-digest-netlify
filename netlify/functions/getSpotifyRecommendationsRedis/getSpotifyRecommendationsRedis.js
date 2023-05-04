@@ -3,21 +3,13 @@ const Redis = require("ioredis");
 
 const client = new Redis(process.env.REDIS_URL);
 
-// Delete the Spotify access token and expiration time keys
-client.del('spotify_access_token');
-client.del('spotify_expires_at');
-
-// Quit the Redis client
-client.quit();
-
 exports.handler = async function (event, context) {
   try {
     const seed_artists = event.queryStringParameters.seed_artists;
     const seed_genres = event.queryStringParameters.seed_genres;
     const seed_tracks = event.queryStringParameters.seed_tracks;
 
-    // const getTokenUrl = process.env.GET_SPOTIFY_TOKEN_URL;
-    const getTokenUrl = "redis://default:mZuiG13KhdhmuGqUq3MIqHLnYetD8sDr@redis-19507.c114.us-east-1-4.ec2.cloud.redislabs.com:19507";
+    const getTokenUrl = process.env.GET_SPOTIFY_TOKEN_URL;
 
     console.log('Creating Redis client');
     const client = new Redis(process.env.REDIS_URL, {
