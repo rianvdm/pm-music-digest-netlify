@@ -1,7 +1,10 @@
 const fetch = require("node-fetch");
 const Redis = require("ioredis");
 
-const client = new Redis(process.env.REDIS_URL);
+console.log('Creating Redis client');
+  const client = new Redis(process.env.REDIS_URL, {
+  connectTimeout: 10000,
+});
 
 exports.handler = async function (event, context) {
   try {
@@ -10,15 +13,6 @@ exports.handler = async function (event, context) {
     const seed_tracks = event.queryStringParameters.seed_tracks;
 
     const getTokenUrl = process.env.GET_SPOTIFY_TOKEN_URL;
-
-    console.log('Creating Redis client');
-    const client = new Redis(process.env.REDIS_URL, {
-      connectTimeout: 10000,
-    });
-
-    client.on('error', (error) => {
-      console.error('Error in Redis client:', error);
-    });
 
     console.log('Retrieving access token and expiration time from Redis');
     let access_token = await client.get("spotify_access_token");

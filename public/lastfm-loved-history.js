@@ -18,6 +18,7 @@ fetch('/.netlify/functions/getLovedTracks')
         });
 
       const q = `${encodedTrack} ${encodedArtist}`;
+      // const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults-OG?type=getTrack&q=${q}`)
       const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
         .then(response => response.json());
 
