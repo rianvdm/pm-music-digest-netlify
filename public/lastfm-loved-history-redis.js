@@ -36,7 +36,7 @@ fetch('/.netlify/functions/getLovedTracks')
           ? lastfmTags[0]?.name
           : "rock";
 
-      const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendationsRedis?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
+      const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
         .then(response => response.json());
 
       const [spotifyRecoData] = await Promise.allSettled([spotifyRecoPromise]);
