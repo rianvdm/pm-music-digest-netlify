@@ -22,10 +22,11 @@ exports.handler = async function(event, context) {
     }
 
     // Parse the response JSON and return the access token
-    const { access_token } = await response.json();
+    const { access_token, expires_in } = await response.json();
+    
     return {
       statusCode: 200,
-      body: JSON.stringify({ access_token })
+      body: JSON.stringify({ access_token, expires_in })
     };
   } catch (error) {
     // If an error occurs, return a 500 status code and error message
