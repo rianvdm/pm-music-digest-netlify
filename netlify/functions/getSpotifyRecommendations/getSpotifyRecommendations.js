@@ -1,11 +1,6 @@
 const fetch = require("node-fetch");
 const Redis = require("ioredis");
 
-console.log('Creating Redis client');
-  const client = new Redis(process.env.REDIS_URL, {
-  connectTimeout: 10000,
-});
-
 exports.handler = async function (event, context) {
   try {
     const seed_artists = event.queryStringParameters.seed_artists;
@@ -13,6 +8,11 @@ exports.handler = async function (event, context) {
     const seed_tracks = event.queryStringParameters.seed_tracks;
 
     const getTokenUrl = process.env.GET_SPOTIFY_TOKEN_URL;
+
+    console.log('Creating Redis client');
+      const client = new Redis(process.env.REDIS_URL, {
+      connectTimeout: 10000,
+    });
 
     console.log('Retrieving access token and expiration time from Redis');
     let access_token = await client.get("spotify_access_token");
@@ -37,6 +37,9 @@ exports.handler = async function (event, context) {
       console.log(expires_at);
     }
 
+    console.log('Quitting Redis client');
+    await client.quit();
+
     const requestUrl = `https://api.spotify.com/v1/recommendations?limit=10&seed_artists=${seed_artists}&seed_genres=${seed_genres}&seed_tracks=${seed_tracks}&limit=2`;
 
     const response = await fetch(requestUrl, {
@@ -58,8 +61,5 @@ exports.handler = async function (event, context) {
       statusCode: 500,
       body: JSON.stringify({ error: "Internal Server Error" }),
     };
-  } finally {
-    console.log('Quitting Redis client');
-    await client.quit();
   }
 };
