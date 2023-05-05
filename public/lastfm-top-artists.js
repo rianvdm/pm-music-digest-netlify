@@ -55,7 +55,6 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
 
 
           const q = `${artist.name}`;
-          // const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySearchResults-OG?type=getArtist&q=${encodeURIComponent(q)}`);
           const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(q)}`);
           const spotifyData = await spotifyResponse.json();
           const spotifyArtistID = spotifyData.data.items[0].id;

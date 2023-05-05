@@ -1,7 +1,6 @@
 fetch(`/.netlify/functions/getRecentTracks`)
   .then(response => response.json())
   .then(data => {
-  //  const dataContainer = document.querySelector('.js-openai-summary');
     const nowPlaying = [data.recenttracks.track[0]]; 
 
 // Get the data for the artist
@@ -16,7 +15,6 @@ const encodedName = encodeURIComponent(trackName);
 
 
 // Call OpenAI to generate a summary
-// const prompt = `Write a summary of the artist ${encodedName}. The summary should be 2 sentences long and include the artist's main genres.`;
 const prompt = `Write a summary to help someone decide if they might like the song ${encodedName} by ${encodedArtist}. Include information about the song/artist’s genres as well as similar artists. Write no more than two sentences.`;
 const max_tokens = 100;
 

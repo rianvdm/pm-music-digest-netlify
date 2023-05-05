@@ -2,7 +2,6 @@ fetch(`/.netlify/functions/getRecentTracks`)
 
 .then(response => response.json())
 .then(data => {
-// const dataContainer = document.querySelector('.js-now-playing');
 const nowPlaying = [data.recenttracks.track[0]];
 
 const artist = encodeURIComponent(nowPlaying[0].artist['#text'].replace('&', ''));
@@ -10,7 +9,6 @@ const title = encodeURIComponent(nowPlaying[0].name.replace('&', ''));
 const album = encodeURIComponent(nowPlaying[0].album['#text'].replace('&', ''));
 const q = `${artist} ${title} ${album}`;
 
-// fetch(`/.netlify/functions/getSpotifySearchResults-OG?type=getTrack&q=${q}`)
 fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
   .then(response => {
     if (!response.ok) {
