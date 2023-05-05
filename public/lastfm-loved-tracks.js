@@ -19,7 +19,7 @@ fetch('/.netlify/functions/getLovedTracks')
 
       const q = `${encodedTrack} ${encodedArtist}`;
       // const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults-OG?type=getTrack&q=${q}`)
-      const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
+       const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
         .then(response => response.json());
 
       const [lastfmData, spotifyData] = await Promise.allSettled([lastfmPromise, spotifySearchPromise]);
@@ -36,7 +36,9 @@ fetch('/.netlify/functions/getLovedTracks')
           ? lastfmTags[0]?.name
           : "rock";
 
+      // const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations-OG?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
       const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
+
         .then(response => response.json());
 
       const prompt = `Write a summary to help someone decide if they might like the song ${encodeURIComponent(track.name)} by ${encodeURIComponent(track.artist.name)}. Include information about the song/artist’s genres as well as similar artists. Write no more than one sentence.`;

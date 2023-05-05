@@ -7,6 +7,7 @@ fetch('/.netlify/functions/getSpotifyTopItems?type=tracks')
     const trackPromises = topSpotifyTracks.map(async item => {
 
       const SpotifyGenres = "rock,indie"
+      // const spotifyRecommendations = await fetch(`/.netlify/functions/getSpotifyRecommendations-OG?seed_artists=${item.artists[0].id}&seed_genres=${SpotifyGenres}&seed_tracks=${item.id}`);
       const spotifyRecommendations = await fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${item.artists[0].id}&seed_genres=${SpotifyGenres}&seed_tracks=${item.id}`);
       const spotifyRecoData = await spotifyRecommendations.json();
       const spotifyRecoID = spotifyRecoData.tracks.slice(0, 2).map(track => track.id);

@@ -33,7 +33,6 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
           // const bioSentences = fullbio.split(/(?<!\b\w\.)\s*[.?!](?=\s*(\b\w|[A-Z]))/);
           // const bio = bioSentences[0];
 
-
           return {
             tags: data.artist.tags.tag
               .filter(tag => tag.name !== "seen live")
@@ -56,6 +55,7 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
 
 
           const q = `${artist.name}`;
+          // const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySearchResults-OG?type=getArtist&q=${encodeURIComponent(q)}`);
           const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(q)}`);
           const spotifyData = await spotifyResponse.json();
           const spotifyArtistID = spotifyData.data.items[0].id;
