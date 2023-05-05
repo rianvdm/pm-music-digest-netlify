@@ -7,15 +7,7 @@ const lastFMUser = 'bordesak';
 
 const fetch = require('node-fetch');
 
-// Replace the values in the array with the origins you want to allow
-const allowedOrigins = [
-  'https://elezea.com',
-];
-
-const handler = async (event) => {
-  const origin = event.headers.origin || event.headers.Origin;
-  const allowedOrigin = allowedOrigins.includes(origin) ? origin : 'null';
-
+const handler = async () => {
   const url = `http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${lastFMUser}&api_key=${lastFMToken}&format=json`
   const results = await fetch(url);
 
@@ -25,9 +17,6 @@ const handler = async (event) => {
 
     return {
       statusCode: 500,
-      headers: {
-        'Access-Control-Allow-Origin': allowedOrigin,
-      },
       body: results.statusText
     }
   }
@@ -39,9 +28,6 @@ const handler = async (event) => {
   return {
     statusCode: 200,
     headers: {
-      'Access-Control-Allow-Origin': allowedOrigin,
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
