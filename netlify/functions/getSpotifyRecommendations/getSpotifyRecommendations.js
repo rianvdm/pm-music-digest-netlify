@@ -11,7 +11,7 @@ exports.handler = async function (event, context) {
 
     console.log('Creating Redis client');
       const client = new Redis(process.env.REDIS_URL, {
-      connectTimeout: 10000,
+      connectTimeout: 26000,
     });
 
     console.log('Retrieving access token and expiration time from Redis');
