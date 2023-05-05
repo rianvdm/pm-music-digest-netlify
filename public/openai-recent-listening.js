@@ -8,7 +8,7 @@ fetch('/.netlify/functions/getRecentTracks')
     if (recentTracks.length > 0) {
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
       const prompt = `Analyze the last 10 songs I listened to, listed below. 
-      Speculate on what kind of music I am in the mood for, then recommend up to two similar albums that I might want to listen to next.
+      Speculate on what what mood I might be in based on the last 10 songs, then recommend up to two similar albums that I might want to listen to next.
       List the albums in the format 1. and 2.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
@@ -55,7 +55,6 @@ fetch('/.netlify/functions/getRecentTracks')
           const content = `
             <div class="openai-response">
               <p>${formattedResponse}</p>
-              <p>---</p>
               <p>Here are the 10 most recent tracks, for reference:</p>
               <ul>
                 ${html}
