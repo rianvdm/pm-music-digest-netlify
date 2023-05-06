@@ -5,6 +5,31 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 exports.handler = async function(event, context) {
+  const allowedOrigins = ['https://music-elezea.com'];
+  const origin = event.headers.origin || event.headers.Origin;
+
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : '',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  };
+
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: ''
+    };
+  }
+
+  if (!allowedOrigins.includes(origin)) {
+    return {
+      statusCode: 403,
+      headers: corsHeaders,
+      body: 'Forbidden: Access is restricted to allowed origins.'
+    };
+  }
+
   try {
     // Send a POST request to the Spotify API to retrieve a new access token
     const response = await fetch("https://accounts.spotify.com/api/token", {
@@ -23,18 +48,18 @@ exports.handler = async function(event, context) {
 
     // Parse the response JSON and return the access token
     const { access_token, expires_in } = await response.json();
-    
+
     return {
       statusCode: 200,
+      headers: corsHeaders,
       body: JSON.stringify({ access_token, expires_in })
     };
   } catch (error) {
     // If an error occurs, return a 500 status code and error message
     return {
       statusCode: 500,
+      headers: corsHeaders,
       body: JSON.stringify({ error: error.message })
     };
   }
-
 };
-

@@ -3,3 +3,11 @@
 
 [[plugins]]
   package = "@netlify/plugin-emails"
+
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "https://music.elezea.com, http://localhost:8888"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"
