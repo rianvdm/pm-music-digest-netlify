@@ -75,7 +75,8 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
                 <div class="no-wrap-text">
                   <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays).
                   <!-- <br>${artists[i].bio}. -->
-                  <br><strong>Genres:</strong> ${artists[i].tags[0].name} and ${artists[i].tags[1].name}. 
+                  <br><strong>Genres:</strong> ${artists[i].tags[0].name} and ${artists[i].tags[1].name}.
+                  <!-- <br><strong>Genres:</strong> ${spotifyGenres[0]} and ${spotifyGenres[1]}. -->
                   <br><strong>Most popular albums:</strong> ${
                     artists[i].topAlbums && artists[i].topAlbums.length >= 2
                       ? `<a href="${artists[i].topAlbums[0].url}" target="_blank">${artists[i].topAlbums[0].name}</a> and <a href="${artists[i].topAlbums[1].url}" target="_blank">${artists[i].topAlbums[1].name}</a>`

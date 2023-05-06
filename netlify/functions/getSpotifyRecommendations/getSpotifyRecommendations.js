@@ -24,7 +24,6 @@ exports.handler = async function (event, context) {
       console.log('Fetching new access token');
       const tokenResponse = await fetch(getTokenUrl);
       const tokenData = await tokenResponse.json();
-      console.log(tokenData);
       access_token = tokenData.access_token;
       expires_at = Date.now() + tokenData.expires_in * 1000;
       console.log(expires_at);
