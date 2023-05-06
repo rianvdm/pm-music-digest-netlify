@@ -59,8 +59,6 @@ fetch('/.netlify/functions/getRecentTracks')
               <ul>
                 ${html}
               </ul>
-              <p>---</p>
-              <p><em>Dev note: ${openaiTokensUsed} OpenAI tokens used for this response.</em></p>
             </div>
           `;
 
