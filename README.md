@@ -1,4 +1,4 @@
-# Music mini-site using Netlify + Last.fm + Discogs + YouTube
+# Music mini-site using Netlify + Last.fm + Discogs + more
 This site shows what you're listening to on [Last.fm](https://last.fm), as well as some collection information from [Discogs](https://discogs.com). It makes use of Netlify’s [serverless functions](https://docs.netlify.com/functions/overview/). It also uses the Spotify and OpenAI APIs to do a bunch of stuff. You'll need API keys from all those sites to make this work.
 
 The front-end HTML, CSS, and javascript inside of the `public` directory are all vanilla. No fancy frameworks here, so feel free to integrate this into whatever frameworks you’re comfortable with.
