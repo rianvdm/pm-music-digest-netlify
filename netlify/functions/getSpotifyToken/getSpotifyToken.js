@@ -5,7 +5,7 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 exports.handler = async function(event, context) {
-  const allowedOrigins = ['https://music-elezea.com'];
+  const allowedOrigins = ['https://music-elezea.com, http://localhost:8888'];
   const origin = event.headers.origin || event.headers.Origin;
 
   const corsHeaders = {
