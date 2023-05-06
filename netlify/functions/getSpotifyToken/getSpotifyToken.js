@@ -50,12 +50,12 @@ exports.handler = async function(event, context) {
     const { access_token, expires_in } = await response.json();
 
     // For testing purposes, set expires_in to a very short duration (e.g., 1 second)
-    const shortexpiration = 1;
+    // const shortexpiration = 1;
 
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: JSON.stringify({ access_token, expires_in: shortexpiration })
+      body: JSON.stringify({ access_token, expires_in })
     };
   } catch (error) {
     // If an error occurs, return a 500 status code and error message
