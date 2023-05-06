@@ -8,6 +8,6 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    Access-Control-Allow-Origin = "https://music.elezea.com, http://localhost:8888, http://localhost"
+    Access-Control-Allow-Origin = "https://music.elezea.com"
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type"
