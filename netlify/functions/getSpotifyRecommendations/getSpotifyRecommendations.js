@@ -17,8 +17,7 @@ exports.handler = async function (event, context) {
     console.log('Retrieving access token and expiration time from Redis');
     let access_token = await client.get("spotify_access_token");
     let expires_at_str = await client.get("spotify_expires_at");
-    // let expires_at = parseInt(expires_at_str, 10);
-    let expires_at = Date.now() - 1;
+    let expires_at = parseInt(expires_at_str, 10);
     console.log(expires_at);
 
     if (!access_token || !expires_at || Date.now() >= expires_at) {
