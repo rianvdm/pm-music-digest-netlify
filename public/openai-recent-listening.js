@@ -1,9 +1,8 @@
-// This is the existing code to fetch recent tracks
 fetch('/.netlify/functions/getRecentTracks')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-recent');
-    const recentTracks = data.recenttracks.track.slice(0, 10);
+    const recentTracks = data.recenttracks.track.slice(1, 11);
 
     if (recentTracks.length > 0) {
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
@@ -46,19 +45,9 @@ fetch('/.netlify/functions/getRecentTracks')
           // Combine the text and the ordered list, and insert into the data container
           const formattedResponse = `${textBeforeList}${wrappedOrderedList}`;
 
-          const html = recentTracks.map(track => `
-            <li class="track_recent">
-              <a href="${track.url}" target="_blank" class="track_link">${track.name}</a> by ${track.artist['#text']}
-            </li>
-          `).join('');
-
           const content = `
             <div class="openai-response">
               <p>${formattedResponse}</p>
-              <p>Here are the 10 most recent tracks, for reference:</p>
-              <ul>
-                ${html}
-              </ul>
             </div>
           `;
 
@@ -85,6 +74,3 @@ fetch('/.netlify/functions/getRecentTracks')
     }
   })
   .catch(error => console.error(error));
-
-
-  // <br><br>Error: <em>${error.message}</em></p>
