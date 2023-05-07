@@ -10,7 +10,7 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
       const spotifyData = await spotifyResponse.json();
       const spotifyArtistID = spotifyData.data.items[0].id;
       const spotifyArtistImgUrl = spotifyData.data.items[0].images[1].url;
-      const spotifyGenres = spotifyData.data.items[0].genres.slice(0, 2);
+      const spotifyGenres = spotifyData.data.items[0].genres.slice(0, 3);
 
       async function getTopTracks(spotifyArtistID) {
         const topTracksResponse = await fetch(`/.netlify/functions/getSpotifyArtistTopTracks?spotifyArtistID=${spotifyArtistID}`);
@@ -33,7 +33,11 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
           <img src="${spotifyArtistImgUrl}">
           <div class="no-wrap-text">
             <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays).
-            <br><strong>Genres:</strong> ${spotifyGenres[0]}, ${spotifyGenres[1]}.
+            <br><strong>Genres:</strong> ${
+                spotifyGenres && spotifyGenres.length >= 2
+                  ? `${spotifyGenres[0]}, ${spotifyGenres[1]}`
+                  : "unknown"
+            }.
             <br><strong>Most popular songs:</strong> ${
                 topTracks && topTracks.length >= 3
                   ? `<a href="https://odesli.co/${topTracks[0].external_urls.spotify}">${topTracks[0].name}</a>, <a href="https://odesli.co/${topTracks[1].external_urls.spotify}">${topTracks[1].name}</a>, and <a href="https://odesli.co/${topTracks[2].external_urls.spotify}">${topTracks[2].name}</a>`
