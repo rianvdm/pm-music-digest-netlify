@@ -1,20 +1,46 @@
 const fetch = require("node-fetch");
+const Redis = require("ioredis");
 
 exports.handler = async function(event, context) {
   try {
     const spotifyArtistID = event.queryStringParameters.spotifyArtistID;
 
-    // Get the URL of the getSpotifyToken function from an environment variable
     const getTokenUrl = process.env.GET_SPOTIFY_TOKEN_URL;
 
-    // Call the getSpotifyToken function to retrieve an access token
-    const gettokenSecret = process.env.SPOTIFY_GET_TOKEN_SECRET;
-    const tokenResponse = await fetch(getTokenUrl, {
-      headers: {
-        "x-api-key": gettokenSecret
-      }
+    console.log('Creating Redis client');
+      const client = new Redis(process.env.REDIS_URL, {
+      connectTimeout: 26000,
     });
-    const { access_token } = await tokenResponse.json();
+
+    console.log('Retrieving access token and expiration time from Redis');
+    let access_token = await client.get("spotify_access_token");
+    let expires_at_str = await client.get("spotify_expires_at");
+    let expires_at = parseInt(expires_at_str, 10);
+    console.log(expires_at);
+
+    if (!access_token || !expires_at || Date.now() >= expires_at) {
+      console.log('Fetching new access token');
+      const gettokenSecret = process.env.SPOTIFY_GET_TOKEN_SECRET;
+      const tokenResponse = await fetch(getTokenUrl, {
+        headers: {
+          "x-api-key": gettokenSecret
+        }
+      });
+      const tokenData = await tokenResponse.json();
+      access_token = tokenData.access_token;
+      expires_at = Date.now() + tokenData.expires_in * 1000;
+      console.log(expires_at);
+
+      console.log('Storing new access token and expiration time in Redis');
+      await client.set("spotify_access_token", access_token);
+      await client.set("spotify_expires_at", expires_at);
+    } else {
+      console.log('Using existing access token from Redis');
+      console.log(expires_at);
+    }
+
+    console.log('Quitting Redis client');
+    await client.quit();
 
     // Construct the request URL with the necessary query parameters
     const requestUrl = `https://api.spotify.com/v1/artists/${spotifyArtistID}/related-artists`;

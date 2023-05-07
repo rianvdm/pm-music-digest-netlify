@@ -37,7 +37,6 @@ fetch('/.netlify/functions/getLovedTracks')
           ? lastfmTags[0]?.name.charAt(0).toUpperCase() + lastfmTags[0]?.name.slice(1)
           : "Rock";
 
-      // const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations-OG?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
       const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
         .then(response => response.json());
 
