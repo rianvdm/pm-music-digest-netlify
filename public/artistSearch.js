@@ -38,13 +38,13 @@ async function performSearch(artistName) {
 
     const topTracks = await getTopTracks(spotifyArtistID);
 
-    async function getRelatedArtists(spotifyArtistID) {
-      const relatedArtistsResponse = await fetch(`/.netlify/functions/getSpotifyRelatedArtists?spotifyArtistID=${spotifyArtistID}`);
-      const relatedArtistsData = await relatedArtistsResponse.json();
-      return relatedArtistsData.slice(0, 3);
-    }
+    // async function getRelatedArtists(spotifyArtistID) {
+    //   const relatedArtistsResponse = await fetch(`/.netlify/functions/getSpotifyRelatedArtists?spotifyArtistID=${spotifyArtistID}`);
+    //   const relatedArtistsData = await relatedArtistsResponse.json();
+    //   return relatedArtistsData.slice(0, 3);
+    // }
 
-    const relatedArtists = await getRelatedArtists(spotifyArtistID);
+    // const relatedArtists = await getRelatedArtists(spotifyArtistID);
 
     async function getLastfmData(lastfmArtistName) {
       const lastfmArtistResponse = await fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${lastfmArtistName}`);
