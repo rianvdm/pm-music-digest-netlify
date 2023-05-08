@@ -28,7 +28,7 @@ async function performSearch(artistName) {
     const spotifyArtistID = artist.id;
     const spotifyImgUrl = artist.images[1].url;
     const spotifyGenres = artist.genres.slice(0, 3);
-    const lastfmArtistName = artist.name
+    const lastfmArtistName = artist.name;
 
     async function getTopTracks(spotifyArtistID) {
       const topTracksResponse = await fetch(`/.netlify/functions/getSpotifyArtistTopTracks?spotifyArtistID=${spotifyArtistID}`);
@@ -47,7 +47,7 @@ async function performSearch(artistName) {
     // const relatedArtists = await getRelatedArtists(spotifyArtistID);
 
     async function getLastfmData(lastfmArtistName) {
-      const lastfmArtistResponse = await fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${lastfmArtistName}`);
+      const lastfmArtistResponse = await fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodeURIComponent(lastfmArtistName)}`);
       const lastfmArtistData = await lastfmArtistResponse.json();
       return lastfmArtistData.artist;
     }
@@ -60,7 +60,7 @@ async function performSearch(artistName) {
 
 
     async function getLastfmTopAlbums(lastfmArtistName) {
-      const lastfmTopAlbumsResponse = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${lastfmArtistName}`);
+      const lastfmTopAlbumsResponse = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${encodeURIComponent(lastfmArtistName)}`);
       const lastfmTopAlbumsData = await lastfmTopAlbumsResponse.json();
       return lastfmTopAlbumsData.topalbums;
     }
