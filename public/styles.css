@@ -320,9 +320,9 @@ blockquote {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   padding-top: 2em;
-  padding-bottom: 2.5em;
+  padding-bottom: 1em;
 }
 
 #search-form label {
