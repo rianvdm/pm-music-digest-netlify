@@ -65,7 +65,7 @@ searchForm.addEventListener('submit', async (event) => {
 
     searchResults.innerHTML = `
       <div class="track_ul2">
-      <p style="font-weight: bold; font-size: 22px">${artist.name}</p>
+      <p style="font-weight: bold; font-size: 22px; text-align: center">${artist.name}</p>
       <div class="image-text-wrapper">
       <img src="${spotifyImgUrl}" alt="${artist.name}" style="max-width: 180px;">
         <div class="no-wrap-text">
@@ -75,8 +75,8 @@ searchForm.addEventListener('submit', async (event) => {
                 : "unknown"
           }.
           <br><strong>Similar artists:</strong> ${
-              relatedArtists && relatedArtists.length >= 3
-                ? `<a href="${relatedArtists[0].external_urls.spotify}">${relatedArtists[0].name}</a>, <a href="${relatedArtists[1].external_urls.spotify}">${relatedArtists[1].name}</a>, and <a href="${relatedArtists[2].external_urls.spotify}">${relatedArtists[2].name}</a>`
+              lastfmSimilar && lastfmSimilar.length >= 3
+                ? `${lastfmSimilar[0].name}, ${lastfmSimilar[1].name}, and ${lastfmSimilar[2].name}`
                 : "unknown"
           }.
           <br><strong>Most popular songs:</strong> ${
