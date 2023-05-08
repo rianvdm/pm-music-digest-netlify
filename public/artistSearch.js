@@ -81,7 +81,7 @@ async function performSearch(artistName) {
           }.
           <br><strong>Similar artists:</strong> ${
               lastfmSimilar && lastfmSimilar.length >= 3
-                ? `<a href="/search?artist=${lastfmSimilar[0].name}">${lastfmSimilar[0].name}</a>, <a href="/search?artist=${lastfmSimilar[1].name}">${lastfmSimilar[1].name}</a>, and <a href="/search?artist=${lastfmSimilar[2].name}">${lastfmSimilar[2].name}</a>`
+                ? `<a href="/search?artist=${encodeURIComponent(lastfmSimilar[0].name)}">${lastfmSimilar[0].name}</a>, <a href="/search?artist=${encodeURIComponent(lastfmSimilar[1].name)}">${lastfmSimilar[1].name}</a>, and <a href="/search?artist=${encodeURIComponent(lastfmSimilar[2].name)}">${lastfmSimilar[2].name}</a>`
                 : "unknown"
           }.
           <br><strong>Most popular songs:</strong> ${
