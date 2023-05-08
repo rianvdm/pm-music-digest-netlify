@@ -76,7 +76,7 @@ fetch('/.netlify/functions/getLovedTracks')
           <div class="no-wrap-text">
             <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
             <br><strong>Details:</strong> ${spotifyGenres} song released in ${spotifyYear}.
-            <br><strong>Similar artists:</strong> ${similarArtist[0].name}, ${similarArtist[1].name}, ${similarArtist[2].name}.
+            <br><strong>Similar artists:</strong> <a href="/search?artist=${similarArtist[0].name}">${similarArtist[0].name}</a>, <a href="/search?artist=${similarArtist[1].name}">${similarArtist[1].name}</a>, <a href="/search?artist=${similarArtist[2].name}">${similarArtist[2].name}</a>.
             <br><strong>Related songs:</strong> <a href="https://odesli.co/${spotifyUrlsReco[0]}" target="_blank">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
             and <a href="https://odesli.co/${spotifyUrlsReco[1]}" target="_blank">${spotifyTrackReco[1]}</a> by ${spotifyArtistReco[1]}.
           </div>

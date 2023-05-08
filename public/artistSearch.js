@@ -53,8 +53,11 @@ async function performSearch(artistName) {
     }
 
     const lastfmArtist = await getLastfmData(lastfmArtistName);
-    const lastfmGenres = lastfmArtist.tags.tag.slice(0, 2);
+    const lastfmGenres = lastfmArtist.tags.tag
+      .filter(tag => tag.name.toLowerCase() !== "seen live")
+      .slice(0, 2);
     const lastfmSimilar = lastfmArtist.similar.artist.slice(0, 3);
+
 
     async function getLastfmTopAlbums(lastfmArtistName) {
       const lastfmTopAlbumsResponse = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${lastfmArtistName}`);
