@@ -2,7 +2,7 @@ fetch('/.netlify/functions/getRecentTracks')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-recent');
-    const recentTracks = data.recenttracks.track.slice(1, 11);
+    const recentTracks = data.recenttracks.track.slice(0, 10);
 
     if (recentTracks.length > 0) {
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
