@@ -1,10 +1,13 @@
 const searchForm = document.querySelector('#search-form');
 const searchResults = document.querySelector('#search-results');
 
-searchForm.addEventListener('submit', async (event) => {
-  event.preventDefault(); // prevent the form from submitting normally
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
 
-  const artistName = document.querySelector('#artist-name').value;
+async function performSearch(artistName) {
+  searchResults.innerHTML = `<p style="text-align: center">Searching for ${artistName}...</p>`;
 
   // Call the Netlify function with the artist name
   const response = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(artistName)}`);
@@ -53,7 +56,6 @@ searchForm.addEventListener('submit', async (event) => {
     const lastfmGenres = lastfmArtist.tags.tag.slice(0, 2);
     const lastfmSimilar = lastfmArtist.similar.artist.slice(0, 3);
 
-
     async function getLastfmTopAlbums(lastfmArtistName) {
       const lastfmTopAlbumsResponse = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${lastfmArtistName}`);
       const lastfmTopAlbumsData = await lastfmTopAlbumsResponse.json();
@@ -71,12 +73,12 @@ searchForm.addEventListener('submit', async (event) => {
         <div class="no-wrap-text">
           <strong>Genres:</strong> ${
               lastfmGenres && lastfmGenres.length >= 2
-                ? `${lastfmGenres[0].name}, ${lastfmGenres[1].name}`
+              ? `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}, ${lastfmGenres[1].name.charAt(0).toUpperCase()}${lastfmGenres[1].name.slice(1)}`
                 : "unknown"
           }.
           <br><strong>Similar artists:</strong> ${
               lastfmSimilar && lastfmSimilar.length >= 3
-                ? `${lastfmSimilar[0].name}, ${lastfmSimilar[1].name}, and ${lastfmSimilar[2].name}`
+                ? `<a href="/search?artist=${lastfmSimilar[0].name}">${lastfmSimilar[0].name}</a>, <a href="/search?artist=${lastfmSimilar[1].name}">${lastfmSimilar[1].name}</a>, and <a href="/search?artist=${lastfmSimilar[2].name}">${lastfmSimilar[2].name}</a>`
                 : "unknown"
           }.
           <br><strong>Most popular songs:</strong> ${
@@ -97,28 +99,28 @@ searchForm.addEventListener('submit', async (event) => {
       </div>
     `;
 
-  const streamingEmbed = `
+    const streamingEmbed = `
       <div class="track_ul2">
-      Here is ${artist.name}‘s most popular song, ${topTracks[0].name}:
-      <div style="max-width:600px; margin: 1em auto;">
-        <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
-          <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
+        Here is ${artist.name}‘s most popular song, ${topTracks[0].name}:
+        <div style="max-width:600px; margin: 1em auto;">
+          <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
+            <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
+          </div>
         </div>
       </div>
-      </div>
-  `;
+    `;
 
-  searchResults.innerHTML += streamingEmbed;
+    searchResults.innerHTML += streamingEmbed;
 
-  const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
+    const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
 
     const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s genres and styles. Write no more than two sentences.`;
     const max_tokens = 100;
 
     async function getOpenAiSummary(prompt, max_tokens) {
-      const OpenAiSummaryResponse = await fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
+      const OpenAiSummaryResponse = await fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`);
       const OpenAiSummaryData = await OpenAiSummaryResponse.json();
-      return OpenAiSummaryData.data.choices[0].message['content']
+      return OpenAiSummaryData.data.choices[0].message['content'];
     }
 
     const OpenAiSummary = await getOpenAiSummary(prompt, max_tokens);
@@ -128,4 +130,17 @@ searchForm.addEventListener('submit', async (event) => {
   } else {
     searchResults.innerHTML = `<p>No results found</p>`;
   }
+}
+
+searchForm.addEventListener('submit', async (event) => {
+  event.preventDefault(); // prevent the form from submitting normally
+  const artistName = document.querySelector('#artist-name').value;
+  performSearch(artistName);
 });
+
+const initialArtistName = getQueryParam('artist');
+if (initialArtistName) {
+  document.querySelector('#artist-name').value = initialArtistName;
+  performSearch(initialArtistName);
+}
+

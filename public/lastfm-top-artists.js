@@ -32,7 +32,7 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
         <div class="track_ul">
           <img src="${spotifyArtistImgUrl}">
           <div class="no-wrap-text">
-            <strong><a href="${artist.url}" target="_blank" class="track_link">${artist.name}</a></strong> (${artist.playcount} plays).
+            <strong><a href="/search?artist=${artist.name}">${artist.name}</a></strong> (${artist.playcount} plays).
             <br><strong>Genres:</strong> ${
                 spotifyGenres && spotifyGenres.length >= 2
                   ? `${spotifyGenres[0]}, ${spotifyGenres[1]}`
