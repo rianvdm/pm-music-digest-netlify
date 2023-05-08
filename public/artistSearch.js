@@ -97,7 +97,7 @@ async function performSearch(artistName) {
           </div>
         </div>
         <div id="openai-summary-placeholder" style="margin-bottom: 0px;">
-          <p>Generating summary...</p>
+          <p">Generating ChatGPT summary...</p>
         </div>
       </div>
     `;
