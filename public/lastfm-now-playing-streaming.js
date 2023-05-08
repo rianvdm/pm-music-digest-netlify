@@ -1,15 +1,20 @@
+function sanitizeInput(input) {
+  const cleanedInput = input.replace(/[+&™]/g, '');
+  return encodeURIComponent(cleanedInput);
+}
+
+
 fetch(`/.netlify/functions/getRecentTracks`)
+  .then(response => response.json())
+  .then(data => {
+    const nowPlaying = [data.recenttracks.track[0]];
 
-.then(response => response.json())
-.then(data => {
-const nowPlaying = [data.recenttracks.track[0]];
+    const artist = sanitizeInput(nowPlaying[0].artist['#text']);
+    const title = sanitizeInput(nowPlaying[0].name);
+    const album = sanitizeInput(nowPlaying[0].album['#text']);
+    const q = `${artist} ${title} ${album}`;
 
-const artist = encodeURIComponent(nowPlaying[0].artist['#text'].replace('&', ''));
-const title = encodeURIComponent(nowPlaying[0].name.replace('&', ''));
-const album = encodeURIComponent(nowPlaying[0].album['#text'].replace('&', ''));
-const q = `${artist} ${title} ${album}`;
-
-fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
+    fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
   .then(response => {
     if (!response.ok) {
       throw new Error('Failed to fetch Spotify song');

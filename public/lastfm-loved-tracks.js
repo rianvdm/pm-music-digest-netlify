@@ -39,7 +39,7 @@ fetch('/.netlify/functions/getLovedTracks')
 
         .then(response => response.json());
 
-      const prompt = `Write a summary to help someone decide if they might like the song ${encodeURIComponent(track.name)} by ${encodeURIComponent(track.artist.name)}. Include information about the song/artist’s genres as well as similar artists. Write no more than one sentence.`;
+      const prompt = `Write a summary to help someone decide if they might like the song ${encodeURIComponent(track.name)} by ${encodeURIComponent(track.artist.name)}. Include information about the song/artist’s genres, as well as similar artists. Write no more than one sentence.`;
       const max_tokens = 80;
 
       const openaiPromise = fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)

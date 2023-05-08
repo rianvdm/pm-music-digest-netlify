@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Rian van der Merwe">
+    <link href="/styles.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+
+
+    <!-- HTML Meta Tags -->
+    <title>Artist Search</title>
+    <meta name="description" content="Curious about an artist someone recommended? Find out more information about their genres, top albums, and most popular songs to help you figure out if you want to check them out.">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://music.elezea.com">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Artist Search">
+    <meta property="og:description" content="Curious about an artist someone recommended? Find out more information about their genres, top albums, and most popular songs to help you figure out if you want to check them out.">
+    <meta property="og:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="music.elezea.com">
+    <meta property="twitter:url" content="https://music.elezea.com">
+    <meta name="twitter:title" content="Artist Search">
+    <meta name="twitter:description" content="Curious about an artist someone recommended? Find out more information about their genres, top albums, and most popular songs to help you figure out if you want to check them out.">
+    <meta name="twitter:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
+
+  </head>
+
+  <body>
+
+    <nav>
+      <ul>
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="/recommendations">Recommendations</a></li>
+        <li><a href="/mood">Mood</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+
+    <h1>Artist Search</h1>
+
+    <h4 style="text-align: center;">Curious about an artist someone recommended? Find out more information about their genres, top albums, and most popular songs to help you figure out if you want to check them out.</h4>
+
+    <form id="search-form">
+      <label for="artist-name">Artist Name:</label>
+      <input type="text" id="artist-name" name="artist-name">
+      <button type="submit">Search</button>
+    </form>
+
+    <div id="search-results"></div>
+
+
+    <div class="footer">
+      <p><a href="https://youtu.be/cNtprycno14?t=9032">There’s a fire that’s been burning right outside my door.</a></p>
+    </div>
+
+    <script src="/artistSearch.js"></script>
+  </body>
+</html>
