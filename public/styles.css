@@ -227,6 +227,21 @@ blockquote {
   margin-bottom: 20px;
 }
 
+.track_ul2 {
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.4em;
+  max-width: 800px;
+  overflow: auto;
+}
+
+.track_ul2 img {
+  float: left;
+  max-width: 150px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
 .no-wrap-text {
   overflow: hidden;
 }
@@ -345,11 +360,6 @@ blockquote {
 #search-form button:hover {
   background-color: rgba(var(--c-accent), 0.8);
   color: rgba(var(--c-bg), 0.8);
-}
-
-.track_ul_2 {
-  display: flex;
-  flex-direction: column;
 }
 
 .image-text-wrapper {

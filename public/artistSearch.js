@@ -64,7 +64,7 @@ searchForm.addEventListener('submit', async (event) => {
     const lasftmTopAlbum = lastfmTopAlbums.album.slice(0, 3);
 
     searchResults.innerHTML = `
-      <div class="track_ul">
+      <div class="track_ul2">
       <p style="font-weight: bold; font-size: 22px">${artist.name}</p>
       <div class="image-text-wrapper">
       <img src="${spotifyImgUrl}" alt="${artist.name}" style="max-width: 180px;">
@@ -91,14 +91,14 @@ searchForm.addEventListener('submit', async (event) => {
           }.
           </div>
         </div>
-        <div id="openai-summary-placeholder">
+        <div id="openai-summary-placeholder" style="margin-bottom: 0px;">
           <p>Generating summary...</p>
         </div>
       </div>
     `;
 
   const streamingEmbed = `
-      <div class="track_recent">
+      <div class="track_ul2">
       <p>Here is ${artist.name}‘s most popular song, ${topTracks[0].name}:</p>
       <div style="max-width:600px; margin: 0 auto;">
         <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
