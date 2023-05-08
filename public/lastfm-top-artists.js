@@ -45,7 +45,7 @@ fetch('/.netlify/functions/getTopArtists?period=7day')
             }.
             <br><strong>Similar artists:</strong> ${
                 relatedArtists && relatedArtists.length >= 3
-                  ? `<a href="${relatedArtists[0].external_urls.spotify}">${relatedArtists[0].name}</a>, <a href="${relatedArtists[1].external_urls.spotify}">${relatedArtists[1].name}</a>, and <a href="${relatedArtists[2].external_urls.spotify}">${relatedArtists[2].name}</a>`
+                  ? `<a href="/search?artist=${relatedArtists[0].name}">${relatedArtists[0].name}</a>, <a href="/search?artist=${relatedArtists[1].name}">${relatedArtists[1].name}</a>, and <a href="/search?artist=${relatedArtists[2].name}">${relatedArtists[2].name}</a>`
                   : "unknown"
             }.
           </div>
