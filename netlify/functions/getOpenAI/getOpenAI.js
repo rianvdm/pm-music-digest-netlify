@@ -35,7 +35,7 @@ exports.handler = async function(event, context) {
 
     // If the response is not successful, throw an error
     if (!response.ok) {
-      throw new Error(`Failed to generate text: ${response.statusText}`);
+      throw new Error(`${response.error}`);
     }
 
     // Parse the response JSON
