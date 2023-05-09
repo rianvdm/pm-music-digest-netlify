@@ -76,7 +76,7 @@ async function performSearch(artistName) {
         <div class="no-wrap-text">
           <strong>Genres:</strong> ${
               lastfmGenres && lastfmGenres.length >= 2
-              ? `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}, ${lastfmGenres[1].name.charAt(0).toUpperCase()}${lastfmGenres[1].name.slice(1)}`
+              ? `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}, ${lastfmGenres[1].name}`
                 : "unknown"
           }.
           <br><strong>Similar artists:</strong> ${
@@ -104,7 +104,7 @@ async function performSearch(artistName) {
 
     const streamingEmbed = `
       <div class="track_ul2">
-        Here is ${artist.name}‘s most popular song, ${topTracks[0].name}:
+        Here is ${artist.name}’s most popular song, ${topTracks[0].name}:
         <div style="max-width:600px; margin: 1em auto;">
           <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
             <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
