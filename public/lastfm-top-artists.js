@@ -1,8 +1,8 @@
-fetch('/.netlify/functions/getTopArtists?period=7day')
+fetch('/.netlify/functions/getTopArtists?period=7day&limit=5')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-artists');
-    const topArtists = data.topartists.artist.slice(0, 6);
+    const topArtists = data.topartists.artist.slice(0, 5);
 
     const htmlPromises = topArtists.map(async (artist, i) => {
       const q = `${artist.name}`;

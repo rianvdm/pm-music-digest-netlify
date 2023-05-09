@@ -1,6 +1,6 @@
 const encodeName = (name) => encodeURIComponent(name.replace(/&/g, '%26').replace(/\+/g, '%2B').replace(/\./g, '%2E'));
 
-fetch('/.netlify/functions/getLovedTracks')
+fetch('/.netlify/functions/getLovedTracks?limit=12')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-loved-history');
