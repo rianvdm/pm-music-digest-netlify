@@ -26,6 +26,12 @@ fetch('/.netlify/functions/getLovedTracks')
       const lastfmTags = lastfmData.value && lastfmData.value.artist.tags.tag
         .filter(tag => tag.name.toLowerCase() !== "seen live")
         .slice(0, 2);
+      const lastfmGenres = (lastfmTags && lastfmTags[0]?.name)
+          ? lastfmTags[0]?.name.charAt(0).toUpperCase() + lastfmTags[0]?.name.slice(1)
+          : "Rock";
+
+      const similarArtist = lastfmData.value && lastfmData.value.artist.similar.artist.length > 0 ? lastfmData.value.artist.similar.artist.slice(0,3) : 'N/A';
+
 
       const spotifyUrl = spotifyData.value.data.items[0].external_urls.spotify;
       const spotifyID = spotifyData.value.data.items[0].id;
@@ -33,31 +39,26 @@ fetch('/.netlify/functions/getLovedTracks')
       const spotifyImgUrl = spotifyData.value.data.items[0].album.images[1].url;
       const spotifyReleased = spotifyData.value.data.items[0].album.release_date;
       const spotifyYear = spotifyReleased.length === 4 ? spotifyReleased : spotifyReleased.substring(0, 4);
-      const spotifyGenres = (lastfmTags && lastfmTags[0]?.name)
-          ? lastfmTags[0]?.name.charAt(0).toUpperCase() + lastfmTags[0]?.name.slice(1)
-          : "Rock";
 
-      const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
+      const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${lastfmGenres}&seed_tracks=${spotifyID}`)
         .then(response => response.json());
 
       const [spotifyRecoData] = await Promise.allSettled([spotifyRecoPromise]);
 
       return {
         track,
-        lastfmTags,
-        similarArtist: lastfmData.value && lastfmData.value.artist.similar.artist.length > 0 ? lastfmData.value.artist.similar.artist.slice(0,3) : 'N/A',
+        lastfmGenres,
+        similarArtist,
         spotifyUrl,
-        spotifyID,
         spotifyImgUrl,
         spotifyRecoData,
-        spotifyGenres,
         spotifyYear
       };
     });
 
     const trackData = await Promise.all(trackPromises);
 
-    const html = trackData.map(({ track, lastfmTags, similarArtist, spotifyUrl, spotifyID, spotifyImgUrl, spotifyRecoData, spotifyGenres, spotifyYear }) => {
+    const html = trackData.map(({ track, similarArtist, spotifyUrl, spotifyImgUrl, spotifyRecoData, lastfmGenres, spotifyYear }) => {
       const spotifyTrackReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.name);
       const spotifyArtistReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.artists[0].name);
       const spotifyUrlsReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.external_urls.spotify);
@@ -75,7 +76,7 @@ fetch('/.netlify/functions/getLovedTracks')
           <a href="https://odesli.co/${spotifyUrl}" target="_blank"><img src="${spotifyImgUrl}"></a>
           <div class="no-wrap-text">
             <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
-            <br><strong>Details:</strong> ${spotifyGenres} song released in ${spotifyYear}.
+            <br><strong>Details:</strong> ${lastfmGenres} song released in ${spotifyYear}.
             <br><strong>Similar artists:</strong> <a href="/search?artist=${similarArtist[0].name}">${similarArtist[0].name}</a>, <a href="/search?artist=${similarArtist[1].name}">${similarArtist[1].name}</a>, <a href="/search?artist=${similarArtist[2].name}">${similarArtist[2].name}</a>.
             <br><strong>Related songs:</strong> <a href="https://odesli.co/${spotifyUrlsReco[0]}" target="_blank">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
             and <a href="https://odesli.co/${spotifyUrlsReco[1]}" target="_blank">${spotifyTrackReco[1]}</a> by ${spotifyArtistReco[1]}.
