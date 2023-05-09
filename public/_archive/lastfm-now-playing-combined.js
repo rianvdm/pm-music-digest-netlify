@@ -27,16 +27,14 @@ fetch('/.netlify/functions/getRecentTracks')
       .then(response => response.json())
       .then(lastFmData => {
         let additionalInfo = '';
-        if (typeof lastFmData.artist.tags.tag[1] !== 'undefined') {
+        if (typeof lastFmData.artist.tags.tag[0] !== 'undefined') {
           const tags = lastFmData.artist.tags.tag
             .map(tag => tag.name.toLowerCase())
             .filter(tag => tag !== "seen live");
           const similar = lastFmData.artist.similar.artist.map(artist => artist.name);
 
           additionalInfo = `Try this song if you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> music
-                          from artists like ${similar[0]}, ${similar[1]}, and ${similar[2]}.`;
-        } else {
-          additionalInfo = "Last.fm unfortunately does not have any additional information about this song.";
+                          from artists like <strong>${similar[0]}</strong>, <strong>${similar[1]}</strong>, and <strong>${similar[2]}</strong>.`;
         }
 
         if (nowPlaying[0].hasOwnProperty('@attr') && nowPlaying[0]['@attr'].hasOwnProperty('nowplaying') && nowPlaying[0]['@attr'].nowplaying === 'true') {
