@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getRecentTracks')
+fetch('/.netlify/functions/getRecentTracks?limit=10')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-recent');
