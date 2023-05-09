@@ -1,30 +1,25 @@
-function sanitizeInput(input) {
-  const cleanedInput = input.replace(/[+&™]/g, '');
-  return encodeURIComponent(cleanedInput);
+async function fetchData(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return response.json();
 }
 
+async function fetchAndDisplayTrack() {
+  try {
+    const recentTracksData = await fetchData('/.netlify/functions/getRecentTracks?limit=1');
+    const nowPlaying = [recentTracksData.recenttracks.track[0]];
 
-fetch(`/.netlify/functions/getRecentTracks?limit=1`)
-  .then(response => response.json())
-  .then(data => {
-    const nowPlaying = [data.recenttracks.track[0]];
+    const artist = nowPlaying[0].artist['#text'];
+    const title = nowPlaying[0].name;
+    const album = nowPlaying[0].album['#text'];
+    const q = `${sanitizeInput(artist)} ${sanitizeInput(title)} ${sanitizeInput(album)}`;
 
-    const artist = sanitizeInput(nowPlaying[0].artist['#text']);
-    const title = sanitizeInput(nowPlaying[0].name);
-    const album = sanitizeInput(nowPlaying[0].album['#text']);
-    const q = `${artist} ${title} ${album}`;
+    const spotifyData = await fetchData(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`);
 
-    fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Failed to fetch Spotify song');
-    }
-    return response.json();
-  })
-  .then(data => {
     const dataContainer = document.querySelector('.js-spotify-song');
-    const spotifyUrl = data.data.items[0].external_urls.spotify;
-    const spotifyID = data.data.items[0].id;
+    const spotifyUrl = spotifyData.data.items[0].external_urls.spotify;
 
     const html = `
       <div class="track_recent">
@@ -33,19 +28,25 @@ fetch(`/.netlify/functions/getRecentTracks?limit=1`)
               <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${spotifyUrl}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
             </div>
           </div>
-       </div>
+      </div>
     `;
     dataContainer.innerHTML = html;
-  })
-  .catch(error => {
+  } catch (error) {
     console.error(error);
-    // display error message to user
-    const dataContainer = document.querySelector('.js-spotify-song');
-    const html = `
-      <p class="track_recent" style="text-align: center;"><strong>Oops, it looks like the Spotify API is having some issues.</strong> Please try again a little later!</p>
-    `;
-    dataContainer.innerHTML = html;
-  });
+    displayErrorMessage('.js-spotify-song', 'Oops, it looks like the Spotify API is having some issues. Please try again a little later!');
+  }
+}
 
-  })
-.catch(error => console.error(error));
+function sanitizeInput(input) {
+  return encodeURIComponent(input.replace(/[+&™]/g, ''));
+}
+
+function displayErrorMessage(selector, message) {
+  const container = document.querySelector(selector);
+  const html = `
+    <p class="track_recent" style="text-align: center;"><strong>${message}</strong></p>
+  `;
+  container.innerHTML = html;
+}
+
+fetchAndDisplayTrack();
