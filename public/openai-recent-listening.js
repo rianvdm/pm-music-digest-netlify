@@ -7,10 +7,10 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
     if (recentTracks.length > 0) {
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
       const prompt = `Analyze the last 10 songs I listened to, listed below. 
-      Speculate on what what mood I might be in based on the last 10 songs, then recommend up to two similar albums that I might want to listen to next, using the numbering format "1. " and "2. ".
+      Speculate on what what mood I might be in based on those songs, then recommend no more than two similar albums that I might want to listen to next.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
-      const max_tokens = 500;
+      const max_tokens = 400;
 
       // Fetch call with error message
       // fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
@@ -26,24 +26,28 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
           const openaiTextResponse = openaiDataResponse.data.choices[0].message['content'];
           const openaiTokensUsed = openaiDataResponse.data.usage.total_tokens;
 
-          // Find the position of the numbering
-          const listStartRegex = /^(1\. )/m;
-          const listStartIndex = openaiTextResponse.search(listStartRegex);
+          // Split the response into paragraphs at each newline
+          let paragraphs = openaiTextResponse.split('\n\n');
 
-          // Split the text into two parts: before and after the numbering
-          const textBeforeList = openaiTextResponse.substring(0, listStartIndex);
-          const listText = openaiTextResponse.substring(listStartIndex);
+          let formattedResponse = '';
 
-          // Convert the numbered list into an ordered list
-          const listItemsRegex = /^(\d+\. )((.|\n)+?)(?=\n\d+\. |$)/gm;
-          const orderedList = listText.replace(listItemsRegex, (match, number, content) => {
-            const listItemContent = content.replace(/\n/g, ' ');
-            return `<li>${listItemContent}</li>`;
-          });
-          const wrappedOrderedList = `<ol class="track_ol">${orderedList}</ol>`;
-
-          // Combine the text and the ordered list, and insert into the data container
-          const formattedResponse = `${textBeforeList}${wrappedOrderedList}`;
+          // Loop through each paragraph
+          for (let paragraph of paragraphs) {
+            // If the paragraph starts with a digit followed by a period or a closing bracket, format it as an ordered list
+            if (paragraph.match(/^\d+[\.\)]/)) {
+              let listItems = paragraph.split('\n');
+              formattedResponse += '<ol>';
+              for (let listItem of listItems) {
+                // Remove the digit and the following character (either period or closing bracket)
+                listItem = listItem.replace(/^\d+[\.\)]\s*/, '');
+                formattedResponse += `<li>${listItem}</li>`;
+              }
+              formattedResponse += '</ol>';
+            } else {
+              // Otherwise, format it as a paragraph
+              formattedResponse += `<p>${paragraph}</p>`;
+            }
+          }
 
           const content = `
             <div class="openai-response">
