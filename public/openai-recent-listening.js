@@ -10,7 +10,7 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
       Speculate on what what mood I might be in based on those songs, then recommend no more than two similar albums that I might want to listen to next.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
-      const max_tokens = 400;
+      const max_tokens = 350;
 
       // Fetch call with error message
       // fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
@@ -52,6 +52,7 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
           const content = `
             <div class="openai-response">
               <p>${formattedResponse}</p>
+              <p><em>Dev note: this response used ${openaiTokensUsed} OpenAI tokens.</em></p>
             </div>
           `;
 
@@ -61,8 +62,7 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
           // Display the error message
           const errorMessage = `
             <div class="error-message">
-              <p>Oops, it looks like the OpenAI API timed out. Please try again.
-              <br><br>PS. I need a paid Netlify account to increase the timeout above 10s, which is why this sometimes happens. 
+              <p>Oops, it looks like the OpenAI API timed out. Please try again.</p>
             </div>
           `;
           dataContainer.innerHTML = errorMessage;
