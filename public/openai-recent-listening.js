@@ -6,11 +6,11 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
 
     if (recentTracks.length > 0) {
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
-      const prompt = `Analyze the last 10 songs I listened to, listed below. 
-      Speculate on what what mood I might be in based on those songs, then recommend no more than two similar albums that I might want to listen to next.
+      const prompt = `Speculate on the mood I might be in based on the last 10 songs I listened to, which are listed below.
+      Then recommend no more than two similar albums that I might want to listen to next. Use a numbered list.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
-      const max_tokens = 350;
+      const max_tokens = 400;
 
       // Fetch call with error message
       // fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
@@ -36,13 +36,13 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
             // If the paragraph starts with a digit followed by a period or a closing bracket, format it as an ordered list
             if (paragraph.match(/^\d+[\.\)]/)) {
               let listItems = paragraph.split('\n');
-              formattedResponse += '<ol>';
+              formattedResponse += '<ul class="track_ul">';
               for (let listItem of listItems) {
                 // Remove the digit and the following character (either period or closing bracket)
                 listItem = listItem.replace(/^\d+[\.\)]\s*/, '');
                 formattedResponse += `<li>${listItem}</li>`;
               }
-              formattedResponse += '</ol>';
+              formattedResponse += '</ul>';
             } else {
               // Otherwise, format it as a paragraph
               formattedResponse += `<p>${paragraph}</p>`;
@@ -52,7 +52,7 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
           const content = `
             <div class="openai-response">
               <p>${formattedResponse}</p>
-              <p><em>Dev note: this response used ${openaiTokensUsed} OpenAI tokens.</em></p>
+              <p><div class="footnote"><em>Dev note: this response used ${openaiTokensUsed} OpenAI tokens.</em></div></p>
             </div>
           `;
 

@@ -112,6 +112,14 @@ blockquote {
   margin: 0;
 }
 
+.footnote {
+  color: var(--c-base);
+  margin: 1em auto;
+  line-height: 1.4em;
+  font-size: 12px;
+  max-width: 800px;
+}
+
 
 
 .button,
