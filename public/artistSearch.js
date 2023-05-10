@@ -116,7 +116,7 @@ async function performSearch(artistName) {
             <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
           </div>
         </div>
-        <h4>Artist bio:</h4>
+        <h4>Artist bio</h4>
         <p>${artistBio}</p>
       </div>
     `;
