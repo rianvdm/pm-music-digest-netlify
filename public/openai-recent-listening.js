@@ -11,10 +11,11 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
       List the albums in the format 1. and 2.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
-      const max_tokens = 400;
+      const max_tokens = 500;
 
       // Fetch call with error message
-      fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
+      // fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
+      fetch(`/.netlify/functions/getOpenAIBonkers?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
         .then(async response => {
           if (!response.ok) {
             const errorJson = await response.json();
