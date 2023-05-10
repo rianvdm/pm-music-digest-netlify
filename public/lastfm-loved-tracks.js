@@ -1,7 +1,17 @@
+const checkStatus = (response) => {
+  if (response.ok) {
+    return response.json();
+  } else {
+    return response.json().then(json => {
+      throw new Error(json.message || 'Request failed');
+    });
+  }
+};
+
 const encodeName = (name) => encodeURIComponent(name.replace(/&/g, '%26').replace(/\+/g, '%2B').replace(/\./g, '%2E'));
 
 fetch('/.netlify/functions/getLovedTracks?limit=5')
-  .then(response => response.json())
+  .then(checkStatus)
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-loved-tracks');
     const lovedTracks = data.lovedtracks.track.slice(0, 5);
@@ -11,17 +21,34 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
       const encodedTrack = encodeName(track.name);
 
       const lastfmPromise = fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedArtist}`)
-        .then(response => response.json())
+        .then(checkStatus)
         .catch(error => {
+          dataContainer.innerHTML = `<p>Error: ${error.message}</p>`;
           console.error(error);
           return null;
         });
 
-      const q = `${encodedTrack} ${encodedArtist}`;
+     const q = `${encodedTrack} ${encodedArtist}`;
      const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
-        .then(response => response.json());
+        .then(checkStatus)
+        .catch(error => {
+          console.error(error);
+          dataContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+        });
 
       const [lastfmData, spotifyData] = await Promise.allSettled([lastfmPromise, spotifySearchPromise]);
+
+      if (lastfmData.status === 'rejected') {
+        console.error(lastfmData.reason);
+        dataContainer.innerHTML += `<p>Error: ${lastfmData.reason.message}</p>`;
+        return;
+      }
+
+      if (spotifyData.status === 'rejected') {
+        console.error(spotifyData.reason);
+        dataContainer.innerHTML += `<p>Error: ${spotifyData.reason.message}</p>`;
+        return;
+      }
 
       const lastfmTags = lastfmData.value && lastfmData.value.artist.tags.tag
         .filter(tag => tag.name.toLowerCase() !== "seen live")
@@ -36,16 +63,34 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
           : "rock";
 
       const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
-
-        .then(response => response.json());
+        .then(checkStatus)
+        .catch(error => {
+          console.error(error);
+          dataContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+        });
 
       const prompt = `Write a summary to help someone decide if they might like the song ${encodeURIComponent(track.name)} by ${encodeURIComponent(track.artist.name)}. Include information about the song/artist’s genres, as well as similar artists. Write no more than one sentence.`;
       const max_tokens = 80;
 
       const openaiPromise = fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
-        .then(response => response.json());
-
+        .then(checkStatus)
+        .catch(error => {
+          console.error(error);
+          dataContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+        });
       const [spotifyRecoData, openaiData] = await Promise.allSettled([spotifyRecoPromise, openaiPromise]);
+
+        if (spotifyRecoData.status === 'rejected') {
+          console.error(spotifyRecoData.reason);
+          dataContainer.innerHTML += `<p>Error: ${spotifyRecoData.reason.message}</p>`;
+          return;
+        }
+
+        if (openaiData.status === 'rejected') {
+          console.error(openaiData.reason);
+          dataContainer.innerHTML += `<p>Error: ${openaiData.reason.message}</p>`;
+          return;
+        }
 
       return {
         track,
@@ -91,4 +136,9 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
 
     dataContainer.innerHTML = `${html.join('')}`;
   })
-  .catch(error => console.error(error));
+  .catch(error => {
+    const dataContainer = document.querySelector('.js-lastfm-loved-tracks');
+    console.error(error);
+    dataContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+  });
+
