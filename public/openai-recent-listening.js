@@ -11,7 +11,7 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
       List the albums in the format 1. and 2.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
-      const max_tokens = 500;
+      const max_tokens = 600;
 
       // Fetch call with error message
       // fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
