@@ -57,6 +57,12 @@ async function performSearch(artistName) {
       .filter(tag => tag.name.toLowerCase() !== "seen live")
       .slice(0, 2);
     const lastfmSimilar = lastfmArtist.similar.artist.slice(0, 3);
+    let artistBio;
+    if (lastfmArtist.bio && lastfmArtist.bio.summary) {
+      artistBio = lastfmArtist.bio.summary;
+    } else {
+      artistBio = "unknown";
+    }
 
 
     async function getLastfmTopAlbums(lastfmArtistName) {
@@ -110,6 +116,8 @@ async function performSearch(artistName) {
             <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
           </div>
         </div>
+        <h4>Artist bio:</h4>
+        <p>${artistBio}</p>
       </div>
     `;
 
@@ -117,18 +125,22 @@ async function performSearch(artistName) {
 
     const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
 
-    const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s genres and styles. Write no more than two sentences.`;
-    const max_tokens = 100;
+    const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s genres and styles. Write no more than three sentences.`;
+    const max_tokens = 120;
 
     async function getOpenAiSummary(prompt, max_tokens) {
       const OpenAiSummaryResponse = await fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`);
+      // const OpenAiSummaryResponse = await fetch(`/.netlify/functions/getOpenAIBonkers?prompt=${prompt}&max_tokens=${max_tokens}`);
       const OpenAiSummaryData = await OpenAiSummaryResponse.json();
       return OpenAiSummaryData.data.choices[0].message['content'];
     }
 
     const OpenAiSummary = await getOpenAiSummary(prompt, max_tokens);
 
-    openAiSummaryPlaceholder.innerHTML = `<p>${OpenAiSummary}</p>`;
+    openAiSummaryPlaceholder.innerHTML = `
+<!--    <p style="text-align: center; color: red;">🚨 <strong><em>ChatGPT is usually super helpful, but just for fun I’m dialling up the sass today...</strong></em> 🚨</p> -->
+    <p>${OpenAiSummary}</p>
+    `;
 
   } else {
     searchResults.innerHTML = `<p>No results found</p>`;
