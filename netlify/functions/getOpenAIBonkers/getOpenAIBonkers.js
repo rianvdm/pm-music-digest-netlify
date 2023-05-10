@@ -24,7 +24,7 @@ exports.handler = async function(event, context) {
         messages: [
           {role: "user", content: prompt},
           // {role: "system", content: "Pretend you are a Gen Z female. Respond in an annoying, overly enthusiastic tone with lots of jargon and too many exclamation points."}
-          {role: "system", content: "Pretend you are a musical snob. Provide helpful information, but also do a bored, dry, playful roast of user's music taste."}          
+          {role: "system", content: "Pretend you are a musical snob. Provide helpful information, but also do a bored, snarky roast of my music taste. It's ok to be mean, it comforts me."}          
         ],
         max_tokens: max_tokens,
         n: 1,
