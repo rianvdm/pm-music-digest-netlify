@@ -59,10 +59,13 @@ async function performSearch(artistName) {
     const lastfmSimilar = lastfmArtist.similar.artist.slice(0, 3);
     let artistBio;
     if (lastfmArtist.bio && lastfmArtist.bio.summary) {
-      artistBio = lastfmArtist.bio.content.replace(/\n/g, '<br />');
+      artistBio = lastfmArtist.bio.content
+          .replace(/\n/g, '<br />')
+          .replace(/<a href=\"https:\/\/www\.last\.fm\/music\/.*\">Read more on Last\.fm<\/a>\. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply\.$/, '');
     } else {
       artistBio = "unknown";
     }
+
 
 
 
@@ -140,7 +143,8 @@ async function performSearch(artistName) {
 
     openAiSummaryPlaceholder.innerHTML = `
 <!--    <p style="text-align: center; color: red;">🚨 <strong><em>ChatGPT is usually super helpful, but just for fun I’m dialling up the sass today...</strong></em> 🚨</p> -->
-    <p>${OpenAiSummary}</p>
+    <p><strong>Quick summary:</strong><br>
+    ${OpenAiSummary}</p>
     `;
 
   } else {
