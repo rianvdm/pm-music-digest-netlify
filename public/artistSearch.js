@@ -59,10 +59,11 @@ async function performSearch(artistName) {
     const lastfmSimilar = lastfmArtist.similar.artist.slice(0, 3);
     let artistBio;
     if (lastfmArtist.bio && lastfmArtist.bio.summary) {
-      artistBio = lastfmArtist.bio.summary;
+      artistBio = lastfmArtist.bio.content.replace(/\n/g, '<br />');
     } else {
       artistBio = "unknown";
     }
+
 
 
     async function getLastfmTopAlbums(lastfmArtistName) {
@@ -115,8 +116,8 @@ async function performSearch(artistName) {
           <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
             <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
           </div>
-        </div>
-        <h4>Artist bio:</h4>
+        </div><br>
+        <h4>More about ${artist.name}:</h4>
         <p>${artistBio}</p>
       </div>
     `;
