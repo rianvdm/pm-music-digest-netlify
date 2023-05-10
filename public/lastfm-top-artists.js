@@ -34,7 +34,7 @@ fetch('/.netlify/functions/getTopArtists?period=7day&limit=5')
           <div class="no-wrap-text">
             <strong><a href="/search?artist=${artist.name}">${artist.name}</a></strong> (${artist.playcount} plays).
             <br><strong>Genres:</strong> ${
-                spotifyGenres && spotifyGenres.length >= 2
+                spotifyGenres && spotifyGenres.length >= 1
                   ? `${spotifyGenres[0]}, ${spotifyGenres[1]}`
                   : "unknown"
             }.
