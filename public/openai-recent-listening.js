@@ -7,8 +7,7 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
     if (recentTracks.length > 0) {
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
       const prompt = `Analyze the last 10 songs I listened to, listed below. 
-      Speculate on what what mood I might be in based on the last 10 songs, then recommend up to two similar albums that I might want to listen to next.
-      List the albums in the format 1. and 2.
+      Speculate on what what mood I might be in based on the last 10 songs, then recommend up to two similar albums that I might want to listen to next, using the numbering format "1. " and "2. ".
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
       const max_tokens = 500;
