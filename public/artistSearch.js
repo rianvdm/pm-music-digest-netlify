@@ -55,7 +55,7 @@ async function performSearch(artistName) {
     const lastfmArtist = await getLastfmData(lastfmArtistName);
     const lastfmGenres = lastfmArtist.tags.tag
       .filter(tag => tag.name.toLowerCase() !== "seen live")
-      .slice(0, 2);
+      .slice(0, 3);
     const lastfmSimilar = lastfmArtist.similar.artist.slice(0, 3);
     let artistBio;
     if (lastfmArtist.bio && lastfmArtist.bio.summary) {
@@ -82,11 +82,11 @@ async function performSearch(artistName) {
       <div class="track_ul2">
       <p style="font-weight: bold; font-size: 22px; text-align: center">${artist.name}</p>
       <div class="image-text-wrapper">
-      <img src="${spotifyImgUrl}" alt="${artist.name}" style="max-width: 180px;">
+      <img src="${spotifyImgUrl}" alt="${artist.name}" style="max-width: 220px;">
         <div class="no-wrap-text">
           <strong>Genres:</strong> ${
               lastfmGenres && lastfmGenres.length >= 2
-              ? `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}, ${lastfmGenres[1].name}`
+              ? `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}, ${lastfmGenres[1].name.toLowerCase()}, ${lastfmGenres[2].name.toLowerCase()}`
                 : "unknown"
           }.
           <br><strong>Similar artists:</strong> ${
