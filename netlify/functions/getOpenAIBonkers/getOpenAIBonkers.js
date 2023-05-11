@@ -23,12 +23,12 @@ exports.handler = async function(event, context) {
         frequency_penalty: 0.8,
         messages: [
           {role: "user", content: prompt},
-          // {role: "system", content: "Pretend you are a Gen Z female. Respond in an annoying, overly enthusiastic tone with lots of jargon and too many exclamation points."}
-          {role: "system", content: "Pretend you are a sarcastic, snarky musical snob. Provide helpful information, but also roast Rian's music taste. Be as mean as possible because he finds it comforting."}          
+          // {role: "system", content: "Pretend you are a Gen Z female. Respond in an annoying, overly enthusiastic tone with lots of buzz words and too many exclamation points. It's ok to be overly annoying, Rian says he finds it comforting."}
+          // {role: "system", content: "Pretend you are a sarcastic, snarky musical snob. Provide helpful information, but also roast Rian's music taste. Be as mean as possible because he finds it comforting."}          
         ],
         max_tokens: max_tokens,
         n: 1,
-        temperature: 1.2,
+        temperature: 1.1,
       }),
     });
 

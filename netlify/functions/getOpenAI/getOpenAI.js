@@ -23,7 +23,7 @@ exports.handler = async function(event, context) {
         frequency_penalty: 0.8,
         messages: [
           {role: "user", content: prompt},
-          {role: "system", content: "Pretend you are a friendly assistant who wants to help people find music they will love."}
+          {role: "system", content: "You are a friendly assistant who wants to help people find music they will love."}
         ],
         max_tokens: max_tokens,
         n: 1,

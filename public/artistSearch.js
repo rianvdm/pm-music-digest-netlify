@@ -66,9 +66,6 @@ async function performSearch(artistName) {
       artistBio = "unknown";
     }
 
-
-
-
     async function getLastfmTopAlbums(lastfmArtistName) {
       const lastfmTopAlbumsResponse = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${encodeURIComponent(lastfmArtistName)}`);
       const lastfmTopAlbumsData = await lastfmTopAlbumsResponse.json();
@@ -90,7 +87,7 @@ async function performSearch(artistName) {
                 : "unknown"
           }.
           <br><strong>Similar artists:</strong> ${
-              lastfmSimilar && lastfmSimilar.length >= 3
+              lastfmSimilar && lastfmSimilar.length >= 2
                 ? `<a href="/search?artist=${encodeURIComponent(lastfmSimilar[0].name)}">${lastfmSimilar[0].name}</a>, <a href="/search?artist=${encodeURIComponent(lastfmSimilar[1].name)}">${lastfmSimilar[1].name}</a>, and <a href="/search?artist=${encodeURIComponent(lastfmSimilar[2].name)}">${lastfmSimilar[2].name}</a>`
                 : "unknown"
           }.
