@@ -29,7 +29,7 @@ a {
 h1 {
   color: var(--c-accent);
   text-align: center;
-  margin: 2em 0 0;
+  margin: 1.4em 0 0;
   position: relative;
 }
 
@@ -102,7 +102,7 @@ nav li.active a {
 
   nav li {
     display: inline-block;
-    margin: 5px 5px 0px 5px;
+    margin: 0px 5px 0px 5px;
   }
 }
 
