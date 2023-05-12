@@ -144,34 +144,26 @@ async function performSearch(artistName) {
     const artistBioPlaceholder = document.querySelector('#artist-bio-placeholder');
     const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
 
-    // Get data from Genius
-
-
+    // Start Genius API calls
     const query = `${topTracks[0].name} by ${artist.name}`;
 
-    const geniusData = await fetchData('getGeniusSearch', {query: query});
-    const geniusID = geniusData.data.response.hits[0].result.id;
-    const geniusArtistID = geniusData.data.response.hits[0].result.primary_artist.id;
-
-    const geniusSong = await fetchData('getGeniusSong', {songid: geniusID});
-    let geniusStory = geniusSong.data.response.song.description.dom;
-
-    const geniusArtist = await fetchData('getGeniusArtist', {artistid: geniusArtistID});
-    let geniusArtistBio = geniusArtist.data.response.artist.description.dom;
+    const geniusDataPromise = fetchData('getGeniusSearch', {query: query});
+    const geniusSongPromise = geniusDataPromise
+      .then(geniusData => fetchData('getGeniusSong', {songid: geniusData.data.response.hits[0].result.id}));
+    const geniusArtistPromise = geniusDataPromise
+      .then(geniusData => fetchData('getGeniusArtist', {artistid: geniusData.data.response.hits[0].result.primary_artist.id}));
 
 
-    if (
-        geniusStory.children[0].children[0] === "?"
-      ) {
-        geniusStory = "No additional information available.";
-      }
+    // Start OpenAI call
+    const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s genres and styles. Write no more than three sentences.`;
+    const max_tokens = 120;
 
-    if (
-      geniusArtistBio.children[0].children[0] === "?"
-    ) {
-      geniusArtistBio = "No additional information available.";
+    async function getOpenAiSummary(prompt, max_tokens) {
+      const OpenAiSummaryData = await fetchData('getOpenAI', {prompt: prompt, max_tokens: max_tokens});
+      return OpenAiSummaryData.data.choices[0].message['content'];
     }
 
+    const openAiSummaryPromise = getOpenAiSummary(prompt, max_tokens);
 
     function generateHTML(node) {
         if (typeof node === 'string') {
@@ -194,26 +186,31 @@ async function performSearch(artistName) {
         return childrenHTML;
     }
 
-    const descriptionHTML = generateHTML(geniusStory);
-    const geniusArtistBioHTML = generateHTML(geniusArtistBio);
+    // Handle Genius API call results as soon as they're ready
+    geniusSongPromise.then(geniusSong => {
+      let geniusStory = geniusSong.data.response.song.description.dom;
+      if (geniusStory.children[0].children[0] === "?") {
+        geniusStory = "No additional information available.";
+      }
+      const descriptionHTML = generateHTML(geniusStory);
+      descriptionPlaceholder.innerHTML = `<p>${descriptionHTML}</p>`;
+    });
 
-    descriptionPlaceholder.innerHTML = `<p>${descriptionHTML}</p>`;
-    artistBioPlaceholder.innerHTML = `<p>${geniusArtistBioHTML}</p>`;
+    geniusArtistPromise.then(geniusArtist => {
+      let geniusArtistBio = geniusArtist.data.response.artist.description.dom;
+      if (geniusArtistBio.children[0].children[0] === "?") {
+        geniusArtistBio = "No additional information available.";
+      }
+      const geniusArtistBioHTML = generateHTML(geniusArtistBio);
+      artistBioPlaceholder.innerHTML = `<p>${geniusArtistBioHTML}</p>`;
+    });
 
-    // Get OpenAI data
+    // Handle OpenAI call result when it's ready
+    openAiSummaryPromise.then(OpenAiSummary => {
+      openAiSummaryPlaceholder.innerHTML = `<p>${OpenAiSummary}</p>`;
+    });
 
 
-    const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s genres and styles. Write no more than three sentences.`;
-    const max_tokens = 120;
-
-    async function getOpenAiSummary(prompt, max_tokens) {
-      const OpenAiSummaryData = await fetchData('getOpenAI', {prompt: prompt, max_tokens: max_tokens});
-      return OpenAiSummaryData.data.choices[0].message['content'];
-    }
-
-    const OpenAiSummary = await getOpenAiSummary(prompt, max_tokens);
-
-    openAiSummaryPlaceholder.innerHTML = `<p>${OpenAiSummary}</p>`;
 
   } else {
     searchResults.innerHTML = `<p>No results found</p>`;
