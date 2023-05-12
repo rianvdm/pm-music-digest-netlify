@@ -20,14 +20,12 @@ async function fetchAndDisplayTrack() {
 
     const dataContainer = document.querySelector('.js-spotify-song');
     const spotifyUrl = spotifyData.data.items[0].external_urls.spotify;
+    const spotifyID = spotifyData.data.items[0].id;
 
     const html = `
       <div class="track_recent">
-          <div style="max-width:600px; margin: 0 auto;">
-            <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
-              <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${spotifyUrl}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
-            </div>
-          </div>
+        <p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyID}"
+        width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></p>
       </div>
     `;
     dataContainer.innerHTML = html;
@@ -50,3 +48,12 @@ function displayErrorMessage(selector, message) {
 }
 
 fetchAndDisplayTrack();
+
+
+      // <div class="track_recent">
+      //     <div style="max-width:600px; margin: 0 auto;">
+      //       <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
+      //         <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${spotifyUrl}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
+      //       </div>
+      //     </div>
+      // </div>

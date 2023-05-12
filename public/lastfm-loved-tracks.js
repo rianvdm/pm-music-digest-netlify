@@ -54,13 +54,21 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
         .filter(tag => tag.name.toLowerCase() !== "seen live")
         .slice(0, 2);
 
+      const lastfmGenres = (lastfmTags && lastfmTags[0]?.name)
+      ? lastfmTags[0]?.name.charAt(0).toUpperCase() + lastfmTags[0]?.name.slice(1)
+      : "Rock";
+
+      const similarArtist = lastfmData.value && lastfmData.value.artist.similar.artist.length > 0 ? lastfmData.value.artist.similar.artist.slice(0,3) : 'N/A';
+
       const spotifyUrl = spotifyData.value.data.items[0].external_urls.spotify;
       const spotifyID = spotifyData.value.data.items[0].id;
       const spotifyArtistID = spotifyData.value.data.items[0].artists[0].id;
       const spotifyImgUrl = spotifyData.value.data.items[0].album.images[1].url;
+      const spotifyReleased = spotifyData.value.data.items[0].album.release_date;
+      const spotifyYear = spotifyData.length === 4 ? spotifyReleased : spotifyReleased.substring(0, 4);
       const spotifyGenres = (lastfmTags && lastfmTags[0]?.name)
-          ? lastfmTags[0]?.name
-          : "rock";
+           ? lastfmTags[0]?.name
+           : "rock";
 
       const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
         .then(checkStatus)
@@ -69,16 +77,18 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
           dataContainer.innerHTML = `<p>Error: ${error.message}</p>`;
         });
 
-      const prompt = `Write a summary to help someone decide if they might like the song ${encodeURIComponent(track.name)} by ${encodeURIComponent(track.artist.name)}. Include information about the song/artist’s genres, as well as similar artists. Write no more than one sentence.`;
-      const max_tokens = 80;
+      // const prompt = `Write a summary to help someone decide if they might like the song ${encodeURIComponent(track.name)} by ${encodeURIComponent(track.artist.name)}. Include information about the song/artist’s genres, as well as similar artists. Write no more than one sentence.`;
+      // const max_tokens = 80;
 
-      const openaiPromise = fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
-        .then(checkStatus)
-        .catch(error => {
-          console.error(error);
-          dataContainer.innerHTML = `<p>Error: ${error.message}</p>`;
-        });
-      const [spotifyRecoData, openaiData] = await Promise.allSettled([spotifyRecoPromise, openaiPromise]);
+      // const openaiPromise = fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
+      //   .then(checkStatus)
+      //   .catch(error => {
+      //     console.error(error);
+      //     dataContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+      //   });
+
+      // const [spotifyRecoData, openaiData] = await Promise.allSettled([spotifyRecoPromise, openaiPromise]);
+        const [spotifyRecoData] = await Promise.allSettled([spotifyRecoPromise]);
 
         if (spotifyRecoData.status === 'rejected') {
           console.error(spotifyRecoData.reason);
@@ -86,32 +96,32 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
           return;
         }
 
-        if (openaiData.status === 'rejected') {
-          console.error(openaiData.reason);
-          dataContainer.innerHTML += `<p>Error: ${openaiData.reason.message}</p>`;
-          return;
-        }
+        // if (openaiData.status === 'rejected') {
+        //   console.error(openaiData.reason);
+        //   dataContainer.innerHTML += `<p>Error: ${openaiData.reason.message}</p>`;
+        //   return;
+        // }
 
       return {
         track,
-        lastfmTags,
+        lastfmGenres,
+        similarArtist,
         spotifyUrl,
-        spotifyID,
         spotifyImgUrl,
         spotifyRecoData,
-        openaiData,
-        spotifyGenres
+//        openaiData,
+        spotifyYear
       };
     });
 
     const trackData = await Promise.all(trackPromises);
 
-    const html = trackData.map(({ track, lastfmTags, spotifyUrl, spotifyID, spotifyImgUrl, spotifyRecoData, openaiData, spotifyGenres }) => {
+    const html = trackData.map(({ track, lastfmGenres, similarArtist, spotifyUrl, spotifyImgUrl, spotifyRecoData, spotifyYear }) => {
       const spotifyTrackReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.name);
       const spotifyArtistReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.artists[0].name);
       const spotifyUrlsReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.external_urls.spotify);
 
-      const openaiTextResponse = openaiData.value.data.choices[0].message['content'];
+//      const openaiTextResponse = openaiData.value.data.choices[0].message['content'];
 
       const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
       const pacificTimezone = 'America/Los_Angeles';
@@ -126,8 +136,9 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
           <a href="https://odesli.co/${spotifyUrl}" target="_blank"><img src="${spotifyImgUrl}"></a>
           <div class="no-wrap-text">
             <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
-            <br>${openaiTextResponse}
-            <br><em>Related ${spotifyGenres} songs:</em> <a href="https://odesli.co/${spotifyUrlsReco[0]}" target="_blank">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
+            <br><strong>Details:</strong> ${lastfmGenres} song released in ${spotifyYear}.
+            <br><strong>Similar artists:</strong> <a href="/search?artist=${similarArtist[0].name}">${similarArtist[0].name}</a>, <a href="/search?artist=${similarArtist[1].name}">${similarArtist[1].name}</a>, <a href="/search?artist=${similarArtist[2].name}">${similarArtist[2].name}</a>.
+            <br><strong>Related songs:</strong> <a href="https://odesli.co/${spotifyUrlsReco[0]}" target="_blank">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
             and <a href="https://odesli.co/${spotifyUrlsReco[1]}" target="_blank">${spotifyTrackReco[1]}</a> by ${spotifyArtistReco[1]}.
           </div>
         </div>
