@@ -156,8 +156,8 @@ async function performSearch(artistName) {
         return result.trim(); // Trim any leading or trailing spaces
       }
 
-    const query = `${removeTextInBrackets(topTracks[0].name)} ${artist.name}`;
-
+//    const query = `${removeTextInBrackets(topTracks[0].name)} ${artist.name}`;
+    const query = `${artist.name}`;
     const geniusDataPromise = fetchData('getGeniusSearch', {query: query});
     // const geniusSongPromise = geniusDataPromise
     //   .then(geniusData => fetchData('getGeniusSong', {songid: geniusData.data.response.hits[0].result.id}));
