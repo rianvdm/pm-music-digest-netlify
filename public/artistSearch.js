@@ -6,6 +6,18 @@ function getQueryParam(param) {
   return urlParams.get(param);
 }
 
+async function fetchData(endpoint, params = {}) {
+  const urlParams = new URLSearchParams(params).toString();
+  const url = `/.netlify/functions/${endpoint}?${urlParams}`;
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data from ${url}: ${response.statusText}`);
+  }
+  return response.json();
+}
+
+
 async function performSearch(artistName) {
   searchResults.innerHTML = `<p style="text-align: center">Searching for ${artistName}...</p>`;
 
@@ -31,8 +43,7 @@ async function performSearch(artistName) {
     const lastfmArtistName = artist.name;
 
     async function getTopTracks(spotifyArtistID) {
-      const topTracksResponse = await fetch(`/.netlify/functions/getSpotifyArtistTopTracks?spotifyArtistID=${spotifyArtistID}`);
-      const topTracksData = await topTracksResponse.json();
+      const topTracksData = await fetchData('getSpotifyArtistTopTracks', {spotifyArtistID: spotifyArtistID});
       return topTracksData.slice(0, 3);
     }
 
@@ -47,8 +58,7 @@ async function performSearch(artistName) {
     // const relatedArtists = await getRelatedArtists(spotifyArtistID);
 
     async function getLastfmData(lastfmArtistName) {
-      const lastfmArtistResponse = await fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodeURIComponent(lastfmArtistName)}`);
-      const lastfmArtistData = await lastfmArtistResponse.json();
+      const lastfmArtistData = await fetchData('getLastfmData', {type: 'getArtistInfo', artist: encodeURIComponent(lastfmArtistName)});
       return lastfmArtistData.artist;
     }
 
@@ -59,21 +69,61 @@ async function performSearch(artistName) {
     const lastfmSimilar = lastfmArtist.similar.artist.slice(0, 3);
     let artistBio;
     if (lastfmArtist.bio && lastfmArtist.bio.summary) {
-      artistBio = lastfmArtist.bio.content
+      artistBio = lastfmArtist.bio.summary
           .replace(/\n/g, '<br />')
-          .replace(/<a href=\"https:\/\/www\.last\.fm\/music\/.*\">Read more on Last\.fm<\/a>\. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply\.$/, '');
+          // .replace(/<a href=\"https:\/\/www\.last\.fm\/music\/.*\">Read more on Last\.fm<\/a>\. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply\.$/, '');
+          // .replace(/<a href=\"https:\/\/www\.last\.fm\/music\/.*\">Read more on Last\.fm<\/a>/, '');
     } else {
       artistBio = "unknown";
     }
 
     async function getLastfmTopAlbums(lastfmArtistName) {
-      const lastfmTopAlbumsResponse = await fetch(`/.netlify/functions/getLastfmData?type=topAlbumsByArtist&artist=${encodeURIComponent(lastfmArtistName)}`);
-      const lastfmTopAlbumsData = await lastfmTopAlbumsResponse.json();
+      const lastfmTopAlbumsData = await fetchData('getLastfmData', {type: 'topAlbumsByArtist', artist: encodeURIComponent(lastfmArtistName)});
       return lastfmTopAlbumsData.topalbums;
     }
 
     const lastfmTopAlbums = await getLastfmTopAlbums(lastfmArtistName);
     const lasftmTopAlbum = lastfmTopAlbums.album.slice(0, 3);
+
+
+    const query = `${topTracks[0].name} by ${artist.name}`;
+
+    const geniusData = await fetchData('getGeniusSearch', {query: query});
+    const geniusID = geniusData.data.response.hits[0].result.id;
+
+    const geniusSong = await fetchData('getGeniusSong', {songid: geniusID});
+    let geniusStory = geniusSong.data.response.song.description.dom;
+
+    if (
+        geniusStory.children[0].children[0] === "?"
+      ) {
+        geniusStory = "No additional information available";
+      }
+
+
+    function generateHTML(node) {
+        if (typeof node === 'string') {
+            return node;
+        }
+
+        let childrenHTML = '';
+        if (node.children) {
+            childrenHTML = node.children.map(generateHTML).join('');
+        }
+
+        if (node.tag === 'a') {
+            return `<a href="${node.attributes.href}" rel="${node.attributes.rel || ''}">${childrenHTML}</a>`;
+        }
+
+        if (node.tag === 'p' || node.tag === 'em') {
+            return `<${node.tag}>${childrenHTML}</${node.tag}>`;
+        }
+
+        return childrenHTML;
+    }
+
+const descriptionHTML = generateHTML(geniusStory);
+
 
     searchResults.innerHTML = `
       <div class="track_ul2">
@@ -117,7 +167,10 @@ async function performSearch(artistName) {
             <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
           </div>
         </div><br>
-        <h4>More about ${artist.name}:</h4>
+        <h4>More about ${topTracks[0].name} (via Genius):</h4>
+        <p><em>(This data can be a little weird sometimes, but it’s often interesting so I am trying it out for a bit)</em></p>
+        <p>${descriptionHTML}</p>
+        <h4>More about ${artist.name} (via Last.fm):</h4>
         <p>${artistBio}</p>
       </div>
     `;
@@ -130,17 +183,13 @@ async function performSearch(artistName) {
     const max_tokens = 120;
 
     async function getOpenAiSummary(prompt, max_tokens) {
-      const OpenAiSummaryResponse = await fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`);
-      // const OpenAiSummaryResponse = await fetch(`/.netlify/functions/getOpenAIBonkers?prompt=${prompt}&max_tokens=${max_tokens}`);
-      const OpenAiSummaryData = await OpenAiSummaryResponse.json();
+      const OpenAiSummaryData = await fetchData('getOpenAI', {prompt: prompt, max_tokens: max_tokens});
       return OpenAiSummaryData.data.choices[0].message['content'];
     }
 
     const OpenAiSummary = await getOpenAiSummary(prompt, max_tokens);
 
     openAiSummaryPlaceholder.innerHTML = `
-<!--    <p style="text-align: center; color: red;">🚨 <strong><em>ChatGPT is usually super helpful, but just for fun I’m dialling up the sass today...</strong></em> 🚨</p> -->
-    <p><strong>Quick summary:</strong><br>
     ${OpenAiSummary}</p>
     `;
 

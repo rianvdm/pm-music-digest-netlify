@@ -37,7 +37,7 @@ async function getRecentTracks() {
         .filter(tag => tag !== "seen live");
       const similar = lastFmData.artist.similar.artist.map(artist => artist.name);
 
-      additionalInfo = `Try this song if you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> music
+      additionalInfo = `Try it if you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> music
                       from artists like ${similar[0]}, ${similar[1]}, and ${similar[2]}.`;
     } else {
       additionalInfo = "Last.fm unfortunately does not have any additional information about this song.";
