@@ -67,15 +67,13 @@ async function performSearch(artistName) {
       .filter(tag => tag.name.toLowerCase() !== "seen live")
       .slice(0, 3);
     const lastfmSimilar = lastfmArtist.similar.artist.slice(0, 3);
-    let artistBio;
-    if (lastfmArtist.bio && lastfmArtist.bio.summary) {
-      artistBio = lastfmArtist.bio.summary
-          .replace(/\n/g, '<br />')
-          // .replace(/<a href=\"https:\/\/www\.last\.fm\/music\/.*\">Read more on Last\.fm<\/a>\. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply\.$/, '');
-          // .replace(/<a href=\"https:\/\/www\.last\.fm\/music\/.*\">Read more on Last\.fm<\/a>/, '');
-    } else {
-      artistBio = "unknown";
-    }
+    // let artistBio;
+    // if (lastfmArtist.bio && lastfmArtist.bio.summary) {
+    //   artistBio = lastfmArtist.bio.summary
+    //       .replace(/\n/g, '<br />')
+    // } else {
+    //   artistBio = "unknown";
+    // }
 
     async function getLastfmTopAlbums(lastfmArtistName) {
       const lastfmTopAlbumsData = await fetchData('getLastfmData', {type: 'topAlbumsByArtist', artist: encodeURIComponent(lastfmArtistName)});
@@ -90,15 +88,26 @@ async function performSearch(artistName) {
 
     const geniusData = await fetchData('getGeniusSearch', {query: query});
     const geniusID = geniusData.data.response.hits[0].result.id;
+    const geniusArtistID = geniusData.data.response.hits[0].result.primary_artist.id;
 
     const geniusSong = await fetchData('getGeniusSong', {songid: geniusID});
     let geniusStory = geniusSong.data.response.song.description.dom;
 
+    const geniusArtist = await fetchData('getGeniusArtist', {artistid: geniusArtistID});
+    let geniusArtistBio = geniusArtist.data.response.artist.description.dom;
+
+
     if (
         geniusStory.children[0].children[0] === "?"
       ) {
-        geniusStory = "No additional information available";
+        geniusStory = "No additional information available.";
       }
+
+    if (
+      geniusArtistBio.children[0].children[0] === "?"
+    ) {
+      geniusArtistBio = "No additional information available.";
+    }
 
 
     function generateHTML(node) {
@@ -123,6 +132,8 @@ async function performSearch(artistName) {
     }
 
 const descriptionHTML = generateHTML(geniusStory);
+
+const geniusArtistBioHTML = generateHTML(geniusArtistBio);
 
 
     searchResults.innerHTML = `
@@ -167,11 +178,11 @@ const descriptionHTML = generateHTML(geniusStory);
             <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
           </div>
         </div><br>
-        <h4>More about ${topTracks[0].name} (via Genius):</h4>
-        <p><em>(This data can be a little weird sometimes, but it’s often interesting so I am trying it out for a bit)</em></p>
+        <p>ℹ️ <em>The information below comes from <a href="https://genius.com">Genius</a> and it can be a little weird sometimes, but it’s often interesting so I am trying it out for a bit.</em></p>
+        <h4>More about ${topTracks[0].name}:</h4>
         <p>${descriptionHTML}</p>
-        <h4>More about ${artist.name} (via Last.fm):</h4>
-        <p>${artistBio}</p>
+        <h4>More about ${artist.name}:</h4>
+        <p>${geniusArtistBioHTML}</p>
       </div>
     `;
 
