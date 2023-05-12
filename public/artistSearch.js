@@ -145,7 +145,18 @@ async function performSearch(artistName) {
     const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
 
     // Start Genius API calls
-    const query = `${topTracks[0].name} ${artist.name}`;
+
+      function removeTextInBrackets(text) {
+        // Regular expression pattern to match text within brackets
+        const regex = /\([^()]*\)/g;
+        
+        // Replace the matched text with an empty string
+        const result = text.replace(regex, '');
+        
+        return result.trim(); // Trim any leading or trailing spaces
+      }
+
+    const query = `${removeTextInBrackets(topTracks[0].name)} ${artist.name}`;
 
     const geniusDataPromise = fetchData('getGeniusSearch', {query: query});
     // const geniusSongPromise = geniusDataPromise
