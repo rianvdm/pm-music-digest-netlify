@@ -84,6 +84,69 @@ async function performSearch(artistName) {
     const lasftmTopAlbum = lastfmTopAlbums.album.slice(0, 3);
 
 
+    searchResults.innerHTML = `
+      <div class="track_ul2">
+      <p style="font-weight: bold; font-size: 22px; text-align: center">${artist.name}</p>
+      <div class="image-text-wrapper">
+      <img src="${spotifyImgUrl}" alt="${artist.name}" style="max-width: 220px;">
+        <div class="no-wrap-text">
+          <strong>Genres:</strong> ${
+              lastfmGenres && lastfmGenres.length >= 2
+              ? `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}, ${lastfmGenres[1].name.toLowerCase()}, ${lastfmGenres[2].name.toLowerCase()}`
+                : "unknown"
+          }.
+          <br><strong>Similar artists:</strong> ${
+              lastfmSimilar && lastfmSimilar.length >= 2
+                ? `<a href="/search?artist=${encodeURIComponent(lastfmSimilar[0].name)}">${lastfmSimilar[0].name}</a>, <a href="/search?artist=${encodeURIComponent(lastfmSimilar[1].name)}">${lastfmSimilar[1].name}</a>, and <a href="/search?artist=${encodeURIComponent(lastfmSimilar[2].name)}">${lastfmSimilar[2].name}</a>`
+                : "unknown"
+          }.
+          <br><strong>Most popular songs:</strong> ${
+              topTracks && topTracks.length >= 3
+                ? `<a href="https://odesli.co/${topTracks[0].external_urls.spotify}">${topTracks[0].name}</a>, <a href="https://odesli.co/${topTracks[1].external_urls.spotify}">${topTracks[1].name}</a>, and <a href="https://odesli.co/${topTracks[2].external_urls.spotify}">${topTracks[2].name}</a>`
+                : "unknown"
+          }.
+          <br><strong>Most popular albums:</strong> ${
+              lastfmTopAlbums && lastfmTopAlbums.album && lastfmTopAlbums.album.length >= 3
+                ? `<a href="${lasftmTopAlbum[0].url}" target="_blank">${lasftmTopAlbum[0].name}</a>, <a href="${lasftmTopAlbum[1].url}" target="_blank">${lasftmTopAlbum[1].name}</a>, and <a href="${lasftmTopAlbum[2].url}" target="_blank">${lasftmTopAlbum[2].name}</a>`
+                : "unknown"
+          }.
+          </div>
+        </div>
+        <div id="openai-summary-placeholder" style="margin-bottom: 0px;">
+          <p">Generating ChatGPT summary...</p>
+        </div>
+      </div>
+    `;
+
+    const streamingEmbed = `
+      <div class="track_ul2">
+        Here is ${artist.name}’s most popular song, ${topTracks[0].name}:
+        <div style="max-width:600px; margin: 1em auto;">
+          <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
+            <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
+          </div>
+        </div><br>
+        <p>ℹ️ <em>The information below comes from <a href="https://genius.com">Genius</a> and it can be a little weird sometimes, but it’s often interesting so I am trying it out for a bit.</em></p>
+        <h4>More about ${topTracks[0].name}:</h4>
+        <div id="description-placeholder">
+          <p>Fetching information about the song...</p>
+        </div>
+        <h4>More about ${artist.name}:</h4>
+        <div id="artist-bio-placeholder">
+          <p>Fetching information about the artist...</p>
+        </div>
+      </div>
+    `;
+
+    searchResults.innerHTML += streamingEmbed;
+
+    const descriptionPlaceholder = document.querySelector('#description-placeholder');
+    const artistBioPlaceholder = document.querySelector('#artist-bio-placeholder');
+    const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
+
+    // Get data from Genius
+
+
     const query = `${topTracks[0].name} by ${artist.name}`;
 
     const geniusData = await fetchData('getGeniusSearch', {query: query});
@@ -131,64 +194,14 @@ async function performSearch(artistName) {
         return childrenHTML;
     }
 
-const descriptionHTML = generateHTML(geniusStory);
+    const descriptionHTML = generateHTML(geniusStory);
+    const geniusArtistBioHTML = generateHTML(geniusArtistBio);
 
-const geniusArtistBioHTML = generateHTML(geniusArtistBio);
+    descriptionPlaceholder.innerHTML = `<p>${descriptionHTML}</p>`;
+    artistBioPlaceholder.innerHTML = `<p>${geniusArtistBioHTML}</p>`;
 
+    // Get OpenAI data
 
-    searchResults.innerHTML = `
-      <div class="track_ul2">
-      <p style="font-weight: bold; font-size: 22px; text-align: center">${artist.name}</p>
-      <div class="image-text-wrapper">
-      <img src="${spotifyImgUrl}" alt="${artist.name}" style="max-width: 220px;">
-        <div class="no-wrap-text">
-          <strong>Genres:</strong> ${
-              lastfmGenres && lastfmGenres.length >= 2
-              ? `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}, ${lastfmGenres[1].name.toLowerCase()}, ${lastfmGenres[2].name.toLowerCase()}`
-                : "unknown"
-          }.
-          <br><strong>Similar artists:</strong> ${
-              lastfmSimilar && lastfmSimilar.length >= 2
-                ? `<a href="/search?artist=${encodeURIComponent(lastfmSimilar[0].name)}">${lastfmSimilar[0].name}</a>, <a href="/search?artist=${encodeURIComponent(lastfmSimilar[1].name)}">${lastfmSimilar[1].name}</a>, and <a href="/search?artist=${encodeURIComponent(lastfmSimilar[2].name)}">${lastfmSimilar[2].name}</a>`
-                : "unknown"
-          }.
-          <br><strong>Most popular songs:</strong> ${
-              topTracks && topTracks.length >= 3
-                ? `<a href="https://odesli.co/${topTracks[0].external_urls.spotify}">${topTracks[0].name}</a>, <a href="https://odesli.co/${topTracks[1].external_urls.spotify}">${topTracks[1].name}</a>, and <a href="https://odesli.co/${topTracks[2].external_urls.spotify}">${topTracks[2].name}</a>`
-                : "unknown"
-          }.
-          <br><strong>Most popular albums:</strong> ${
-              lastfmTopAlbums && lastfmTopAlbums.album && lastfmTopAlbums.album.length >= 3
-                ? `<a href="${lasftmTopAlbum[0].url}" target="_blank">${lasftmTopAlbum[0].name}</a>, <a href="${lasftmTopAlbum[1].url}" target="_blank">${lasftmTopAlbum[1].name}</a>, and <a href="${lasftmTopAlbum[2].url}" target="_blank">${lasftmTopAlbum[2].name}</a>`
-                : "unknown"
-          }.
-          </div>
-        </div>
-        <div id="openai-summary-placeholder" style="margin-bottom: 0px;">
-          <p">Generating ChatGPT summary...</p>
-        </div>
-      </div>
-    `;
-
-    const streamingEmbed = `
-      <div class="track_ul2">
-        Here is ${artist.name}’s most popular song, ${topTracks[0].name}:
-        <div style="max-width:600px; margin: 1em auto;">
-          <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
-            <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
-          </div>
-        </div><br>
-        <p>ℹ️ <em>The information below comes from <a href="https://genius.com">Genius</a> and it can be a little weird sometimes, but it’s often interesting so I am trying it out for a bit.</em></p>
-        <h4>More about ${topTracks[0].name}:</h4>
-        <p>${descriptionHTML}</p>
-        <h4>More about ${artist.name}:</h4>
-        <p>${geniusArtistBioHTML}</p>
-      </div>
-    `;
-
-    searchResults.innerHTML += streamingEmbed;
-
-    const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
 
     const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s genres and styles. Write no more than three sentences.`;
     const max_tokens = 120;
@@ -200,9 +213,7 @@ const geniusArtistBioHTML = generateHTML(geniusArtistBio);
 
     const OpenAiSummary = await getOpenAiSummary(prompt, max_tokens);
 
-    openAiSummaryPlaceholder.innerHTML = `
-    ${OpenAiSummary}</p>
-    `;
+    openAiSummaryPlaceholder.innerHTML = `<p>${OpenAiSummary}</p>`;
 
   } else {
     searchResults.innerHTML = `<p>No results found</p>`;
