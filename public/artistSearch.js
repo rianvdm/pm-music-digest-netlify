@@ -40,7 +40,7 @@ async function performSearch(artistName) {
     const spotifyArtistID = artist.id;
     const spotifyImgUrl = artist.images[1].url;
     const spotifyGenres = artist.genres.slice(0, 3);
-    const lastfmArtistName = artist.name;
+    const spotifyArtistName = artist.name;
 
     async function getTopTracks(spotifyArtistID) {
       const topTracksData = await fetchData('getSpotifyArtistTopTracks', {spotifyArtistID: spotifyArtistID});
@@ -57,12 +57,12 @@ async function performSearch(artistName) {
 
     // const relatedArtists = await getRelatedArtists(spotifyArtistID);
 
-    async function getLastfmData(lastfmArtistName) {
-      const lastfmArtistData = await fetchData('getLastfmData', {type: 'getArtistInfo', artist: encodeURIComponent(lastfmArtistName)});
+    async function getLastfmData(spotifyArtistName) {
+      const lastfmArtistData = await fetchData('getLastfmData', {type: 'getArtistInfo', artist: encodeURIComponent(spotifyArtistName)});
       return lastfmArtistData.artist;
     }
 
-    const lastfmArtist = await getLastfmData(lastfmArtistName);
+    const lastfmArtist = await getLastfmData(spotifyArtistName);
     const lastfmGenres = lastfmArtist.tags.tag
       .filter(tag => tag.name.toLowerCase() !== "seen live")
       .slice(0, 3);
@@ -75,12 +75,12 @@ async function performSearch(artistName) {
     //   artistBio = "unknown";
     // }
 
-    async function getLastfmTopAlbums(lastfmArtistName) {
-      const lastfmTopAlbumsData = await fetchData('getLastfmData', {type: 'topAlbumsByArtist', artist: encodeURIComponent(lastfmArtistName)});
+    async function getLastfmTopAlbums(spotifyArtistName) {
+      const lastfmTopAlbumsData = await fetchData('getLastfmData', {type: 'topAlbumsByArtist', artist: encodeURIComponent(spotifyArtistName)});
       return lastfmTopAlbumsData.topalbums;
     }
 
-    const lastfmTopAlbums = await getLastfmTopAlbums(lastfmArtistName);
+    const lastfmTopAlbums = await getLastfmTopAlbums(spotifyArtistName);
     const lasftmTopAlbum = lastfmTopAlbums.album.slice(0, 3);
 
 
@@ -121,26 +121,26 @@ async function performSearch(artistName) {
     const streamingEmbed = `
       <div class="track_ul2">
         Here is ${artist.name}’s most popular song, ${topTracks[0].name}:
-        <div style="max-width:600px; margin: 1em auto;">
+        <div style="max-width:500px; margin: 1em auto;">
           <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
             <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${topTracks[0].external_urls.spotify}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
           </div>
         </div><br>
-        <p>ℹ️ <em>The information below comes from <a href="https://genius.com">Genius</a> and it can be a little weird sometimes, but it’s often interesting so I am trying it out for a bit.</em></p>
-        <h4>More about ${topTracks[0].name}:</h4>
-        <div id="description-placeholder">
-          <p>Fetching information about the song...</p>
-        </div>
+        <!-- <h4>More about ${topTracks[0].name}:</h4>
+         <div id="description-placeholder">
+           <p>Fetching information about the song...</p>
+         </div> -->
         <h4>More about ${artist.name}:</h4>
         <div id="artist-bio-placeholder">
           <p>Fetching information about the artist...</p>
         </div>
+        <p>ℹ️ <em>The information above comes from <a href="https://genius.com">Genius</a> and it can be a little weird sometimes, but it’s often interesting so I am trying it out for a bit.</em></p>
       </div>
     `;
 
     searchResults.innerHTML += streamingEmbed;
 
-    const descriptionPlaceholder = document.querySelector('#description-placeholder');
+    // const descriptionPlaceholder = document.querySelector('#description-placeholder');
     const artistBioPlaceholder = document.querySelector('#artist-bio-placeholder');
     const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
 
@@ -148,8 +148,8 @@ async function performSearch(artistName) {
     const query = `${topTracks[0].name} ${artist.name}`;
 
     const geniusDataPromise = fetchData('getGeniusSearch', {query: query});
-    const geniusSongPromise = geniusDataPromise
-      .then(geniusData => fetchData('getGeniusSong', {songid: geniusData.data.response.hits[0].result.id}));
+    // const geniusSongPromise = geniusDataPromise
+    //   .then(geniusData => fetchData('getGeniusSong', {songid: geniusData.data.response.hits[0].result.id}));
     const geniusArtistPromise = geniusDataPromise
       .then(geniusData => fetchData('getGeniusArtist', {artistid: geniusData.data.response.hits[0].result.primary_artist.id}));
 
@@ -187,14 +187,14 @@ async function performSearch(artistName) {
     }
 
     // Handle Genius API call results as soon as they're ready
-    geniusSongPromise.then(geniusSong => {
-      let geniusStory = geniusSong.data.response.song.description.dom;
-      if (geniusStory.children[0].children[0] === "?") {
-        geniusStory = "No additional information available.";
-      }
-      const descriptionHTML = generateHTML(geniusStory);
-      descriptionPlaceholder.innerHTML = `<p>${descriptionHTML}</p>`;
-    });
+    // geniusSongPromise.then(geniusSong => {
+    //   let geniusStory = geniusSong.data.response.song.description.dom;
+    //   if (geniusStory.children[0].children[0] === "?") {
+    //     geniusStory = "No additional information available.";
+    //   }
+    //   const descriptionHTML = generateHTML(geniusStory);
+    //   descriptionPlaceholder.innerHTML = `<p>${descriptionHTML}</p>`;
+    // });
 
     geniusArtistPromise.then(geniusArtist => {
       let geniusArtistBio = geniusArtist.data.response.artist.description.dom;
