@@ -145,7 +145,7 @@ async function performSearch(artistName) {
     const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
 
     // Start Genius API calls
-    const query = `${topTracks[0].name} by ${artist.name}`;
+    const query = `${topTracks[0].name} ${artist.name}`;
 
     const geniusDataPromise = fetchData('getGeniusSearch', {query: query});
     const geniusSongPromise = geniusDataPromise
