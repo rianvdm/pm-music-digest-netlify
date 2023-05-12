@@ -73,7 +73,6 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
       const max_tokens = 80;
 
       const openaiPromise = fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
-  //  const openaiPromise = fetch(`/.netlify/functions/getOpenAIBonkers?prompt=${prompt}&max_tokens=${max_tokens}`)
         .then(checkStatus)
         .catch(error => {
           console.error(error);
