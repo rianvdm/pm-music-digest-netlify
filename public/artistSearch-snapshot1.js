@@ -67,15 +67,13 @@ async function performSearch(artistName) {
       .filter(tag => tag.name.toLowerCase() !== "seen live")
       .slice(0, 3);
     const lastfmSimilar = lastfmArtist.similar.artist.slice(0, 3);
-    let artistBio;
-    if (lastfmArtist.bio && lastfmArtist.bio.content) {
-        artistBio = lastfmArtist.bio.content
-            .replace(/\n/g, '<br />')
-            .replace(/<a href="https:\/\/www\.last\.fm\/music\/.*">Read more on Last\.fm<\/a>\. User-contributed text is available under the Creative Commons By-SA License; additional terms may apply\./, '');
-    } else {
-        artistBio = "Last.fm unfortunately doesn’t have any additional information about this artist.";
-    }
-
+    // let artistBio;
+    // if (lastfmArtist.bio && lastfmArtist.bio.summary) {
+    //   artistBio = lastfmArtist.bio.summary
+    //       .replace(/\n/g, '<br />')
+    // } else {
+    //   artistBio = "unknown";
+    // }
 
     async function getLastfmTopAlbums(spotifyArtistName) {
       const lastfmTopAlbumsData = await fetchData('getLastfmData', {type: 'topAlbumsByArtist', artist: encodeURIComponent(spotifyArtistName)});
@@ -115,7 +113,7 @@ async function performSearch(artistName) {
           </div>
         </div>
         <div id="openai-summary-placeholder" style="margin-bottom: 0px;">
-          <p><em>Generating ChatGPT summary...</em></p>
+          <p">Generating ChatGPT summary...</p>
         </div>
       </div>
     `;
@@ -132,76 +130,72 @@ async function performSearch(artistName) {
          <div id="description-placeholder">
            <p>Fetching information about the song...</p>
          </div> -->
-        <h4>More about ${artist.name} (via Last.fm):</h4>
-        <p>${artistBio}</p>
+        <h4>More about ${artist.name}:</h4>
+        <div id="artist-bio-placeholder">
+          <p>Fetching information about the artist...</p>
+        </div>
+        <p>ℹ️ <em>The information above comes from <a href="https://genius.com">Genius</a> and it can be a little weird sometimes, but it’s often interesting so I am trying it out for a bit.</em></p>
       </div>
     `;
 
     searchResults.innerHTML += streamingEmbed;
 
     // const descriptionPlaceholder = document.querySelector('#description-placeholder');
-    // const artistBioPlaceholder = document.querySelector('#artist-bio-placeholder');
+    const artistBioPlaceholder = document.querySelector('#artist-bio-placeholder');
     const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
 
-    // // Start Genius API calls
+    // Start Genius API calls
 
-    //   function removeTextInBrackets(text) {
-    //     // Regular expression pattern to match text within brackets
-    //     const regex = /\([^()]*\)/g;
+      function removeTextInBrackets(text) {
+        // Regular expression pattern to match text within brackets
+        const regex = /\([^()]*\)/g;
         
-    //     // Replace the matched text with an empty string
-    //     const result = text.replace(regex, '');
+        // Replace the matched text with an empty string
+        const result = text.replace(regex, '');
         
-    //     return result.trim(); // Trim any leading or trailing spaces
-    //   }
+        return result.trim(); // Trim any leading or trailing spaces
+      }
 
-    // const query = `${removeTextInBrackets(topTracks[0].name)} ${artist.name}`;
-    // const query = `${artist.name}`;
-    // const geniusDataPromise = fetchData('getGeniusSearch', {query: query});
+//    const query = `${removeTextInBrackets(topTracks[0].name)} ${artist.name}`;
+    const query = `${artist.name}`;
+    const geniusDataPromise = fetchData('getGeniusSearch', {query: query});
     // const geniusSongPromise = geniusDataPromise
-    //  .then(geniusData => fetchData('getGeniusSong', {songid: geniusData.data.response.hits[0].result.id}));
-    // const geniusArtistPromise = geniusDataPromise
-    //   .then(geniusData => fetchData('getGeniusArtist', {artistid: geniusData.data.response.hits[0].result.primary_artist.id}));
+    //   .then(geniusData => fetchData('getGeniusSong', {songid: geniusData.data.response.hits[0].result.id}));
+    const geniusArtistPromise = geniusDataPromise
+      .then(geniusData => fetchData('getGeniusArtist', {artistid: geniusData.data.response.hits[0].result.primary_artist.id}));
 
 
     // Start OpenAI call
-      const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s genres and styles. Write no more than three sentences.`;
-      const max_tokens = 120;
+    const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s genres and styles. Write no more than three sentences.`;
+    const max_tokens = 120;
 
-      async function getOpenAiSummary(prompt, max_tokens) {
-        const OpenAiSummaryData = await fetchData('getOpenAI', {prompt: prompt, max_tokens: max_tokens});
-        return OpenAiSummaryData.data.choices[0].message['content'];
-      }
+    async function getOpenAiSummary(prompt, max_tokens) {
+      const OpenAiSummaryData = await fetchData('getOpenAI', {prompt: prompt, max_tokens: max_tokens});
+      return OpenAiSummaryData.data.choices[0].message['content'];
+    }
 
-      getOpenAiSummary(prompt, max_tokens)
-        .then(OpenAiSummary => {
-          openAiSummaryPlaceholder.innerHTML = `<p>${OpenAiSummary}</p>`;
-        })
-        .catch(error => {
-          openAiSummaryPlaceholder.innerHTML = `<p>Error: ${error.message}. Unable to fetch summary from OpenAI.</p>`;
-        });
+    const openAiSummaryPromise = getOpenAiSummary(prompt, max_tokens);
 
+    function generateHTML(node) {
+        if (typeof node === 'string') {
+            return node;
+        }
 
-    // function generateHTML(node) {
-    //     if (typeof node === 'string') {
-    //         return node;
-    //     }
+        let childrenHTML = '';
+        if (node.children) {
+            childrenHTML = node.children.map(generateHTML).join('');
+        }
 
-    //     let childrenHTML = '';
-    //     if (node.children) {
-    //         childrenHTML = node.children.map(generateHTML).join('');
-    //     }
+        if (node.tag === 'a') {
+            return `<a href="${node.attributes.href}" rel="${node.attributes.rel || ''}">${childrenHTML}</a>`;
+        }
 
-    //     if (node.tag === 'a') {
-    //         return `<a href="${node.attributes.href}" rel="${node.attributes.rel || ''}">${childrenHTML}</a>`;
-    //     }
+        if (node.tag === 'p' || node.tag === 'em') {
+            return `<${node.tag}>${childrenHTML}</${node.tag}>`;
+        }
 
-    //     if (node.tag === 'p' || node.tag === 'em') {
-    //         return `<${node.tag}>${childrenHTML}</${node.tag}>`;
-    //     }
-
-    //     return childrenHTML;
-    // }
+        return childrenHTML;
+    }
 
     // Handle Genius API call results as soon as they're ready
     // geniusSongPromise.then(geniusSong => {
@@ -213,14 +207,20 @@ async function performSearch(artistName) {
     //   descriptionPlaceholder.innerHTML = `<p>${descriptionHTML}</p>`;
     // });
 
-    // geniusArtistPromise.then(geniusArtist => {
-    //   let geniusArtistBio = geniusArtist.data.response.artist.description.dom;
-    //   if (geniusArtistBio.children[0].children[0] === "?") {
-    //     geniusArtistBio = "No additional information available.";
-    //   }
-    //   const geniusArtistBioHTML = generateHTML(geniusArtistBio);
-    //   artistBioPlaceholder.innerHTML = `<p>${geniusArtistBioHTML}</p>`;
-    // });
+    geniusArtistPromise.then(geniusArtist => {
+      let geniusArtistBio = geniusArtist.data.response.artist.description.dom;
+      if (geniusArtistBio.children[0].children[0] === "?") {
+        geniusArtistBio = "No additional information available.";
+      }
+      const geniusArtistBioHTML = generateHTML(geniusArtistBio);
+      artistBioPlaceholder.innerHTML = `<p>${geniusArtistBioHTML}</p>`;
+    });
+
+    // Handle OpenAI call result when it's ready
+    openAiSummaryPromise.then(OpenAiSummary => {
+      openAiSummaryPlaceholder.innerHTML = `<p>${OpenAiSummary}</p>`;
+    });
+
 
 
   } else {

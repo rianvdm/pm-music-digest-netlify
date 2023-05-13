@@ -29,6 +29,9 @@ fetch('/.netlify/functions/getLovedTracks?limit=12')
       const lastfmGenres = (lastfmTags && lastfmTags[0]?.name)
           ? lastfmTags[0]?.name.charAt(0).toUpperCase() + lastfmTags[0]?.name.slice(1)
           : "Rock";
+      const lastfmGenres2 = (lastfmTags && lastfmTags[1]?.name)
+      ? lastfmTags[1]?.name.toLowerCase()
+      : "Pop";
 
       const similarArtist = lastfmData.value && lastfmData.value.artist.similar.artist.length > 0 ? lastfmData.value.artist.similar.artist.slice(0,3) : 'N/A';
 
@@ -48,6 +51,7 @@ fetch('/.netlify/functions/getLovedTracks?limit=12')
       return {
         track,
         lastfmGenres,
+        lastfmGenres2,
         similarArtist,
         spotifyUrl,
         spotifyImgUrl,
@@ -58,7 +62,7 @@ fetch('/.netlify/functions/getLovedTracks?limit=12')
 
     const trackData = await Promise.all(trackPromises);
 
-    const html = trackData.map(({ track, similarArtist, spotifyUrl, spotifyImgUrl, spotifyRecoData, lastfmGenres, spotifyYear }) => {
+    const html = trackData.map(({ track, similarArtist, spotifyUrl, spotifyImgUrl, spotifyRecoData, lastfmGenres, lastfmGenres2, spotifyYear }) => {
       const spotifyTrackReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.name);
       const spotifyArtistReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.artists[0].name);
       const spotifyUrlsReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.external_urls.spotify);
@@ -76,7 +80,7 @@ fetch('/.netlify/functions/getLovedTracks?limit=12')
           <a href="https://odesli.co/${spotifyUrl}" target="_blank"><img src="${spotifyImgUrl}"></a>
           <div class="no-wrap-text">
             <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <a href="/search?artist=${track.artist.name}">${track.artist.name}</a> (recommended on ${formattedDate}).
-            <br><strong>Details:</strong> ${lastfmGenres} song released in ${spotifyYear}.
+            <br><strong>Details:</strong> ${lastfmGenres}/${lastfmGenres2} song released in ${spotifyYear}.
             <br><strong>Similar artists:</strong> <a href="/search?artist=${similarArtist[0].name}">${similarArtist[0].name}</a>, <a href="/search?artist=${similarArtist[1].name}">${similarArtist[1].name}</a>, <a href="/search?artist=${similarArtist[2].name}">${similarArtist[2].name}</a>.
             <br><strong>Related songs:</strong> <a href="https://odesli.co/${spotifyUrlsReco[0]}" target="_blank">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
             and <a href="https://odesli.co/${spotifyUrlsReco[1]}" target="_blank">${spotifyTrackReco[1]}</a> by ${spotifyArtistReco[1]}.

@@ -58,6 +58,10 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
       ? lastfmTags[0]?.name.charAt(0).toUpperCase() + lastfmTags[0]?.name.slice(1)
       : "Rock";
 
+      const lastfmGenres2 = (lastfmTags && lastfmTags[1]?.name)
+      ? lastfmTags[1]?.name.toLowerCase()
+      : "Pop";
+
       const similarArtist = lastfmData.value && lastfmData.value.artist.similar.artist.length > 0 ? lastfmData.value.artist.similar.artist.slice(0,3) : 'N/A';
 
       const spotifyUrl = spotifyData.value.data.items[0].external_urls.spotify;
@@ -105,6 +109,7 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
       return {
         track,
         lastfmGenres,
+        lastfmGenres2,
         similarArtist,
         spotifyUrl,
         spotifyImgUrl,
@@ -116,28 +121,28 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
 
     const trackData = await Promise.all(trackPromises);
 
-    const html = trackData.map(({ track, lastfmGenres, similarArtist, spotifyUrl, spotifyImgUrl, spotifyRecoData, spotifyYear }) => {
+    const html = trackData.map(({ track, lastfmGenres, lastfmGenres2, similarArtist, spotifyUrl, spotifyImgUrl, spotifyRecoData, spotifyYear }) => {
       const spotifyTrackReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.name);
       const spotifyArtistReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.artists[0].name);
       const spotifyUrlsReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.external_urls.spotify);
 
 //      const openaiTextResponse = openaiData.value.data.choices[0].message['content'];
 
-      const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-      const pacificTimezone = 'America/Los_Angeles';
-      const utsDate = track.date.uts;
-      const formattedDate = new Date(utsDate * 1000).toLocaleString('en-US', {
-        ...optionsDate,
-        timeZone: pacificTimezone
-      });
+      // const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+      // const pacificTimezone = 'America/Los_Angeles';
+      // const utsDate = track.date.uts;
+      // const formattedDate = new Date(utsDate * 1000).toLocaleString('en-US', {
+      //   ...optionsDate,
+      //   timeZone: pacificTimezone
+      // });
 
       return `
         <div class="track_ul">
           <a href="https://odesli.co/${spotifyUrl}" target="_blank"><img src="${spotifyImgUrl}"></a>
           <div class="no-wrap-text">
-            <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <strong>${track.artist.name}</strong> (recommended on ${formattedDate}).
-            <br><strong>Details:</strong> ${lastfmGenres} song released in ${spotifyYear}.
-            <br><strong>Similar artists:</strong> <a href="/search?artist=${similarArtist[0].name}">${similarArtist[0].name}</a>, <a href="/search?artist=${similarArtist[1].name}">${similarArtist[1].name}</a>, <a href="/search?artist=${similarArtist[2].name}">${similarArtist[2].name}</a>.
+            <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <strong><a href="/search?artist=${track.artist.name}">${track.artist.name}</a></strong>
+            <br><strong>Details:</strong> ${lastfmGenres}/${lastfmGenres2} song released in ${spotifyYear}.
+            <br><strong>Similar artists:</strong> <a href="/search?artist=${similarArtist[0].name}">${similarArtist[0].name}</a>, <a href="/search?artist=${similarArtist[1].name}">${similarArtist[1].name}</a>, and <a href="/search?artist=${similarArtist[2].name}">${similarArtist[2].name}</a>.
             <br><strong>Related songs:</strong> <a href="https://odesli.co/${spotifyUrlsReco[0]}" target="_blank">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
             and <a href="https://odesli.co/${spotifyUrlsReco[1]}" target="_blank">${spotifyTrackReco[1]}</a> by ${spotifyArtistReco[1]}.
           </div>
