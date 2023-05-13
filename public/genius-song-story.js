@@ -6,6 +6,16 @@ async function fetchData(url) {
   return response.json();
 }
 
+function removeTextInBrackets(text) {
+  // Regular expression pattern to match text within brackets
+  const regex = /\([^()]*\)/g;
+  
+  // Replace the matched text with an empty string
+  const result = text.replace(regex, '');
+  
+  return result.trim(); // Trim any leading or trailing spaces
+}
+
 async function fetchAndDisplayTrack() {
   try {
     const dataContainer = document.querySelector('.js-genius-song-story');
@@ -21,7 +31,13 @@ async function fetchAndDisplayTrack() {
     const geniusID = geniusData.data.response.hits[0].result.id;
 
     const geniusSong = await fetchData(`/.netlify/functions/getGeniusSong?songid=${geniusID}`);
-    const geniusStory = geniusSong.data.response.song.description.dom;
+//    const geniusStory = geniusSong.data.response.song.description.dom;
+    const geniusSongPath = geniusSong.data.response.song.path;
+
+    let geniusStory = geniusSong.data.response.song.description.dom;
+    if (geniusStory.children[0].children[0] === "?") {
+      geniusStory = "";
+    }
 
 
 function generateHTML(node) {
@@ -47,12 +63,10 @@ function generateHTML(node) {
 
 const descriptionHTML = generateHTML(geniusStory);
 
-
-
     const html = `
       <div class="track_recent">
-      <p>${geniusID}</p>
       <p>${descriptionHTML}</p>
+      <p>ℹ️ <em>This data about the song comes from <a href="https://genius.com/${geniusSongPath}">Genius</a>, and it can be a little weird sometimes. But sometimes it’s interesting!</em></p>
       </div>
     `;
     dataContainer.innerHTML = html;
