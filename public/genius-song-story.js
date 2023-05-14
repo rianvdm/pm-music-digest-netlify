@@ -39,10 +39,11 @@ async function fetchAndDisplayTrack() {
     const geniusSong = await fetchData(`/.netlify/functions/getGeniusSong?songid=${geniusID}`);
 //    const geniusStory = geniusSong.data.response.song.description.dom;
     const geniusSongPath = geniusSong.data.response.song.path;
+    const geniusSongName = geniusSong.data.response.song.full_title;
 
     let geniusStory = geniusSong.data.response.song.description.dom;
     if (geniusStory.children[0].children[0] === "?") {
-      geniusStory = "";
+      geniusStory = "Computer says no.";
     }
 
 
@@ -69,11 +70,14 @@ function generateHTML(node) {
 
 let descriptionHTML = generateHTML(geniusStory);
 
-if (geniusStory !== "") {
-  const additionalHTML = `<p>ℹ️ <em>This data about the song comes from <a href="https://genius.com${geniusSongPath}">Genius</a>, and it can be a little weird sometimes. But sometimes it’s interesting!</em></p>`;
-  descriptionHTML += additionalHTML;
+if (geniusStory !== "Computer says no.") {
+  const additionalHTML = `
+  <p>ℹ️ <em>This data about the song comes from <a href="https://genius.com${geniusSongPath}">Genius</a>, and it can be a little weird sometimes. But sometimes it’s interesting!</em>
+  Genius thinks this song is ${geniusSongName}.</p>
+  `;
+  descriptionHTML = additionalHTML + descriptionHTML;
 } else {
-  descriptionHTML = "";
+  descriptionHTML = "Computer says no.";
 }
 
     const html = `
