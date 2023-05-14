@@ -6,12 +6,18 @@ async function fetchData(url) {
   return response.json();
 }
 
-function removeTextInBrackets(text) {
+function removeUnwantedText(text) {
   // Regular expression pattern to match text within brackets
-  const regex = /\([^()]*\)/g;
+  const roundBracketRegex = /\([^()]*\)/g;
+  const squareBracketRegex = /\[[^\]]*\]/g;
   
-  // Replace the matched text with an empty string
-  const result = text.replace(regex, '');
+  let result = text.replace(roundBracketRegex, '');
+  result = result.replace(squareBracketRegex, '');
+  
+  // Regular expression pattern to match "remaster" or "remastered", case-insensitive
+  const remasterRegex = /\b(remaster|remastered)\b/gi;
+  
+  result = result.replace(remasterRegex, '');
   
   return result.trim(); // Trim any leading or trailing spaces
 }
@@ -23,9 +29,9 @@ async function fetchAndDisplayTrack() {
     const nowPlaying = [recentTracksData.recenttracks.track[0]];
 
     const artist = nowPlaying[0].artist['#text'];
-    const title = nowPlaying[0].name;
+    const title = removeUnwantedText(nowPlaying[0].name);
     const album = nowPlaying[0].album['#text'];
-    const query = `${sanitizeInput(title)} by ${sanitizeInput(artist)}`;
+    const query = `${sanitizeInput(title)} ${sanitizeInput(artist)}`;
 
     const geniusData = await fetchData(`/.netlify/functions/getGeniusSearch?query=${query}`);
     const geniusID = geniusData.data.response.hits[0].result.id;
@@ -61,12 +67,18 @@ function generateHTML(node) {
     return childrenHTML;
 }
 
-const descriptionHTML = generateHTML(geniusStory);
+let descriptionHTML = generateHTML(geniusStory);
+
+if (geniusStory !== "") {
+  const additionalHTML = `<p>ℹ️ <em>This data about the song comes from <a href="https://genius.com${geniusSongPath}">Genius</a>, and it can be a little weird sometimes. But sometimes it’s interesting!</em></p>`;
+  descriptionHTML += additionalHTML;
+} else {
+  descriptionHTML = "";
+}
 
     const html = `
       <div class="track_recent">
       <p>${descriptionHTML}</p>
-      <p>ℹ️ <em>This data about the song comes from <a href="https://genius.com/${geniusSongPath}">Genius</a>, and it can be a little weird sometimes. But sometimes it’s interesting!</em></p>
       </div>
     `;
     dataContainer.innerHTML = html;
@@ -89,3 +101,4 @@ function displayErrorMessage(selector, message) {
 }
 
 fetchAndDisplayTrack();
+
