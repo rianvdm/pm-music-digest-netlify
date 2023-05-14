@@ -14,7 +14,7 @@ async function fetchAndDisplayTrack() {
     const artist = nowPlaying[0].artist['#text'];
     const title = nowPlaying[0].name;
     const album = nowPlaying[0].album['#text'];
-    const q = `${sanitizeInput(artist)} ${sanitizeInput(title)} ${sanitizeInput(album)}`;
+    const q = `${sanitizeInput(title)} ${sanitizeInput(artist)}`;
 
     const spotifyData = await fetchData(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`);
 
