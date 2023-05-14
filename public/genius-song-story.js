@@ -78,7 +78,7 @@ let descriptionHTML = generateHTML(geniusStory);
 
 if (geniusStory !== "Computer says no.") {
   const additionalHTML = `
-  <p>ℹ️ <em>This data about the song comes from <a href="https://genius.com${geniusSongPath}">Genius</a>, and it can be a little weird sometimes. But sometimes it’s interesting!
+  <p>ℹ️ <em>This data about the song comes from <a href="https://genius.com${geniusSongPath}">Genius</a>.
   Genius thinks this song is <strong>${geniusSongName}</strong>.</em></p>
   `;
   descriptionHTML = additionalHTML + descriptionHTML;
