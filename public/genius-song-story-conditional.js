@@ -63,7 +63,7 @@ async function fetchAndDisplayTrack() {
     const geniusData = await fetchData(`/.netlify/functions/getGeniusSearch?query=${query}`);
 
     if(!geniusData.data.response.hits[0] || !geniusData.data.response.hits[0].result.id) {
-        displayErrorMessage('.js-genius-song-story', 'No Genius ID found for the song. Please try another song!');
+        // displayErrorMessage('.js-genius-song-story', 'No Genius ID found for the song. Please try another song!');
         return; // Stop executing the function
     }
 
