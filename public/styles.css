@@ -123,12 +123,14 @@ blockquote {
 .js-genius-song-story {
   display: flex;
   justify-content: center;
+  text-align: center;
 }
 
 .button,
 .button:visited {
   background-color: var(--c-accent);
   color: var(--c-bg);
+  display: inline-block;
   font-weight: bold;
   font-size: 16px;
   border: none;
