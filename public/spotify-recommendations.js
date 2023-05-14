@@ -31,7 +31,7 @@ async function getRecentTracks() {
     const spotifyID = spotifySearchData.data.items[0].id;
     const spotifyArtistID = spotifySearchData.data.items[0].artists[0].id;
 
-    const spotifyArtistData = await fetchData(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${q}`);
+    const spotifyArtistData = await fetchData(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodedArtist}`);
     const spotifyArtistName = spotifyArtistData.data.items[0].name;
     const spotifyGenreList = spotifyArtistData.data.items[0].genres.slice(0, 3);
 

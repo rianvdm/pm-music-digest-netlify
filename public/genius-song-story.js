@@ -34,6 +34,12 @@ async function fetchAndDisplayTrack() {
     const query = `${sanitizeInput(title)} ${sanitizeInput(artist)}`;
 
     const geniusData = await fetchData(`/.netlify/functions/getGeniusSearch?query=${query}`);
+
+    if(!geniusData.data.response.hits[0] || !geniusData.data.response.hits[0].result.id) {
+        displayErrorMessage('.js-genius-song-story', 'No Genius ID found for the song. Please try another song!');
+        return; // Stop executing the function
+    }
+
     const geniusID = geniusData.data.response.hits[0].result.id;
 
     const geniusSong = await fetchData(`/.netlify/functions/getGeniusSong?songid=${geniusID}`);
