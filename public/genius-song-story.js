@@ -7,20 +7,19 @@ async function fetchData(url) {
 }
 
 function removeUnwantedText(text) {
-  // Regular expression pattern to match text within brackets
   const roundBracketRegex = /\([^()]*\)/g;
   const squareBracketRegex = /\[[^\]]*\]/g;
-  
+  const remasterRegex = /\b(remaster|remastered)\b/gi;
+  const hyphenRegex = /-.*/g;
+
   let result = text.replace(roundBracketRegex, '');
   result = result.replace(squareBracketRegex, '');
-  
-  // Regular expression pattern to match "remaster" or "remastered", case-insensitive
-  const remasterRegex = /\b(remaster|remastered)\b/gi;
-  
   result = result.replace(remasterRegex, '');
+  result = result.replace(hyphenRegex, '');
   
   return result.trim(); // Trim any leading or trailing spaces
 }
+
 
 async function fetchAndDisplayTrack() {
   try {
