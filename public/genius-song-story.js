@@ -49,7 +49,7 @@ async function fetchAndDisplayTrack() {
 
     let geniusStory = geniusSong.data.response.song.description.dom;
     if (geniusStory.children[0].children[0] === "?") {
-      geniusStory = "Computer says no.";
+      geniusStory = "Genius has nothing to add.";
     }
 
 
@@ -81,13 +81,13 @@ function generateHTML(node) {
 
 let descriptionHTML = generateHTML(geniusStory);
 
-if (geniusStory !== "Computer says no.") {
+if (geniusStory !== "Genius has nothing to add.") {
   const additionalHTML = `
   <p>ℹ️ <em><a href="https://genius.com${geniusSongPath}">Genius</a> thinks this song is <strong>${geniusSongName}</strong>. The search isn’t great so that might not be accurate.</em></p>
   `;
   descriptionHTML = additionalHTML + descriptionHTML;
 } else {
-  descriptionHTML = "Computer says no.";
+  descriptionHTML = "Genius has nothing to add.";
 }
 
     const html = `
