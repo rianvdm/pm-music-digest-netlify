@@ -70,16 +70,20 @@ function generateHTML(node) {
     if (node.tag === 'p' || node.tag === 'em') {
         return `<${node.tag}>${childrenHTML}</${node.tag}>`;
     }
+    
+    if (node.tag === 'img') {
+        return `<img src="${node.attributes.src}" alt="${node.attributes.alt || ''}" style="max-width: 600px; display: block; margin: auto;">`;
+    }
 
     return childrenHTML;
 }
+
 
 let descriptionHTML = generateHTML(geniusStory);
 
 if (geniusStory !== "Computer says no.") {
   const additionalHTML = `
-  <p>ℹ️ <em>This data about the song comes from <a href="https://genius.com${geniusSongPath}">Genius</a>.
-  Genius thinks this song is <strong>${geniusSongName}</strong>.</em></p>
+  <p>ℹ️ <em><a href="https://genius.com${geniusSongPath}">Genius</a> thinks this song is <strong>${geniusSongName}</strong>. The search isn’t great so that might not be accurate.</em></p>
   `;
   descriptionHTML = additionalHTML + descriptionHTML;
 } else {
