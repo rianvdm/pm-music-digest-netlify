@@ -139,8 +139,29 @@ async function performSearch(artistName) {
 
     searchResults.innerHTML += streamingEmbed;
 
-
+    // const descriptionPlaceholder = document.querySelector('#description-placeholder');
+    // const artistBioPlaceholder = document.querySelector('#artist-bio-placeholder');
     const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
+
+    // // Start Genius API calls
+
+    //   function removeTextInBrackets(text) {
+    //     // Regular expression pattern to match text within brackets
+    //     const regex = /\([^()]*\)/g;
+        
+    //     // Replace the matched text with an empty string
+    //     const result = text.replace(regex, '');
+        
+    //     return result.trim(); // Trim any leading or trailing spaces
+    //   }
+
+    // const query = `${removeTextInBrackets(topTracks[0].name)} ${artist.name}`;
+    // const query = `${artist.name}`;
+    // const geniusDataPromise = fetchData('getGeniusSearch', {query: query});
+    // const geniusSongPromise = geniusDataPromise
+    //  .then(geniusData => fetchData('getGeniusSong', {songid: geniusData.data.response.hits[0].result.id}));
+    // const geniusArtistPromise = geniusDataPromise
+    //   .then(geniusData => fetchData('getGeniusArtist', {artistid: geniusData.data.response.hits[0].result.primary_artist.id}));
 
 
     // Start OpenAI call
@@ -148,10 +169,9 @@ async function performSearch(artistName) {
       const max_tokens = 120;
 
       async function getOpenAiSummary(prompt, max_tokens) {
-        const OpenAiSummaryData = await fetchData('getOpenAIArtist', {prompt: prompt, max_tokens: max_tokens, name: artist.name});
-        return OpenAiSummaryData.data;
+        const OpenAiSummaryData = await fetchData('getOpenAI', {prompt: prompt, max_tokens: max_tokens});
+        return OpenAiSummaryData.data.choices[0].message['content'];
       }
-
 
       getOpenAiSummary(prompt, max_tokens)
         .then(OpenAiSummary => {
@@ -160,6 +180,47 @@ async function performSearch(artistName) {
         .catch(error => {
           openAiSummaryPlaceholder.innerHTML = `<p>Error: ${error.message}. Unable to fetch summary from OpenAI.</p>`;
         });
+
+
+    // function generateHTML(node) {
+    //     if (typeof node === 'string') {
+    //         return node;
+    //     }
+
+    //     let childrenHTML = '';
+    //     if (node.children) {
+    //         childrenHTML = node.children.map(generateHTML).join('');
+    //     }
+
+    //     if (node.tag === 'a') {
+    //         return `<a href="${node.attributes.href}" rel="${node.attributes.rel || ''}">${childrenHTML}</a>`;
+    //     }
+
+    //     if (node.tag === 'p' || node.tag === 'em') {
+    //         return `<${node.tag}>${childrenHTML}</${node.tag}>`;
+    //     }
+
+    //     return childrenHTML;
+    // }
+
+    // Handle Genius API call results as soon as they're ready
+    // geniusSongPromise.then(geniusSong => {
+    //   let geniusStory = geniusSong.data.response.song.description.dom;
+    //   if (geniusStory.children[0].children[0] === "?") {
+    //     geniusStory = "No additional information available.";
+    //   }
+    //   const descriptionHTML = generateHTML(geniusStory);
+    //   descriptionPlaceholder.innerHTML = `<p>${descriptionHTML}</p>`;
+    // });
+
+    // geniusArtistPromise.then(geniusArtist => {
+    //   let geniusArtistBio = geniusArtist.data.response.artist.description.dom;
+    //   if (geniusArtistBio.children[0].children[0] === "?") {
+    //     geniusArtistBio = "No additional information available.";
+    //   }
+    //   const geniusArtistBioHTML = generateHTML(geniusArtistBio);
+    //   artistBioPlaceholder.innerHTML = `<p>${geniusArtistBioHTML}</p>`;
+    // });
 
 
   } else {

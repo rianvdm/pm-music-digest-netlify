@@ -1,33 +1,27 @@
 const fetch = require("node-fetch");
 const Redis = require("ioredis");
-const redis = new Redis(process.env.REDIS_URL);
 
 exports.handler = async function(event, context) {
   try {
-    const artistName = event.queryStringParameters.artistName; 
-    const max_tokens = parseInt(event.queryStringParameters.max_tokens) || 100; 
-    const access_token = process.env.OPENAI_API_TOKEN; 
+    const artistName = event.queryStringParameters.name.toLowerCase();
+    const prompt = event.queryStringParameters.prompt; // Get the prompt from the URL query parameters
+    const max_tokens = parseInt(event.queryStringParameters.max_tokens) // Get the max_tokens from the URL query parameters
+    const access_token = process.env.OPENAI_API_TOKEN;
 
-    // Check if the artistName is defined and not empty
-    if (!artistName || artistName.trim().length === 0) {
-      throw new Error("Artist name is required");
+    // Check if the prompt is defined and not empty
+    if (!prompt || prompt.trim().length === 0) {
+      throw new Error("Prompt is required");
     }
 
-    // Check if a cached summary exists in Redis
-    const cachedSummary = await redis.get(artistName);
+    const client = new Redis(process.env.REDIS_URL, {
+      connectTimeout: 26000,
+    });
 
-    if (cachedSummary) {
-      console.log('Cache hit');
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ summary: cachedSummary }),
-      };
-    } else {
-      // If a cached summary does not exist, fetch from OpenAI
-      console.log('Cache miss');
-      const prompt = `Write a summary to help someone decide if they might like the artist ${artistName}. Include information about the artist’s genres and styles. Write no more than three sentences.`;
+    let artistSummary = await client.get(artistName); // Use artistName to get data from Redis
 
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    if (!artistSummary) {
+      console.log("Getting new summary from OpenAI")
+      const openAIResponse = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,27 +37,36 @@ exports.handler = async function(event, context) {
           max_tokens: max_tokens,
           n: 1,
           temperature: 1,
+          // temperature: 1.5,
         }),
       });
 
       // If the response is not successful, throw an error
-      if (!response.ok) {
-        throw new Error(`${response.statusText}`);
+      if (!openAIResponse.ok) {
+        throw new Error(`Failed to fetch from OpenAI API: ${openAIResponse.statusText}`);
       }
 
       // Parse the response JSON
-      const jsonResponse = await response.json();
+      const openAIJsonResponse = await openAIResponse.json();
+      artistSummary = openAIJsonResponse.choices[0].message.content; // Depending on the response structure
 
-      const summary = jsonResponse.choices[0].message['content'];
-
-      // Store the fetched summary in Redis for future use
-      await redis.set(artistName, summary);
+      await client.set(artistName, artistSummary);
 
       return {
         statusCode: 200,
-        body: JSON.stringify({ summary: summary }),
+        body: JSON.stringify({ data: artistSummary }),
       };
+
+    } else {
+      console.log("Using existing summary from Redis");
     }
+
+    await client.quit();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ data: artistSummary }),
+    };
   } catch (error) {
     // If an error occurs, return a 500 status code and error message
     return {
