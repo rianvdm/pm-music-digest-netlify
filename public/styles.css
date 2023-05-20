@@ -4,6 +4,21 @@
   --c-base: #000000;
 }
 
+@media (prefers-color-scheme: dark) {
+   :root {
+      --c-bg: #000000;
+      --c-accent: #FFA500;
+      --c-base: #ffffff;
+   }
+}
+
+[data-theme="dark"] {
+  --c-bg: #000000;
+  --c-accent: #FFA500;
+  --c-base: #ffffff;
+}
+
+
 * {
   font-family: Optima, Candara, 'Noto Sans', source-sans-pro, sans-serif;
 }
@@ -86,6 +101,10 @@ nav a {
 
 nav li.active a {
   font-weight: bold;
+}
+
+#mode-toggle {
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {

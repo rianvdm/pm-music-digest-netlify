@@ -31,6 +31,17 @@
     <meta name="twitter:description" content="Find out more about an artist’s genres, top albums, and most popular songs to help you figure out if you want to check them out.">
     <meta name="twitter:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
 
+    <script>
+      // Set the user's theme preference on initial load
+      const theme = localStorage.getItem("theme");
+
+      if (theme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+   </script>
+
   </head>
 
   <body>
@@ -42,6 +53,7 @@
         <li class="active"><a href="/search">Artist Search</a></li>
         <li><a href="/mood">Mood</a></li>
         <li><a href="/about">About</a></li>
+        <li id="mode-toggle">☀️/🌑</li>
       </ul>
     </nav>
 
@@ -64,5 +76,6 @@
     </div>
 
     <script src="/artistSearch.js?v=14"></script>
+    <script src="/dark-mode.js"></script>
   </body>
 </html>

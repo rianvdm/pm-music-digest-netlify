@@ -31,6 +31,17 @@
     <meta name="twitter:description" content="Real-time listening data and hand-picked music recommendations for your enjoyment.">
     <meta name="twitter:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
 
+    <script>
+      // Set the user's theme preference on initial load
+      const theme = localStorage.getItem("theme");
+
+      if (theme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+   </script>
+
   </head>
 
   <body>
@@ -42,6 +53,7 @@
         <li><a href="/search">Artist Search</a></li>
         <li><a href="/mood">Mood</a></li>
         <li><a href="/about">About</a></li>
+        <li id="mode-toggle">☀️/🌑</li>
       </ul>
     </nav>
 
@@ -100,5 +112,6 @@
   <script src="lastfm-top-artists.js?v=12"></script>  
   <script src="discogs-added.js?v=11"></script>
   <script src="genius-song-story-conditional.js?v=3"></script>
+  <script src="dark-mode.js"></script>
 </body>
 </html>
