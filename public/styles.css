@@ -354,6 +354,13 @@ blockquote {
   text-align: center;
 }
 
+img.center-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 300px;
+}
+
 /* Search Form */
 #search-form {
   display: flex;
@@ -368,7 +375,7 @@ blockquote {
   margin-right: 0.5em;
 }
 
-#artist-name {
+#artist-name, #album-name {
   border: 2px solid var(--c-accent);
   border-radius: 4px;
   padding: 8px;
@@ -412,6 +419,63 @@ blockquote {
   .image-text-wrapper {
     flex-direction: column;
     align-items: center;
-  }
+  } }
+
+
+/* Style the dropdown button */
+.dropbtn {
+  color: var(--c-accent);
+  padding: 16px 16px 0px 16px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Change color of the dropdown button on hover */
+.dropdown:hover .dropbtn {
+  color: var(--c-base);
+}
+
+
+
+/* Style the dropdown button to fit in with the list items */
+.dropdown {
+  display: inline-block;
+  color: var(--c-accent);
+}
+
+/* Style the dropdown content box (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  background-color: var(--c-bg);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Style the links inside the dropdown */
+.dropdown-content a {
+  color: var(--c-accent);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Show the dropdown when the user hovers over the dropdown button */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: var(--c-accent);
+  color: var(--c-bg);
+}
+
+/* Change the color of the dropdown button on hover */
+.dropdown:hover .dropbtn {
+  color: var(--c-accent);
+}
+
 
 

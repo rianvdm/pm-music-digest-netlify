@@ -109,7 +109,7 @@ async function performSearch(artistName) {
           }.
           <br><strong>Most popular albums:</strong> ${
               lastfmTopAlbums && lastfmTopAlbums.album && lastfmTopAlbums.album.length >= 3
-                ? `<a href="${lasftmTopAlbum[0].url}" target="_blank">${lasftmTopAlbum[0].name}</a>, <a href="${lasftmTopAlbum[1].url}" target="_blank">${lasftmTopAlbum[1].name}</a>, and <a href="${lasftmTopAlbum[2].url}" target="_blank">${lasftmTopAlbum[2].name}</a>`
+                ? `<a href="/search-album?album=${lasftmTopAlbum[0].name}%20${artist.name}">${lasftmTopAlbum[0].name}</a>, <a href="/search-album?album=${lasftmTopAlbum[1].name}%20${artist.name}">${lasftmTopAlbum[1].name}</a>, and <a href="/search-album?album=${lasftmTopAlbum[2].name}%20${artist.name}">${lasftmTopAlbum[2].name}</a>`
                 : "unknown"
           }.
           </div>

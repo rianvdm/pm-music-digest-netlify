@@ -12,7 +12,7 @@ function removeUnwantedText(text) {
   const roundBracketRegex = /\([^()]*\)/g;
   const squareBracketRegex = /\[[^\]]*\]/g;
   const remasterRegex = /\b(remaster|remastered)\b/gi;
-  const hyphenRegex = /-.*/g;
+  const hyphenRegex = /\s-\s.*/g;
 
   let result = text.replace(roundBracketRegex, '');
   result = result.replace(squareBracketRegex, '');

@@ -13,14 +13,14 @@
 
 
     <!-- HTML Meta Tags -->
-    <title>Artist Search</title>
-    <meta name="description" content="Find out more about an artist’s genres, top albums, and most popular songs to help you figure out if you want to check them out.">
+    <title>Album Search</title>
+    <meta name="description" content="albumSummaryFind out more information about a specific album.">
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="https://music.elezea.com">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Artist Search">
-    <meta property="og:description" content="Find out more about an artist’s genres, top albums, and most popular songs to help you figure out if you want to check them out.">
+    <meta property="og:description" content="albumSummaryFind out more information about a specific album.">
     <meta property="og:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
 
     <!-- Twitter Meta Tags -->
@@ -28,7 +28,7 @@
     <meta property="twitter:domain" content="music.elezea.com">
     <meta property="twitter:url" content="https://music.elezea.com">
     <meta name="twitter:title" content="Artist Search">
-    <meta name="twitter:description" content="Find out more about an artist’s genres, top albums, and most popular songs to help you figure out if you want to check them out.">
+    <meta name="twitter:description" content="albumSummaryFind out more information about a specific album.">
     <meta name="twitter:image" content="https://files.elezea.com/alberto-bigoni-4-DeS5a-hAM-unsplash.jpg">
 
     <script>
@@ -49,8 +49,8 @@
     <nav>
       <ul>
         <li><a href="/">Home</a></li>
-        <li class="active"><a href="/search">Artist Search</a></li>
-        <li><a href="/search-album">Album Search</a></li>
+        <li><a href="/search">Artist Search</a></li>
+        <li class="active"><a href="/search-album">Album Search</a></li>
         <li class="dropdown">
           <a href="javascript:void(0)" class="dropbtn">More...</a>
           <div class="dropdown-content">
@@ -64,13 +64,13 @@
       </ul>
     </nav>
 
-    <h1>Artist Search</h1>
+    <h1>Album Search</h1>
 
-    <h4 style="text-align: center;">Find out more about an artist’s genres, top albums, and most popular songs to help you figure out if you want to check them out.</h4>
+    <h4 style="text-align: center;">Find out more information about a specific album.</h4>
 
     <form id="search-form">
-      <label for="artist-name">Artist Name:</label>
-      <input type="text" id="artist-name" name="artist-name">
+      <label for="album-name">Album and Artist:</label>
+      <input type="text" id="album-name" name="album-name">
       <button type="submit">Search</button>
     </form>
 
@@ -82,7 +82,7 @@
       <p><a href="https://youtu.be/cNtprycno14?t=9032">There’s a fire that’s been burning right outside my door.</a></p>
     </div>
 
-    <script src="/artistSearch.js?v=14"></script>
+    <script src="/albumSearch.js"></script>
     <script src="/dark-mode.js"></script>
   </body>
 </html>

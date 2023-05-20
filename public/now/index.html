@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Rian van der Merwe">
-    <link href="/styles.css?v=4" rel="stylesheet">
+    <link href="/styles.css?v=16" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="/images/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
@@ -48,9 +48,16 @@
     <nav>
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/recommendations">Recommendations</a></li>
         <li><a href="/search">Artist Search</a></li>
-        <li><a href="/mood">Mood</a></li>
+        <li><a href="/search-album">Album Search</a></li>
+        <li class="dropdown">
+          <a href="javascript:void(0)" class="dropbtn">More...</a>
+          <div class="dropdown-content">
+            <a href="/recommendations">Recommendations</a>
+            <a href="/mood">Mood</a>
+            <a href="/now">Now</a>
+          </div>
+        </li>
         <li><a href="/about">About</a></li>
         <li id="mode-toggle">☀️/🌑</li>
       </ul>
