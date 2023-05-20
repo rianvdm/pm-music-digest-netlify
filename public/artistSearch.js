@@ -155,7 +155,8 @@ async function performSearch(artistName) {
 
       getOpenAiSummary(prompt, max_tokens)
         .then(OpenAiSummary => {
-          openAiSummaryPlaceholder.innerHTML = `<p>${OpenAiSummary}</p>`;
+          openAiSummaryPlaceholder.innerHTML = `<p><strong>Album summary from ChatGPT:</strong></p>
+          <p>${OpenAiSummary}</p>`;
         })
         .catch(error => {
           openAiSummaryPlaceholder.innerHTML = `<p>Error: ${error.message}. Unable to fetch summary from OpenAI.</p>`;

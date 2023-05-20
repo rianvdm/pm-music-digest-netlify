@@ -141,7 +141,7 @@ async function performSearch(albumName) {
 
       getOpenAiSummary(prompt, max_tokens)
         .then(OpenAiSummary => {
-          openAiSummaryPlaceholder.innerHTML = `<p><strong>Album summary:</strong></p>
+          openAiSummaryPlaceholder.innerHTML = `<p><strong>Album summary from ChatGPT:</strong></p>
           <p>${OpenAiSummary}</p>`;
         })
         .catch(error => {
