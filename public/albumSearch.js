@@ -106,10 +106,9 @@ async function performSearch(albumName) {
           ? lastfmGenres.length === 1
             ? "unknown"
             : `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}, ${lastfmGenres[1].name.toLowerCase()}, ${lastfmGenres[2].name.toLowerCase()}`
-          : "unknown"
+          : "Unknown genre"
       }
-
- album with ${spotifyTotalTracks} tracks. Released in ${spotifyYear}.
+      album with ${spotifyTotalTracks} tracks. Released in ${spotifyYear}.
       </em></p>
       <div id="openai-summary-placeholder" style="margin-bottom: 0px;">
         <p><em>Generating ChatGPT summary...</em></p>
