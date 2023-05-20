@@ -129,6 +129,7 @@ blockquote {
   border-left: 3px solid var(--c-accent);
   padding: 0 10px;
   margin: 0;
+  max-width: 800px;
 }
 
 .footnote {
