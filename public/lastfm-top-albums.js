@@ -10,7 +10,7 @@ fetch('/.netlify/functions/getTopAlbums?period=7day')
       const spotifyAlbumUrl = spotifyData.data.items[0].external_urls.spotify;
       return `
         <div class="track">
-          <a href="https://odesli.co/${spotifyAlbumUrl}" target="_blank" class="track_link">
+          <a href="/search-album?album=${album.name}%20${album.artist.name}">
             <img src="${album.image[3]['#text']}" class="track_image">
             <div class="track_content">
               <h2 class="track_artist">${album.name}</h2></a>
