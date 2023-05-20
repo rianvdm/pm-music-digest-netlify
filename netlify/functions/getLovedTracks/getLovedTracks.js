@@ -1,7 +1,7 @@
 // Get recent loved tracks from last.fm
 
 const lastFMToken = process.env.LAST_FM_API_TOKEN;
-const lastFMUser = 'bordesak';
+const lastFMUser = process.env.LASTFM_USERNAME;
 
 const fetch = require('node-fetch');
 

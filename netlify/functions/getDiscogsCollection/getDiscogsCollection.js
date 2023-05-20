@@ -1,7 +1,7 @@
 // Get latest additions to Dicogs
 
 const DiscogsToken = process.env.DISCOGS_API_TOKEN;
-const DiscogsUser = 'elezea-records';
+const DiscogsUser = process.env.DISCOGS_USERNAME;
 
 const fetch = require('node-fetch');
 
