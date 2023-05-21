@@ -59,6 +59,7 @@ async function performSearch(albumName) {
     const spotifyReleased = album.release_date;
     const spotifyYear = spotifyReleased.length === 4 ? spotifyReleased : spotifyReleased.substring(0, 4);
     const spotifyTotalTracks = album.total_tracks;
+    const fullAlbumName = `${cleanAlbumName} ${spotifyArtistName}`;
 
     async function getLastfmAlbumInfo(spotifyAlbumName) {
       const lastfmAlbumData = await fetchData('getLastfmAlbumInfo', {artist: spotifyArtistName, album: cleanAlbumName, limit: 1})
@@ -134,7 +135,7 @@ async function performSearch(albumName) {
       const max_tokens = 120;
 
       async function getOpenAiSummary(prompt, max_tokens) {
-        const OpenAiSummaryData = await fetchData('getOpenAIAlbum', {prompt: prompt, max_tokens: max_tokens, name: cleanAlbumName});
+        const OpenAiSummaryData = await fetchData('getOpenAIAlbum', {prompt: prompt, max_tokens: max_tokens, name: fullAlbumName});
         return OpenAiSummaryData.data;
       }
 
