@@ -138,9 +138,9 @@ fetch('/.netlify/functions/getLovedTracks?limit=5')
 
       return `
         <div class="track_ul">
-          <a href="https://odesli.co/${spotifyUrl}" target="_blank"><img src="${spotifyImgUrl}"></a>
+          <a href="/search-song?song=${track.name}%20${track.artist.name}"><img src="${spotifyImgUrl}"></a>
           <div class="no-wrap-text">
-            <strong><a href="https://odesli.co/${spotifyUrl}" target="_blank">${track.name}</a></strong> by <strong><a href="/search?artist=${track.artist.name}">${track.artist.name}</a></strong> (recommended on ${formattedDate}).
+            <strong><a href="/search-song?song=${track.name}%20${track.artist.name}">${track.name}</a></strong> by <strong><a href="/search?artist=${track.artist.name}">${track.artist.name}</a></strong> (recommended on ${formattedDate}).
             <br><strong>Details:</strong> ${lastfmGenres}/${lastfmGenres2} song released in ${spotifyYear}.
             <br><strong>Similar artists:</strong> <a href="/search?artist=${similarArtist[0].name}">${similarArtist[0].name}</a>, <a href="/search?artist=${similarArtist[1].name}">${similarArtist[1].name}</a>, and <a href="/search?artist=${similarArtist[2].name}">${similarArtist[2].name}</a>.
             <br><strong>Related songs:</strong> <a href="/search-song?song=${spotifyTrackReco[0]}%20${spotifyArtistReco[0]}">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
