@@ -100,7 +100,9 @@ async function performSearch(albumName) {
         <div style="position:relative;padding-bottom:calc(56.25% + 52px);height: 0;">
           <iframe style="position:absolute;top:0;left:0;" width="100%" height="100%" src="https://embed.odesli.co/?url=${spotifyUrl}&theme=dark" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
         </div>
-      </div><br>
+      </div>
+      <div id="copy-success-message"></div>
+      <p style="text-align:center;"><button id="copy-link">Copy Page Link</button></p>
       <p><em>
       ${
         Array.isArray(lastfmGenres) && lastfmGenres.length >= 1
@@ -113,9 +115,7 @@ async function performSearch(albumName) {
       </em></p>
       <div id="openai-summary-placeholder" style="margin-bottom: 0px;">
         <p><em>Generating ChatGPT summary...</em></p>
-      </div>
-
-        
+      </div>        
       </div>
     `;
 
@@ -125,6 +125,15 @@ async function performSearch(albumName) {
     `;
 
     searchResults.innerHTML += wikiEmbed;
+
+    const copyLinkButton = document.querySelector('#copy-link');
+
+    copyLinkButton.addEventListener('click', () => {
+      const albumName = document.querySelector('#album-name').value;
+      const searchUrl = `${window.location.origin}${window.location.pathname}?album=${encodeURIComponent(spotifyAlbumName)}%20${encodeURIComponent(spotifyArtistName)}`;
+      copyToClipboard(searchUrl);
+    });
+
 
 
     const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
@@ -166,4 +175,21 @@ if (initialalbumName) {
   document.querySelector('#album-name').value = initialalbumName;
   performSearch(initialalbumName);
 }
+
+function copyToClipboard(text) {
+  const copySuccessMessage = document.querySelector('#copy-success-message');
+  const copyLinkButton = document.querySelector('#copy-link');
+  
+  navigator.clipboard.writeText(text).then(() => {
+    console.log('Copying to clipboard was successful!');
+    copySuccessMessage.innerHTML = '<p style="text-align:center">Link copied successfully!</p>';
+    copyLinkButton.style.display = 'none';
+  }, (err) => {
+    console.error('Could not copy text: ', err);
+    copySuccessMessage.innerHTML = 'Error: Could not copy link. Please try again.';
+  });
+}
+
+
+
 
