@@ -53,9 +53,9 @@ async function getRecentTracks() {
     let html = `
       <div class="track_none">
     <p style="text-align: center">Here are some recommendations for <strong>${spotifyGenreList[0]} / ${spotifyGenreList[1]}</strong> songs similar to <strong>${spotifyTrackName} by ${spotifyArtistName}</strong>:</p>
-    <p><p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyRecoID[0]}"
+    <p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyRecoID[0]}"
     width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></p>
-    <p><p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyRecoID[1]}"
+    <p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyRecoID[1]}"
     width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></p>
       </div>
     `;
