@@ -117,7 +117,9 @@ async function performSearch(artistName) {
         <div id="openai-summary-placeholder" style="margin-bottom: 0px;">
           <p><em>Generating ChatGPT summary...</em></p>
         </div>
-      </div>
+        <div id="copy-success-message"></div>
+          <p style="text-align:center;"><button id="copy-link">Copy Page Link</button></p>
+        </div>
     `;
 
     const streamingEmbed = `
@@ -138,6 +140,14 @@ async function performSearch(artistName) {
     `;
 
     searchResults.innerHTML += streamingEmbed;
+
+    const copyLinkButton = document.querySelector('#copy-link');
+
+    copyLinkButton.addEventListener('click', () => {
+      const albumName = document.querySelector('#artist-name').value;
+      const searchUrl = `${window.location.origin}${window.location.pathname}?artist=${encodeURIComponent(spotifyArtistName)}`;
+      copyToClipboard(searchUrl);
+    });
 
 
     const openAiSummaryPlaceholder = document.querySelector('#openai-summary-placeholder');
@@ -180,3 +190,16 @@ if (initialArtistName) {
   performSearch(initialArtistName);
 }
 
+function copyToClipboard(text) {
+  const copySuccessMessage = document.querySelector('#copy-success-message');
+  const copyLinkButton = document.querySelector('#copy-link');
+  
+  navigator.clipboard.writeText(text).then(() => {
+    console.log('Copying to clipboard was successful!');
+    copySuccessMessage.innerHTML = '<p style="text-align:center">Link copied successfully!</p>';
+    copyLinkButton.style.display = 'none';
+  }, (err) => {
+    console.error('Could not copy text: ', err);
+    copySuccessMessage.innerHTML = 'Error: Could not copy link. Please try again.';
+  });
+}

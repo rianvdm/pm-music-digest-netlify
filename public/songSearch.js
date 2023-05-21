@@ -175,6 +175,8 @@ function generateHTML(node) {
             </div><br>
         <div class="no-wrap-text">
           <p>${spotifysongName} by ${spotifyArtistName} is a ${spotifyGenreList[0]} song from the album <a href="/search-album?album=${spotifyAlbumName}%20${spotifyArtistName}">${spotifyAlbumName}</a>, released in ${spotifyYear}. Here are some recommended tracks if you like that one:</p>
+          <div id="copy-success-message"></div>
+          <p style="text-align:center;"><button id="copy-link">Copy Page Link</button></p>
           <p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyRecoID[0]}"
               width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
           </iframe></p>
@@ -186,6 +188,14 @@ function generateHTML(node) {
       </div>
       
     `;
+
+    const copyLinkButton = document.querySelector('#copy-link');
+
+    copyLinkButton.addEventListener('click', () => {
+      const albumName = document.querySelector('#song-name').value;
+      const searchUrl = `${window.location.origin}${window.location.pathname}?song=${encodeURIComponent(spotifysongName)}%20${encodeURIComponent(spotifyArtistName)}`;
+      copyToClipboard(searchUrl);
+    });
 
 
   } else {
@@ -205,3 +215,16 @@ if (initialsongName) {
   performSearch(initialsongName);
 }
 
+function copyToClipboard(text) {
+  const copySuccessMessage = document.querySelector('#copy-success-message');
+  const copyLinkButton = document.querySelector('#copy-link');
+  
+  navigator.clipboard.writeText(text).then(() => {
+    console.log('Copying to clipboard was successful!');
+    copySuccessMessage.innerHTML = '<p style="text-align:center">Link copied successfully!</p>';
+    copyLinkButton.style.display = 'none';
+  }, (err) => {
+    console.error('Could not copy text: ', err);
+    copySuccessMessage.innerHTML = 'Error: Could not copy link. Please try again.';
+  });
+}
