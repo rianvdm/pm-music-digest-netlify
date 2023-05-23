@@ -22,11 +22,15 @@ async function fetchAndDisplayTrack() {
     const spotifyUrl = spotifyData.data.items[0].external_urls.spotify;
     const spotifyID = spotifyData.data.items[0].id;
 
+    const songLinkData = await fetchData(`/.netlify/functions/getSongLink?spotifyUrl=${spotifyUrl}`);
+    const songLinkUrl = songLinkData.pageUrl;
+
     const html = `
       <div class="track_recent">
         <p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyID}"
         width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></p>
       </div>
+      <p style="text-align: center;">Want to share this song with a friend? Copy <a href="${songLinkUrl}" target="_blank">this URL</a> for a universal streaming link.</p>
     `;
     dataContainer.innerHTML = html;
   } catch (error) {
