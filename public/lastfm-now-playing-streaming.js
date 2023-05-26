@@ -35,7 +35,7 @@ async function fetchAndDisplayTrack() {
     const songLinkUrl = songLinkData.pageUrl;
 
     const placeholderElement = document.querySelector('#placeholder');
-    placeholderElement.innerHTML = `Want to share this song with a friend? Copy <a href="${songLinkUrl}" target="_blank">this URL</a> for a universal streaming link.`;
+    placeholderElement.innerHTML = `Want to share this song? Copy <a href="${songLinkUrl}" target="_blank">this URL</a> for a universal streaming link.`;
   } catch (error) {
     console.error(error);
     displayErrorMessage('.js-spotify-song', 'Oops, it looks like the Spotify API is having some issues. Please try again a little later!');
