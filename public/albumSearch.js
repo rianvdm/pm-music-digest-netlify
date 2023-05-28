@@ -103,16 +103,8 @@ async function performSearch(albumName) {
       </div>
       <div id="copy-success-message"></div>
       <p style="text-align:center;"><button id="copy-link">Copy Page Link</button></p>
-      <p><em>
-      ${
-        Array.isArray(lastfmGenres) && lastfmGenres.length >= 1
-          ? lastfmGenres.length === 0
-            ? "unknown"
-            : `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}`
-          : "Unknown genre"
-      }
-      album with ${spotifyTotalTracks} tracks. Released in ${spotifyYear}.
-      </em></p>
+      <p>${spotifyTotalTracks}-track album released in ${spotifyYear}.
+      </p>
       <div id="openai-summary-placeholder" style="margin-bottom: 0px;">
         <p><em>Generating ChatGPT summary...</em></p>
       </div>        
@@ -140,7 +132,9 @@ async function performSearch(albumName) {
 
 
     // Start OpenAI call
-      const prompt = `Write a summary to help someone decide if they might like the album ${cleanAlbumName} by ${spotifyArtistName}. Include information about the album's genres and styles. Write no more than three sentences.`;
+      // const prompt = `Write a summary to help someone decide if they might like the album ${cleanAlbumName} by ${spotifyArtistName}. Include information about the album's genres and styles. Write no more than three sentences.`;
+      const prompt = `Write a summary to help someone decide if they might like the album ${cleanAlbumName} by ${spotifyArtistName} if it was released before September 2021, which is the last date the AI was updated. Include information about the album's genres and styles. Write no more than three sentences.
+      If the album was released after this date and therefore you don’t have specific information about it, please simply state: "I'm sorry, I don't have information about the album as it was released after my knowledge cut-off in September 2021."`;
       const max_tokens = 120;
 
       async function getOpenAiSummary(prompt, max_tokens) {

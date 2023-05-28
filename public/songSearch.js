@@ -174,7 +174,7 @@ function generateHTML(node) {
           </div>
             </div><br>
         <div class="no-wrap-text">
-          <p>${spotifysongName} by ${spotifyArtistName} is a ${spotifyGenreList[0]} song from the album <a href="/search-album?album=${spotifyAlbumName}%20${spotifyArtistName}">${spotifyAlbumName}</a>, released in ${spotifyYear}. Here are some recommended tracks if you like that one:</p>
+          <p>${spotifyGenreList[0].charAt(0).toUpperCase() + spotifyGenreList[0].slice(1)} song from the album <a href="/search-album?album=${spotifyAlbumName}%20${spotifyArtistName}">${spotifyAlbumName}</a>, released in ${spotifyYear}. Here are some recommended tracks if you like that one:</p>
           <p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyRecoID[0]}"
               width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
           </iframe></p>
