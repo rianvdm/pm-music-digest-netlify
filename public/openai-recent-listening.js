@@ -8,15 +8,15 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
       const prompt = `
       Based on the last 10 songs I listened to, which are listed below,
-      speculate on my state of mind, then recommend no more than two similar albums that I might want to listen to next. 
+      speculate on the mood I'm in, then recommend two albums that I might want to listen to next, based on my mood. 
       Use a numbered list.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
       const max_tokens = 500;
 
       // Fetch call with error message
-      // fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
-      fetch(`/.netlify/functions/getOpenAIBonkers?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
+       fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
+      // fetch(`/.netlify/functions/getOpenAIBonkers?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
         .then(async response => {
           if (!response.ok) {
             const errorJson = await response.json();
