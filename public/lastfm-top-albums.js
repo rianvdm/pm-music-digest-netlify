@@ -1,14 +1,36 @@
-fetch('/.netlify/functions/getTopAlbums?period=7day')
-  .then(response => response.json())
+const fetchTopAlbumsJSON = async (url, errorMessage = 'Request failed') => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    const json = await response.json();
+    throw new Error(json.message || errorMessage);
+  }
+  return response.json();
+};
+
+const handleTopAlbumsError = (error, container) => {
+  console.error(error);
+  container.innerHTML += `<p>Error: ${error.message}</p>`;
+};
+
+const fetchAlbumData = async (album) => {
+  try {
+    const spotifyData = await fetchTopAlbumsJSON(`/.netlify/functions/getSpotifySearchResults?type=getAlbum&q=${encodeURIComponent(`${album.name} ${album.artist.name}`)}`);
+    const spotifyAlbumUrl = spotifyData.data.items[0].external_urls.spotify;
+    return { album, spotifyAlbumUrl };
+  } catch (error) {
+    handleTopAlbumsError(error, document.querySelector('.js-lastfm-top-albums'));
+  }
+};
+
+document.querySelector('.js-lastfm-top-albums').innerHTML = `<p style="text-align: center;">Loading...</p>`;
+fetchTopAlbumsJSON('/.netlify/functions/getTopAlbums?period=7day')
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-albums');
     const topAlbums = data.topalbums.album.slice(0, 6);
 
-    const htmlPromises = topAlbums.map(async album => {
-      const spotifyResponse = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getAlbum&q=${encodeURIComponent(`${album.name} ${album.artist.name}`)}`);
-      const spotifyData = await spotifyResponse.json();
-      const spotifyAlbumUrl = spotifyData.data.items[0].external_urls.spotify;
-      return `
+    const albumData = await Promise.all(topAlbums.map(fetchAlbumData));
+
+    const html = albumData.map(({ album, spotifyAlbumUrl }) => `
         <div class="track">
           <a href="/search-album?album=${album.name}%20${album.artist.name}">
             <img src="${album.image[3]['#text']}" class="track_image">
@@ -19,9 +41,8 @@ fetch('/.netlify/functions/getTopAlbums?period=7day')
               <a href="https://odesli.co/${spotifyAlbumUrl}" target="_blank" class="track_album">Stream now</a>
             </div>
           </div>
-      `;
-    });
-    const html = await Promise.all(htmlPromises);
+    `);
+
     dataContainer.innerHTML = html.join('');
   })
-  .catch(error => console.error(error));
+  .catch(error => handleTopAlbumsError(error, document.querySelector('.js-lastfm-top-albums')));

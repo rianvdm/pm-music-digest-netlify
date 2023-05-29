@@ -1,4 +1,4 @@
-const fetchJSON = async (url, errorMessage = 'Request failed') => {
+const fetchTopArtistsJSON = async (url, errorMessage = 'Request failed') => {
   const response = await fetch(url);
   if (!response.ok) {
     const json = await response.json();
@@ -7,7 +7,7 @@ const fetchJSON = async (url, errorMessage = 'Request failed') => {
   return response.json();
 };
 
-const handleError = (error, container) => {
+const handleTopArtistsError = (error, container) => {
   console.error(error);
   container.innerHTML += `<p>Error: ${error.message}</p>`;
 };
@@ -16,26 +16,26 @@ const fetchArtistData = async (artist) => {
   try {
     const q = `${artist.name}`;
 
-    const spotifyData = await fetchJSON(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(q)}`);
+    const spotifyData = await fetchTopArtistsJSON(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(q)}`);
     const spotifyArtistID = spotifyData.data.items[0].id;
     const spotifyArtistImgUrl = spotifyData.data.items[0].images[1].url;
     const spotifyGenres = spotifyData.data.items[0].genres.slice(0, 3);
 
     const [topTracks, relatedArtists] = await Promise.all([
-      fetchJSON(`/.netlify/functions/getSpotifyArtistTopTracks?spotifyArtistID=${spotifyArtistID}`).then(data => data.slice(0, 3)),
-      fetchJSON(`/.netlify/functions/getSpotifyRelatedArtists?spotifyArtistID=${spotifyArtistID}`).then(data => data.slice(0, 3))
+      fetchTopArtistsJSON(`/.netlify/functions/getSpotifyArtistTopTracks?spotifyArtistID=${spotifyArtistID}`).then(data => data.slice(0, 3)),
+      fetchTopArtistsJSON(`/.netlify/functions/getSpotifyRelatedArtists?spotifyArtistID=${spotifyArtistID}`).then(data => data.slice(0, 3))
     ]);
 
     return { artist, spotifyArtistImgUrl, spotifyGenres, topTracks, relatedArtists };
 
   } catch (error) {
-    handleError(error, document.querySelector('.js-lastfm-top-artists'));
+    handleTopArtistsError(error, document.querySelector('.js-lastfm-top-artists'));
   }
 };
 
 document.querySelector('.js-lastfm-top-artists').innerHTML = `<p style="text-align: center;">Loading...</p>`;
 
-fetchJSON('/.netlify/functions/getTopArtists?period=7day&limit=5')
+fetchTopArtistsJSON('/.netlify/functions/getTopArtists?period=7day&limit=5')
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-artists');
     const topArtists = data.topartists.artist.slice(0, 5);
@@ -70,4 +70,4 @@ fetchJSON('/.netlify/functions/getTopArtists?period=7day&limit=5')
 
     dataContainer.innerHTML = htmlStrings.join('');
   })
-  .catch(error => handleError(error, document.querySelector('.js-lastfm-top-artists')));
+  .catch(error => handleTopArtistsError(error, document.querySelector('.js-lastfm-top-artists')));

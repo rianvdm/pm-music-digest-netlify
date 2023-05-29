@@ -9,27 +9,33 @@ function getPacificTime(date, options) {
   });
 }
 
-async function fetchData(url) {
+const fetchJSON = async (url, errorMessage = 'Request failed') => {
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error('Failed to fetch data');
+    const json = await response.json();
+    throw new Error(json.message || errorMessage);
   }
   return response.json();
-}
+};
+
+const handleError = (error, container) => {
+  console.error(error);
+  container.innerHTML += `<p>Error: ${error.message}</p>`;
+};
 
 async function getRecentTracks() {
   try {
-    const data = await fetchData('/.netlify/functions/getRecentTracks?limit=1');
-    const dataContainer = document.querySelector('.js-now-playing');
+    const data = await fetchJSON('/.netlify/functions/getRecentTracks?limit=1');
     const nowPlaying = [data.recenttracks.track[0]];
-
+    const dataContainer = document.querySelector('.js-now-playing');
+    
     const artistName = nowPlaying[0].artist['#text']
       .replace(/&/g, '%26')
       .replace(/\+/g, '%2B');
     const encodedName = encodeURIComponent(artistName);
 
-    const lastFmData = await fetchData(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedName}`);
-    
+    const lastFmData = await fetchJSON(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedName}`);
+
     let additionalInfo = '';
     if (typeof lastFmData.artist.tags.tag[1] !== 'undefined') {
       const tags = lastFmData.artist.tags.tag
@@ -66,15 +72,15 @@ async function getRecentTracks() {
           ${additionalInfo}</p>
         </div>
       `;
-      }
-      dataContainer.innerHTML = html;
-
-      } catch (error) {
-        console.error(error);
-      }
-      }
+    }
+    dataContainer.innerHTML = html;
+  } catch (error) {
+    handleError(error, dataContainer);
+  }
+}
 
 getRecentTracks();
+
 
 
 // Code to display the Last.fm details
