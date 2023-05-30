@@ -108,7 +108,7 @@ async function displayRecentTracks(nowPlaying, lastFmData) {
 function getTrackHtml(track, formattedDate, formattedTime, additionalInfo, isNowPlaying) {
   const trackTemplate = `
     <div class="track_none">
-      <p style="text-align: center;">${isNowPlaying ? `Right now (${formattedTime} PT on ${formattedDate})` : `The last song I listened to at ${formattedTime} PT on ${formattedDate}`} I am listening to <strong><a href="/search-song?song=${track.name}%20${track.artist['#text']}">${track.name}</strong></a> by <strong><a href="/search?artist=${track.artist['#text']}">${track.artist['#text']}</strong></a> from the album <strong><a href="/search-album?album=${track.album['#text']}%20${track.artist['#text']}">${track.album['#text']}</a></strong>.
+      <p style="text-align: center;">${isNowPlaying ? `Right now (${formattedTime} PT on ${formattedDate}) I am listening to` : `The last song I listened to at ${formattedTime} PT on ${formattedDate}`} <strong><a href="/search-song?song=${track.name}%20${track.artist['#text']}">${track.name}</strong></a> by <strong><a href="/search?artist=${track.artist['#text']}">${track.artist['#text']}</strong></a> from the album <strong><a href="/search-album?album=${track.album['#text']}%20${track.artist['#text']}">${track.album['#text']}</a></strong>.
       ${additionalInfo}</p>
     </div>
   `;
