@@ -79,7 +79,7 @@ async function displayRecentTracks(nowPlaying, lastFmData) {
         .filter(tag => tag !== "seen live");
       const similar = lastFmData.artist.similar.artist.map(artist => artist.name);
 
-      additionalInfo = `Try it if you like <strong>${tags[0]}</strong> and <strong>${tags[1]}</strong> music
+      additionalInfo = `Try it if you like ${tags[0]} music
                         from artists like <a href="/search?artist=${similar[0]}">${similar[0]}</a>, <a href="/search?artist=${similar[1]}">${similar[1]}</a>, and <a href="/search?artist=${similar[2]}">${similar[2]}</a>.`;
     } else {
       additionalInfo = "Last.fm unfortunately does not have any additional information about this song.";
@@ -108,7 +108,7 @@ async function displayRecentTracks(nowPlaying, lastFmData) {
 function getTrackHtml(track, formattedDate, formattedTime, additionalInfo, isNowPlaying) {
   const trackTemplate = `
     <div class="track_none">
-      <p style="text-align: center;">${isNowPlaying ? `Right now (${formattedTime} PT on ${formattedDate}) I am listening to` : `The last song I listened to at ${formattedTime} PT on ${formattedDate}`} <strong><a href="/search-song?song=${track.name}%20${track.artist['#text']}">${track.name}</strong></a> by <strong><a href="/search?artist=${track.artist['#text']}">${track.artist['#text']}</strong></a> from the album <strong><a href="/search-album?album=${track.album['#text']}%20${track.artist['#text']}">${track.album['#text']}</a></strong>.
+      <p style="text-align: center;">${isNowPlaying ? `Right now (${formattedTime} PT on ${formattedDate}) I am listening to` : `The last song I listened to at ${formattedTime} PT on ${formattedDate} was`} <strong><a href="/search-song?song=${track.name}%20${track.artist['#text']}">${track.name}</strong></a> by <strong><a href="/search?artist=${track.artist['#text']}">${track.artist['#text']}</strong></a> from the album <strong><a href="/search-album?album=${track.album['#text']}%20${track.artist['#text']}">${track.album['#text']}</a></strong>.
       ${additionalInfo}</p>
     </div>
   `;

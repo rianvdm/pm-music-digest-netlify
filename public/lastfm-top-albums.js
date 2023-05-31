@@ -27,7 +27,7 @@ const fetchAlbumData = async (album) => {
 };
 
 document.querySelector('.js-lastfm-top-albums').innerHTML = `<p style="text-align: center;">Loading...</p>`;
-fetchTopAlbumsJSON('/.netlify/functions/getTopAlbums?period=7day')
+fetchTopAlbumsJSON('/.netlify/functions/getTopAlbums?period=7day&limit=6')
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-albums');
     const topAlbums = data.topalbums.album.slice(0, 6);
