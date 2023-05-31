@@ -62,20 +62,20 @@ fetchLovedTracksJSON('/.netlify/functions/getLovedTracks?limit=5')
       const spotifyImgUrl = spotifyData.value.data.items[0].album.images[1].url;
       const spotifyReleased = spotifyData.value.data.items[0].album.release_date;
       const spotifyYear = spotifyData.length === 4 ? spotifyReleased : spotifyReleased.substring(0, 4);
-      const spotifyGenres = (lastfmTags && lastfmTags[0]?.name)
-           ? lastfmTags[0]?.name
-           : "rock";
+      // const spotifyGenres = (lastfmTags && lastfmTags[0]?.name)
+      //      ? lastfmTags[0]?.name
+      //      : "rock";
 
-      const spotifyRecoPromise = fetchLovedTracksJSON(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
-        .catch(error => handleLovedTracksError(error, dataContainer));
+      // const spotifyRecoPromise = fetchLovedTracksJSON(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
+      //   .catch(error => handleLovedTracksError(error, dataContainer));
 
-      const [spotifyRecoData] = await Promise.allSettled([spotifyRecoPromise]);
+      // const [spotifyRecoData] = await Promise.allSettled([spotifyRecoPromise]);
 
-        if (spotifyRecoData.status === 'rejected') {
-          console.error(spotifyRecoData.reason);
-          dataContainer.innerHTML += `<p>Error: ${spotifyRecoData.reason.message}</p>`;
-          return;
-        }
+      //   if (spotifyRecoData.status === 'rejected') {
+      //     console.error(spotifyRecoData.reason);
+      //     dataContainer.innerHTML += `<p>Error: ${spotifyRecoData.reason.message}</p>`;
+      //     return;
+      //   }
 
       return {
         track,
@@ -84,17 +84,17 @@ fetchLovedTracksJSON('/.netlify/functions/getLovedTracks?limit=5')
         similarArtist,
         spotifyUrl,
         spotifyImgUrl,
-        spotifyRecoData,
         spotifyYear
+        // spotifyRecoData
       };
     });
 
     const trackData = await Promise.all(trackPromises);
 
-    const html = trackData.map(({ track, lastfmGenres, lastfmGenres2, similarArtist, spotifyUrl, spotifyImgUrl, spotifyRecoData, spotifyYear }) => {
-      const spotifyTrackReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.name);
-      const spotifyArtistReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.artists[0].name);
-      const spotifyUrlsReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.external_urls.spotify);
+    const html = trackData.map(({ track, lastfmGenres, lastfmGenres2, similarArtist, spotifyUrl, spotifyImgUrl, spotifyYear }) => {
+      // const spotifyTrackReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.name);
+      // const spotifyArtistReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.artists[0].name);
+      // const spotifyUrlsReco = spotifyRecoData.value.tracks.slice(0, 3).map(track => track.external_urls.spotify);
 
       const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
       const pacificTimezone = 'America/Los_Angeles';
@@ -111,8 +111,6 @@ fetchLovedTracksJSON('/.netlify/functions/getLovedTracks?limit=5')
             <strong><a href="/search-song?song=${track.name}%20${track.artist.name}">${track.name}</a></strong> by <strong><a href="/search?artist=${track.artist.name}">${track.artist.name}</a></strong> (liked on ${formattedDate}).
             <br><strong>Details:</strong> ${lastfmGenres}/${lastfmGenres2} song released in ${spotifyYear}.
             <br><strong>Similar artists:</strong> <a href="/search?artist=${similarArtist[0].name}">${similarArtist[0].name}</a>, <a href="/search?artist=${similarArtist[1].name}">${similarArtist[1].name}</a>, and <a href="/search?artist=${similarArtist[2].name}">${similarArtist[2].name}</a>.
-            <br><strong>Related songs:</strong> <a href="/search-song?song=${spotifyTrackReco[0]}%20${spotifyArtistReco[0]}">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
-            and <a href="/search-song?song=${spotifyTrackReco[1]}%20${spotifyArtistReco[1]}">${spotifyTrackReco[1]}</a> by ${spotifyArtistReco[1]}.
           </div>
         </div>
       `;
@@ -120,5 +118,10 @@ fetchLovedTracksJSON('/.netlify/functions/getLovedTracks?limit=5')
 
     dataContainer.innerHTML = `${html.join('')}`;
   })
-  .catch(error => handleLovedTracksError(error, dataContainer));
+
+ .catch(error => handleLovedTracksError(error, dataContainer));
+
+
+// <br><strong>Related songs:</strong> <a href="/search-song?song=${spotifyTrackReco[0]}%20${spotifyArtistReco[0]}">${spotifyTrackReco[0]}</a> by ${spotifyArtistReco[0]} 
+// and <a href="/search-song?song=${spotifyTrackReco[1]}%20${spotifyArtistReco[1]}">${spotifyTrackReco[1]}</a> by ${spotifyArtistReco[1]}.
 
