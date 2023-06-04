@@ -93,12 +93,12 @@ async function performSearch(artistName) {
       <img src="${spotifyImgUrl}" alt="${artist.name}" style="max-width: 220px;">
         <div class="no-wrap-text">
           <strong>Genres:</strong> ${
-              lastfmGenres && lastfmGenres.length >= 2
+              lastfmGenres && lastfmGenres.length >= 3
               ? `${lastfmGenres[0].name.charAt(0).toUpperCase()}${lastfmGenres[0].name.slice(1)}, ${lastfmGenres[1].name.toLowerCase()}, ${lastfmGenres[2].name.toLowerCase()}`
                 : "unknown"
           }.
           <br><strong>Similar artists:</strong> ${
-              lastfmSimilar && lastfmSimilar.length >= 2
+              lastfmSimilar && lastfmSimilar.length >= 3
                 ? `<a href="/search?artist=${encodeURIComponent(lastfmSimilar[0].name)}">${lastfmSimilar[0].name}</a>, <a href="/search?artist=${encodeURIComponent(lastfmSimilar[1].name)}">${lastfmSimilar[1].name}</a>, and <a href="/search?artist=${encodeURIComponent(lastfmSimilar[2].name)}">${lastfmSimilar[2].name}</a>`
                 : "unknown"
           }.
