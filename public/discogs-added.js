@@ -1,13 +1,28 @@
 //------------------------------------------
 // Fetch Discogs added albums
 //------------------------------------------
-fetch('/.netlify/functions/getDiscogsCollection')
-  .then(response => response.json())
+const fetchDiscogsAlbumsJSON = async (url, errorMessage = 'Request failed') => {
+  console.log(`fetchDiscogsAlbumsJSON called with URL: ${url}`);
+  const response = await fetch(url);
+  if (!response.ok) {
+    const json = await response.json();
+    throw new Error(json.message || errorMessage);
+  }
+  return response.json();
+};
+
+const handleDiscogsAlbumsError = (error, container) => {
+  console.error(error);
+  container.innerHTML += `<p>Error: ${error.message}</p>`;
+};
+
+const dataContainer = document.querySelector('.js-discogs-added');
+
+fetchDiscogsAlbumsJSON('/.netlify/functions/getDiscogsCollection')
   .then(data => {
-    const dataContainer = document.querySelector('.js-discogs-added');
     const discogsAdded = data.releases.slice(0, 6);
 
-      const html = discogsAdded.map(releases => {
+    const html = discogsAdded.map(releases => {
       const dateAdded = releases.date_added;
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       const formattedDate = new Date(dateAdded).toLocaleDateString('en-US', options);
@@ -27,7 +42,6 @@ fetch('/.netlify/functions/getDiscogsCollection')
         </div>
       `;
     }).join('');
-      dataContainer.innerHTML = html;
-  
+    dataContainer.innerHTML = html;
   })
-  .catch(error => console.error(error));
+  .catch(error => handleDiscogsAlbumsError(error, dataContainer));
