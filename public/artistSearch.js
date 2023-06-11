@@ -163,14 +163,18 @@ async function performSearch(artistName) {
       }
 
 
-      getOpenAiSummary(prompt, max_tokens)
-        .then(OpenAiSummary => {
-          openAiSummaryPlaceholder.innerHTML = `<p><strong>Artist summary from ChatGPT:</strong></p>
-          <p>${OpenAiSummary}</p>`;
-        })
-        .catch(error => {
-          openAiSummaryPlaceholder.innerHTML = `<p>Error: ${error.message}. Unable to fetch summary from OpenAI.</p>`;
-        });
+    getOpenAiSummary(prompt, max_tokens)
+      .then(OpenAiSummary => {
+        // Replace "/n/n" with HTML paragraph breaks
+        let formattedSummary = OpenAiSummary.replace(new RegExp('\n\n', 'g'), '</p><p>');
+
+        openAiSummaryPlaceholder.innerHTML = `<p><strong>Artist summary from ChatGPT:</strong></p>
+        <p>${formattedSummary}</p>`;
+      })
+      .catch(error => {
+        openAiSummaryPlaceholder.innerHTML = `<p>Error: ${error.message}. Unable to fetch summary from OpenAI.</p>`;
+      });
+
 
 
   } else {
