@@ -154,8 +154,8 @@ async function performSearch(artistName) {
 
 
     // Start OpenAI call
-      const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s history, genres, and styles.`;
-      const max_tokens = 200;
+      const prompt = `Write a summary to help someone decide if they might like the artist ${artist.name}. Include information about the artist’s history, genres, and styles. Write no more than 3 paragraphs.`;
+      const max_tokens = 250;
 
       async function getOpenAiSummary(prompt, max_tokens) {
         const OpenAiSummaryData = await fetchData('getOpenAIArtist', {prompt: prompt, max_tokens: max_tokens, name: artist.name});
