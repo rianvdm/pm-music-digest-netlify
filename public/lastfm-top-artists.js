@@ -35,7 +35,7 @@ const fetchArtistData = async (artist) => {
 
 document.querySelector('.js-lastfm-top-artists').innerHTML = `<p style="text-align: center;">Loading...</p>`;
 
-fetchTopArtistsJSON('/.netlify/functions/getTopArtists?period=7day&limit=5')
+fetchTopArtistsJSON('/.netlify/functions/getTopArtists?period=1month&limit=5')
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-artists');
     const topArtists = data.topartists.artist.slice(0, 5);
