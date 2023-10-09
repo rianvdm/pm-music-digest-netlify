@@ -28,11 +28,11 @@ exports.handler = async function(event, context) {
           Authorization: `Bearer ${access_token}`,
         },
         body: JSON.stringify({
-          model: "gpt-3.5-turbo-0613",
+          model: "gpt-3.5-turbo",
           // frequency_penalty: 0.8,
           messages: [
-            {role: "user", content: prompt},
-            {role: "system", content: "You are a friendly assistant who wants to help people find music they will love."}
+            {role: "system", content: "You are a friendly assistant who wants to help people find music they will love."},
+            {role: "user", content: prompt}
           ],
           max_tokens: max_tokens,
           n: 1,
@@ -50,7 +50,7 @@ exports.handler = async function(event, context) {
       const openAIJsonResponse = await openAIResponse.json();
       albumSummary = openAIJsonResponse.choices[0].message.content; // Depending on the response structure
 
-      await client.set(albumName, albumSummary);
+      await client.set(albumName, albumSummary, 'EX', 30 * 24 * 60 * 60);  // Set timeout while setting key
 
       return {
         statusCode: 200,

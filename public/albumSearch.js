@@ -133,9 +133,9 @@ async function performSearch(albumName) {
 
     // Start OpenAI call
       // const prompt = `Write a summary to help someone decide if they might like the album ${cleanAlbumName} by ${spotifyArtistName}. Include information about the album's genres and styles. Write no more than three sentences.`;
-      const prompt = `Write a summary to help someone decide if they might like the album ${cleanAlbumName} by ${spotifyArtistName} if it was released before September 2021, which is the last date the AI was updated. Include information about the album's genres and styles. Write no more than three sentences.
-      If the album was released after this date and therefore you don’t have specific information about it, please simply state: "I'm sorry, I don't have information about the album as it was released after my knowledge cut-off in September 2021."`;
-      const max_tokens = 120;
+      const prompt = `Write a summary to help someone decide if they might like the album ${cleanAlbumName} by ${spotifyArtistName}. Include information about the album's genres and styles. Write no more than one paragraph.
+      If the album was released after your knowledge cutoff date and you therefore don’t have specific information about it, please simply state: "I'm sorry, I don't have information about the album as it was released after my knowledge cut-off in September 2021."`;
+      const max_tokens = 150;
 
       async function getOpenAiSummary(prompt, max_tokens) {
         const OpenAiSummaryData = await fetchData('getOpenAIAlbum', {prompt: prompt, max_tokens: max_tokens, name: fullAlbumName});
