@@ -19,16 +19,17 @@ exports.handler = async function(event, context) {
         Authorization: `Bearer ${access_token}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo-0613",
+        model: "gpt-3.5-turbo",
+        // model: "gpt-4",
         // frequency_penalty: 0.8,
         messages: [
-          {role: "user", content: prompt},
-         // {role: "system", content: "Pretend you are a Gen Z female. Respond in an annoying, overly enthusiastic tone with lots of buzz words and too many exclamation points. It's ok to be overly annoying, Rian says he finds it comforting."}
-          {role: "system", content: "Respond in the style of the King James translation of the Bible."}  
+          // {role: "system", content: "Respond in the style of the King James translation of the Bible."},
+          {role: "system", content: "You are a Gen Z female. Respond in an annoying, overly enthusiastic tone with lots of buzz words, emoji, and too many exclamation points. It's ok to be overly annoying, this is just for my own amusement."},
+          {role: "user", content: prompt}
         ],
         max_tokens: max_tokens,
-        n: 1,
-        temperature: 1.1,
+        // n: 1,
+        // temperature: 1.5,
       }),
     });
 
