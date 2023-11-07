@@ -79,17 +79,17 @@ async function performSearch(songName) {
 
     const spotifyGenres = `${spotifyGenreList[0]},${spotifyGenreList[1]}`;
 
-    // async function getSpotifyReco(spotifyArtistID, spotifyGenres, spotifyTrackID) {
-    //   const spotifyRecoData = await fetchData('getSpotifyRecommendations', {seed_artists: spotifyArtistID, seed_genres: spotifyGenreList, seed_tracks: spotifyTrackID});
-    //   return spotifyRecoData.tracks; 
-    // }
+    async function getSpotifyReco(spotifyArtistID, spotifyGenres, spotifyTrackID) {
+      const spotifyRecoData = await fetchData('getSpotifyRecommendations', {seed_artists: spotifyArtistID, seed_genres: spotifyGenreList, seed_tracks: spotifyTrackID});
+      return spotifyRecoData.tracks; 
+    }
 
-    // const spotifyReco = await getSpotifyReco(spotifyArtistID, spotifyGenres, spotifyTrackID); 
+    const spotifyReco = await getSpotifyReco(spotifyArtistID, spotifyGenres, spotifyTrackID); 
 
-    // const spotifyTrackReco = spotifyReco.slice(0, 3).map(track => track.name);
-    // const spotifyArtistReco = spotifyReco.slice(0, 3).map(track => track.artists[0].name);
-    // const spotifyUrlsReco = spotifyReco.slice(0, 3).map(track => track.external_urls.spotify);
-    // const spotifyRecoID = spotifyReco.slice(0, 2).map(track => track.id);
+    const spotifyTrackReco = spotifyReco.slice(0, 3).map(track => track.name);
+    const spotifyArtistReco = spotifyReco.slice(0, 3).map(track => track.artists[0].name);
+    const spotifyUrlsReco = spotifyReco.slice(0, 3).map(track => track.external_urls.spotify);
+    const spotifyRecoID = spotifyReco.slice(0, 2).map(track => track.id);
 
 
     // Genius search
@@ -174,7 +174,13 @@ function generateHTML(node) {
           </div>
             </div><br>
         <div class="no-wrap-text">
-          <p>${spotifyGenreList[0].charAt(0).toUpperCase() + spotifyGenreList[0].slice(1)} song from the album <a href="/search-album?album=${spotifyAlbumName}%20${spotifyArtistName}">${spotifyAlbumName}</a>, released in ${spotifyYear}. 
+          <p>${spotifyGenreList[0].charAt(0).toUpperCase() + spotifyGenreList[0].slice(1)} song from the album <a href="/search-album?album=${spotifyAlbumName}%20${spotifyArtistName}">${spotifyAlbumName}</a>, released in ${spotifyYear}. Here are some recommended tracks if you like that one:</p>
+          <p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyRecoID[0]}"
+              width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+          </iframe></p>
+          <p><iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/${spotifyRecoID[1]}"
+              width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+          </iframe></p>
           <div id="copy-success-message"></div>
           <p style="text-align:center;"><button id="copy-link">Copy Page Link</button></p>
           <p>${descriptionHTML}</p>

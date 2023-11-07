@@ -44,7 +44,7 @@ exports.handler = async function (event, context) {
     console.log('Quitting Redis client');
     await client.quit();
 
-    const requestUrl = `https://api.spotify.com/v1/recommendations?limit=10&seed_artists=${seed_artists}&seed_genres=${seed_genres}&seed_tracks=${seed_tracks}&limit=2`;
+    const requestUrl = `https://api.spotify.com/v1/recommendations?seed_artists=${seed_artists}&seed_genres=${seed_genres}&seed_tracks=${seed_tracks}&limit=2`;
 
     const response = await fetch(requestUrl, {
       method: "GET",
@@ -53,6 +53,13 @@ exports.handler = async function (event, context) {
         "Content-Type": "application/json",
       },
     });
+
+if (!response.ok) {
+  // This will log the non-JSON error response for debugging purposes
+  const errorText = await response.text();
+  console.error('Error response from Spotify API:', errorText);
+  throw new Error('Non-OK response from Spotify API');
+}
 
     const data = await response.json();
     return {
