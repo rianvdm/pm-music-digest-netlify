@@ -57,7 +57,7 @@ async function getRecentTracks() {
 
       html = `
         <div class="track_none">
-          <p style="text-align: center;">Right now I am listening to <strong><a href="/search-song?song=${nowPlaying[0].name}%20${nowPlaying[0].artist['#text']}">${nowPlaying[0].name}</strong></a> by <strong><a href="/search?artist=${nowPlaying[0].artist['#text']}">${nowPlaying[0].artist['#text']}</strong></a> from the album <strong><a href="/search-album?album=${nowPlaying[0].album['#text']}%20${nowPlaying[0].artist['#text']}">${nowPlaying[0].album['#text']}</a></strong>.
+          <p style="text-align: center;">Right now I am listening to <strong>${nowPlaying[0].name}</strong></a> by <strong><a href="/search?artist=${nowPlaying[0].artist['#text']}">${nowPlaying[0].artist['#text']}</strong></a> from the album <strong><a href="/search-album?album=${nowPlaying[0].album['#text']}%20${nowPlaying[0].artist['#text']}">${nowPlaying[0].album['#text']}</a></strong>.
           ${additionalInfo}</p>
         </div>
       `;
