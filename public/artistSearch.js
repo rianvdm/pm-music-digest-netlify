@@ -104,7 +104,7 @@ async function performSearch(artistName) {
           }.
           <br><strong>Most popular songs:</strong> ${
               topTracks && topTracks.length >= 3
-                ? `<a href="/search-song?song=${topTracks[0].name}%20${artist.name}">${topTracks[0].name}</a>, <a href="/search-song?song=${topTracks[1].name}%20${artist.name}">${topTracks[1].name}</a>, and <a href="/search-song?song=${topTracks[2].name}%20${artist.name}">${topTracks[2].name}</a>`
+                ? `<a href="${topTracks[0].external_urls.spotify}">${topTracks[0].name}</a>, <a href="${topTracks[1].external_urls.spotify}">${topTracks[1].name}</a>, and <a href="${topTracks[2].external_urls.spotify}">${topTracks[2].name}</a>`
                 : "unknown"
           }.
           <br><strong>Most popular albums:</strong> ${
