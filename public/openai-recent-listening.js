@@ -9,7 +9,7 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
       const prompt = `
       Based on the last 10 songs I listened to, which are listed below,
       speculate on the mood I'm in, then recommend two albums that I might want to listen to next to reflect my current mood. 
-      Use proper paragraph spacing.
+      Use proper paragraph spacing. Format the artist and album names in bold text.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
       const max_tokens = 500;
