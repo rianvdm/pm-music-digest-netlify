@@ -37,23 +37,9 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
             // Format text enclosed in ** as bold
             paragraph = paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-            // If the paragraph starts with a digit followed by a period or a closing bracket, format it as an ordered list
-            if (paragraph.match(/^\d+[\.\)]/)) {
-              let listItems = paragraph.split('\n');
-              formattedResponse += '<ul class="track_ul">';
-              for (let listItem of listItems) {
-                // Remove the digit and the following character (either period or closing bracket)
-                listItem = listItem.replace(/^\d+[\.\)]\s*/, '');
-                // Also replace ** in list items
-                listItem = listItem.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                formattedResponse += `<li>${listItem}</li>`;
-              }
-              formattedResponse += '</ul>';
-            } else {
-              // Otherwise, format it as a paragraph
-              formattedResponse += `<p>${paragraph}</p>`;
-            }
-          }
+            // Directly append the paragraph as formatted text without checking for list patterns
+            formattedResponse += `<p>${paragraph}</p>`;
+}
 
 
           const content = `
