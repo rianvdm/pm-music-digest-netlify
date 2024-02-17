@@ -362,7 +362,7 @@ img.center-image {
 }
 
 /* Search Form */
-#search-form {
+#search-form, #usernameInput {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -371,11 +371,11 @@ img.center-image {
   padding-bottom: 1em;
 }
 
-#search-form label {
+#search-form label, #usernameInput label {
   margin-right: 0.5em;
 }
 
-#artist-name, #album-name, #song-name {
+#artist-name, #album-name, #song-name, #lastFmUsername {
   border: 2px solid var(--c-accent);
   border-radius: 4px;
   padding: 8px;
@@ -386,7 +386,7 @@ img.center-image {
   max-width: 300px;
 }
 
-#artist-name:focus {
+#artist-name:focus, #album-name:focus, #song-name:focus, #lastFmUsername:focus {
   border-color: rgba(var(--c-accent), 0.6);
 }
 
