@@ -35,7 +35,8 @@ function fetchUserRecentTracks() {
         const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
         const prompt = `
         Based on the last 10 songs I listened to, which are listed below,
-        speculate on the mood I'm in, then recommend two albums that I might want to listen to next to reflect my current mood. 
+        speculate on the mood I'm in, then recommend two albums that I might want to listen to next to reflect my current mood.
+        Recommend albums by artists that are NOT on the list of the last 10 songs.
         Use proper paragraph spacing. Format the artist and album names in bold text.
         `;
         const fullPrompt = `${prompt}\n\n${trackList}`;
