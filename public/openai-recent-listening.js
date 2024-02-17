@@ -8,8 +8,8 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
       const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
       const prompt = `
       Based on the last 10 songs I listened to, which are listed below,
-      speculate on the mood I'm in, then recommend two albums that I might want to listen to next, based on my mood. 
-      Use a numbered list.
+      speculate on the mood I'm in, then recommend two albums that I might want to listen to next to reflect my current mood. 
+      Use a numbered list with proper paragraph spacing.
       `;
       const fullPrompt = `${prompt}\n\n${trackList}`;
       const max_tokens = 500;
@@ -33,8 +33,10 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
 
           let formattedResponse = '';
 
-          // Loop through each paragraph
           for (let paragraph of paragraphs) {
+            // Format text enclosed in ** as bold
+            paragraph = paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
             // If the paragraph starts with a digit followed by a period or a closing bracket, format it as an ordered list
             if (paragraph.match(/^\d+[\.\)]/)) {
               let listItems = paragraph.split('\n');
@@ -42,6 +44,8 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
               for (let listItem of listItems) {
                 // Remove the digit and the following character (either period or closing bracket)
                 listItem = listItem.replace(/^\d+[\.\)]\s*/, '');
+                // Also replace ** in list items
+                listItem = listItem.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                 formattedResponse += `<li>${listItem}</li>`;
               }
               formattedResponse += '</ul>';
@@ -50,6 +54,7 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
               formattedResponse += `<p>${paragraph}</p>`;
             }
           }
+
 
           const content = `
             <div class="openai-response">

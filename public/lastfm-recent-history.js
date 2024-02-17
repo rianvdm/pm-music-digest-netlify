@@ -9,7 +9,7 @@ fetch('/.netlify/functions/getRecentTracks?limit=10')
 
         return `
           <li class="track_recent">
-            <a href="/search-song?song=${track.name}%20${track.artist['#text']}">${track.name}</a> by ${track.artist['#text']}.
+            ${track.name} by ${track.artist['#text']}.
           </li>
         `;
       }).join('');
