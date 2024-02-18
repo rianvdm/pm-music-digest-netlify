@@ -34,7 +34,10 @@ function fetchUserRecentTracks() {
 
         const trackList = recentTracks.map(track => `${track.name} by ${track.artist['#text']}`).join('\n');
         const prompt = `
-        Based on the last 10 songs I listened to, speculate on the mood I'm in, then recommend two albums that I might want to listen to next to reflect my current mood. Recommend albums by artists that are NOT on the list of the last 10 songs. Use proper paragraph spacing. Format the artist and album names in bold text.
+        Based on the last 10 songs I listened to, speculate on the mood I'm in, 
+        then recommend two albums that I might want to listen to next to reflect my current mood. 
+        Recommend albums by artists that are NOT on the list of the last 10 songs. 
+        Use proper paragraph spacing. Format the artist and album names in bold text.
         `;
         const fullPrompt = `${prompt}\n\n${trackList}`;
         const max_tokens = 500;
@@ -45,7 +48,10 @@ function fetchUserRecentTracks() {
             const openaiTextResponse = openaiDataResponse.data.choices[0].message['content'];
             let paragraphs = openaiTextResponse.split('\n\n');
             let formattedResponse = paragraphs.map(paragraph => 
-              `<p>${paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>`
+            `<p>${paragraph
+              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+            </p>`
+
             ).join('');
 
             dataContainer.innerHTML = `<div class="openai-response">${formattedResponse}</div>`;
