@@ -37,7 +37,7 @@ function fetchUserRecentTracks() {
         Based on the last 10 songs I listened to, speculate on the mood I'm in, 
         then recommend two albums that I might want to listen to next to reflect my current mood. 
         Recommend albums by artists that are NOT on the list of the last 10 songs. 
-        Use proper paragraph spacing. Format the artist and album names in bold text.
+        Use proper paragraph spacing. Display the artist and album names as **<album> by <artist>**.
         `;
         const fullPrompt = `${prompt}\n\n${trackList}`;
         const max_tokens = 500;
@@ -47,12 +47,18 @@ function fetchUserRecentTracks() {
           .then(openaiDataResponse => {
             const openaiTextResponse = openaiDataResponse.data.choices[0].message['content'];
             let paragraphs = openaiTextResponse.split('\n\n');
-            let formattedResponse = paragraphs.map(paragraph => 
-            `<p>${paragraph
-              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
-            </p>`
 
-            ).join('');
+            let formattedResponse = paragraphs.map(paragraph => {
+              // Wrap each paragraph in <p> tags and apply the same transformation for bold text
+              return `<p>${paragraph.replace(/\*\*(.*?)\*\*/g, (match, p1) => {
+                // Encode the entire bold text for the URL
+                const queryEncoded = encodeURIComponent(p1.trim());
+                // Construct URL using the entire encoded text
+                const url = `/search-album?album=${queryEncoded}`;
+                // Replace bold text with a link wrapped in <strong> tags
+                return `<a href="${url}" target="_blank"><strong>${p1}</strong></a>`;
+              })}</p>`;
+            }).join(''); // Join without adding any additional characters, as <p> tags now serve as separators
 
             dataContainer.innerHTML = `<div class="openai-response">${formattedResponse}</div>`;
           })
