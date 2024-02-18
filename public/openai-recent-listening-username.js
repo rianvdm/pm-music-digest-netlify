@@ -56,7 +56,7 @@ function fetchUserRecentTracks() {
                 // Construct URL using the entire encoded text
                 const url = `/search-album?album=${queryEncoded}`;
                 // Replace bold text with a link wrapped in <strong> tags
-                return `<a href="${url}" target="_blank"><strong>${p1}</strong></a>`;
+                return `<a href="${url}"><strong>${p1}</strong></a>`;
               })}</p>`;
             }).join(''); // Join without adding any additional characters, as <p> tags now serve as separators
 
