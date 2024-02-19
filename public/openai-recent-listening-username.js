@@ -36,7 +36,8 @@ function fetchUserRecentTracks() {
         const prompt = `
         Based on the last 10 songs I listened to, speculate on the mood I'm in, 
         then recommend two albums that I might want to listen to next to reflect my current mood. 
-        Recommend albums by artists that are NOT on the list of the last 10 songs. 
+        Recommend albums by artists that are NOT on the list of the last 10 songs.
+        Avoid albums that are very popular and mainstream, instead recommending what could be considered "hidden gems".
         Use proper paragraph spacing. Display the artist and album names as **<album> by <artist>**.
         `;
         const fullPrompt = `${prompt}\n\n${trackList}`;
