@@ -8,7 +8,7 @@ export async function onRequest(context) {
     limit = 1; 
   }
 
-  const url = `http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USERNAME}&api_key=${LAST_FM_API_TOKEN}&limit=${limit}&format=json`;
+  const url = `http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USERNAME}&api_key=${LASTFM_API_TOKEN}&limit=${limit}&format=json`;
   console.log(`${url}`);
   // try {
   //   const response = await fetch(url);
