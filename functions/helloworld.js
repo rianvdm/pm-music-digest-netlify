@@ -3,7 +3,10 @@ const LASTFM_USERNAME = '<your-lastfm-username>';
 
 
 export async function onRequest(context) {
-  const { urlParams } = new URL(context.request.url);
-  let limit = urlParams.get('limit');
-  return new Response(`Hello ${LASTFM_USERNAME}, ${limit} world!`)
+  console.log(`Context: ${context}`);
+  console.log(`Username: ${LASTFM_USERNAME}`);
+  return new Response("Hi");
+  // const { urlParams } = new URL(context.request.url);
+  // let limit = urlParams.get('limit');
+  // return new Response(`Hello ${LASTFM_USERNAME}, ${limit} world!`)
 }
