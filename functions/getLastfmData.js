@@ -10,8 +10,8 @@ export async function onRequest(context) {
   let url;
 
   const urlTemplates = {
-    topAlbumsByArtist: (artist) => artist ? `http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=${artist}&api_key=${lastFMToken}&format=json` : null,
-    getArtistInfo: (artist) => artist ? `http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artist}&api_key=${lastFMToken}&format=json` : null,
+    topAlbumsByArtist: (artist) => artist ? `http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=${artist}&api_key=${LASTFM_API_TOKEN}&format=json` : null,
+    getArtistInfo: (artist) => artist ? `http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artist}&api_key=${LASTFM_API_TOKEN}&format=json` : null,
   };
 
   if (urlTemplates.hasOwnProperty(dataType) && urlTemplates[dataType](artist || period)) {

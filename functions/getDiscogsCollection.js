@@ -5,6 +5,8 @@ export async function onRequest(context) {
   
   const url = `https://api.discogs.com/users/${DiscogsUser}/collection/folders/0/releases?token=${DiscogsToken}&sort=added&sort_order=desc&per_page=10`
 
+  console.log(url);
+
   try {
     const response = await fetch(url);
     if (!response.ok) {
