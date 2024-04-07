@@ -1,12 +1,11 @@
-// const LAST_FM_API_TOKEN = '<your-lastfm-api-token>';
-// const LASTFM_USERNAME = '<your-lastfm-username>';
-
-
 export async function onRequest(context) {
-  console.log(`Context: ${context.request.url}`);
-  console.log(`Username: ${context.env.LASTFM_USERNAME}`);
-  return new Response("Hi");
-  // const { urlParams } = new URL(context.request.url);
-  // let limit = urlParams.get('limit');
-  // return new Response(`Hello ${LASTFM_USERNAME}, ${limit} world!`)
+  const LASTFM_USERNAME = context.env.LASTFM_USERNAME;
+  const LASTFM_API_TOKEN = conext.env.LAST_FM_API_TOKEN;
+  
+  const { urlParams } = new URL(context.request.url);
+  let limit = urlParams.get('limit');
+  if (!limit || isNaN(parseInt(limit))) {
+    limit = 1; 
+  }
+  return new Response(`Hello ${LASTFM_USERNAME} with a limit of ${limit}`);
 }
