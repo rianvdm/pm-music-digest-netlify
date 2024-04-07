@@ -1,4 +1,3 @@
-// Get latest additions to Dicogs
 export async function onRequest(context) {
   
   const DiscogsToken = context.env.DISCOGS_API_TOKEN;
