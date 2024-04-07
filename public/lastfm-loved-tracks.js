@@ -15,7 +15,7 @@ const handleLovedTracksError = (error, container) => {
 const encodeName = (name) => encodeURIComponent(name.replace(/&/g, '%26').replace(/\+/g, '%2B').replace(/\./g, '%2E'));
 
 
-fetchLovedTracksJSON('/.netlify/functions/getLovedTracks?limit=5')
+fetchLovedTracksJSON('/getLovedTracks?limit=5')
   .then(async data => {
     const lovedTracks = data.lovedtracks.track.slice(0, 5);
     const dataContainer = document.querySelector('.js-lastfm-loved-tracks');
@@ -23,11 +23,11 @@ fetchLovedTracksJSON('/.netlify/functions/getLovedTracks?limit=5')
       const encodedArtist = encodeName(track.artist.name);
       const encodedTrack = encodeName(track.name);
 
-      const lastfmPromise = fetchLovedTracksJSON(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedArtist}`)
+      const lastfmPromise = fetchLovedTracksJSON(`/getLastfmData?type=getArtistInfo&artist=${encodedArtist}`)
         .catch(error => handleLovedTracksError(error, dataContainer));
 
       const q = `${encodedTrack} ${encodedArtist}`;
-      const spotifySearchPromise = fetchLovedTracksJSON(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
+      const spotifySearchPromise = fetchLovedTracksJSON(`/getSpotifySearchResults?type=getTrack&q=${q}`)
         .catch(error => handleLovedTracksError(error, dataContainer));
 
       const [lastfmData, spotifyData] = await Promise.allSettled([lastfmPromise, spotifySearchPromise]);
@@ -66,7 +66,7 @@ fetchLovedTracksJSON('/.netlify/functions/getLovedTracks?limit=5')
       //      ? lastfmTags[0]?.name
       //      : "rock";
 
-      // const spotifyRecoPromise = fetchLovedTracksJSON(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
+      // const spotifyRecoPromise = fetchLovedTracksJSON(`/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`)
       //   .catch(error => handleLovedTracksError(error, dataContainer));
 
       // const [spotifyRecoData] = await Promise.allSettled([spotifyRecoPromise]);

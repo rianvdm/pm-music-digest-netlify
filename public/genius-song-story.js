@@ -33,7 +33,7 @@ async function fetchAndDisplayTrack() {
     const album = nowPlaying[0].album['#text'];
     const query = `${sanitizeInput(title)} ${sanitizeInput(artist)}`;
 
-    const geniusData = await fetchData(`/.netlify/functions/getGeniusSearch?query=${query}`);
+    const geniusData = await fetchData(`/getGeniusSearch?query=${query}`);
 
     if(!geniusData.data.response.hits[0] || !geniusData.data.response.hits[0].result.id) {
         displayErrorMessage('.js-genius-song-story', 'No Genius ID found for the song. Please try another song!');
@@ -42,7 +42,7 @@ async function fetchAndDisplayTrack() {
 
     const geniusID = geniusData.data.response.hits[0].result.id;
 
-    const geniusSong = await fetchData(`/.netlify/functions/getGeniusSong?songid=${geniusID}`);
+    const geniusSong = await fetchData(`/getGeniusSong?songid=${geniusID}`);
 //    const geniusStory = geniusSong.data.response.song.description.dom;
     const geniusSongPath = geniusSong.data.response.song.path;
     const geniusSongName = geniusSong.data.response.song.full_title;

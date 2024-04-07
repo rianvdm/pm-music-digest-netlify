@@ -18,7 +18,7 @@ const handleDiscogsAlbumsError = (error, container) => {
 
 const dataContainer = document.querySelector('.js-discogs-added');
 
-fetchDiscogsAlbumsJSON('/.netlify/functions/getDiscogsCollection')
+fetchDiscogsAlbumsJSON('/getDiscogsCollection')
   .then(data => {
     const discogsAdded = data.releases.slice(0, 6);
 

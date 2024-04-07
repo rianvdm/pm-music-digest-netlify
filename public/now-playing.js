@@ -38,8 +38,8 @@ async function fetchAndDisplayTrack() {
     const q = `${sanitizeInput(title)} ${sanitizeInput(artist)} ${sanitizeInput(album)}`;
 
     const [lastFmData, spotifyData] = await Promise.all([
-      fetchNowPlayingData(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodeURIComponent(artist)}`),
-      fetchNowPlayingData(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
+      fetchNowPlayingData(`/getLastfmData?type=getArtistInfo&artist=${encodeURIComponent(artist)}`),
+      fetchNowPlayingData(`/getSpotifySearchResults?type=getTrack&q=${q}`)
     ]);
 
     displayRecentTracks(nowPlaying, lastFmData);
@@ -57,7 +57,7 @@ async function fetchAndDisplayTrack() {
     `;
     dataContainer.innerHTML = html;
 
-    const songLinkData = await fetchNowPlayingData(`/.netlify/functions/getSongLink?spotifyUrl=${spotifyUrl}`);
+    const songLinkData = await fetchNowPlayingData(`/getSongLink?spotifyUrl=${spotifyUrl}`);
     const songLinkUrl = songLinkData.pageUrl;
 
     const placeholderElement = document.querySelector('#placeholder');

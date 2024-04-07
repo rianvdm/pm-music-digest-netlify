@@ -16,14 +16,14 @@ const fetchArtistData = async (artist) => {
   try {
     const q = `${artist.name}`;
 
-    const spotifyData = await fetchTopArtistsJSON(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(q)}`);
+    const spotifyData = await fetchTopArtistsJSON(`/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(q)}`);
     const spotifyArtistID = spotifyData.data.items[0].id;
     const spotifyArtistImgUrl = spotifyData.data.items[0].images[1].url;
     const spotifyGenres = spotifyData.data.items[0].genres.slice(0, 3);
 
     const [topTracks, relatedArtists] = await Promise.all([
-      fetchTopArtistsJSON(`/.netlify/functions/getSpotifyArtistTopTracks?spotifyArtistID=${spotifyArtistID}`).then(data => data.slice(0, 3)),
-      fetchTopArtistsJSON(`/.netlify/functions/getSpotifyRelatedArtists?spotifyArtistID=${spotifyArtistID}`).then(data => data.slice(0, 3))
+      fetchTopArtistsJSON(`/getSpotifyArtistTopTracks?spotifyArtistID=${spotifyArtistID}`).then(data => data.slice(0, 3)),
+      fetchTopArtistsJSON(`/getSpotifyRelatedArtists?spotifyArtistID=${spotifyArtistID}`).then(data => data.slice(0, 3))
     ]);
 
     return { artist, spotifyArtistImgUrl, spotifyGenres, topTracks, relatedArtists };
@@ -35,7 +35,7 @@ const fetchArtistData = async (artist) => {
 
 document.querySelector('.js-lastfm-top-artists').innerHTML = `<p style="text-align: center;">Loading...</p>`;
 
-fetchTopArtistsJSON('/.netlify/functions/getTopArtists?period=1month&limit=5')
+fetchTopArtistsJSON('/getTopArtists?period=1month&limit=5')
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-artists');
     const topArtists = data.topartists.artist.slice(0, 5);

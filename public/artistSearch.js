@@ -8,7 +8,7 @@ function getQueryParam(param) {
 
 async function fetchData(endpoint, params = {}) {
   const urlParams = new URLSearchParams(params).toString();
-  const url = `/.netlify/functions/${endpoint}?${urlParams}`;
+  const url = `/${endpoint}?${urlParams}`;
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -22,7 +22,7 @@ async function performSearch(artistName) {
   searchResults.innerHTML = `<p style="text-align: center">Searching for ${artistName}...</p>`;
 
   // Call the Netlify function with the artist name
-  const response = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(artistName)}`);
+  const response = await fetch(`/getSpotifySearchResults?type=getArtist&q=${encodeURIComponent(artistName)}`);
 
   if (!response.ok) {
     // Display an error message if the response is not successful
@@ -50,7 +50,7 @@ async function performSearch(artistName) {
     const topTracks = await getTopTracks(spotifyArtistID);
 
     // async function getRelatedArtists(spotifyArtistID) {
-    //   const relatedArtistsResponse = await fetch(`/.netlify/functions/getSpotifyRelatedArtists?spotifyArtistID=${spotifyArtistID}`);
+    //   const relatedArtistsResponse = await fetch(`/getSpotifyRelatedArtists?spotifyArtistID=${spotifyArtistID}`);
     //   const relatedArtistsData = await relatedArtistsResponse.json();
     //   return relatedArtistsData.slice(0, 3);
     // }

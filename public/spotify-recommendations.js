@@ -18,7 +18,7 @@ async function getRecentTracks() {
     const encodedTrack = encodeName(nowPlaying[0].name);
 
     const q = `${encodedTrack} ${encodedArtist}`;
-    const spotifySearchData = await fetchData(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`);
+    const spotifySearchData = await fetchData(`/getSpotifySearchResults?type=getTrack&q=${q}`);
     
     if (spotifySearchData.status === 'rejected') {
       console.error(spotifySearchData.reason);
@@ -31,13 +31,13 @@ async function getRecentTracks() {
     const spotifyID = spotifySearchData.data.items[0].id;
     const spotifyArtistID = spotifySearchData.data.items[0].artists[0].id;
 
-    const spotifyArtistData = await fetchData(`/.netlify/functions/getSpotifySearchResults?type=getArtist&q=${encodedArtist}`);
+    const spotifyArtistData = await fetchData(`/getSpotifySearchResults?type=getArtist&q=${encodedArtist}`);
     const spotifyArtistName = spotifyArtistData.data.items[0].name;
     const spotifyGenreList = spotifyArtistData.data.items[0].genres.slice(0, 3);
 
     const spotifyGenres = `${spotifyGenreList[0]},${spotifyGenreList[1]}`;
 
-    const spotifyRecoData = await fetchData(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`);
+    const spotifyRecoData = await fetchData(`/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${spotifyGenres}&seed_tracks=${spotifyID}`);
 
     if (spotifyRecoData.status === 'rejected') {
       console.error(spotifyRecoData.reason);

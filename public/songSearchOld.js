@@ -26,7 +26,7 @@ function sanitizeInput(input) {
 
 async function fetchData(endpoint, params = {}) {
   const urlParams = new URLSearchParams(params).toString();
-  const url = `/.netlify/functions/${endpoint}?${urlParams}`;
+  const url = `/${endpoint}?${urlParams}`;
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -40,7 +40,7 @@ async function performSearch(songName) {
   searchResults.innerHTML = `<p style="text-align: center">Searching for ${songName}...</p>`;
 
   // Call the Netlify function with the song name
-  const response = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${encodeURIComponent(songName)}`);
+  const response = await fetch(`/getSpotifySearchResults?type=getTrack&q=${encodeURIComponent(songName)}`);
 
   if (!response.ok) {
     // Display an error message if the response is not successful
@@ -112,7 +112,7 @@ async function performSearch(songName) {
       }
 
       geniusID = geniusData.data.response.hits[0].result.id;
-      const geniusSongResponse = await fetch(`/.netlify/functions/getGeniusSong?songid=${geniusID}`);
+      const geniusSongResponse = await fetch(`/getGeniusSong?songid=${geniusID}`);
       geniusSong = await geniusSongResponse.json();
       geniusSongPath = geniusSong.data.response.song.path;
       geniusSongName = geniusSong.data.response.song.full_title;

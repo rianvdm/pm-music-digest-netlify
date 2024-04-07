@@ -15,8 +15,8 @@ fetch('/getRecentTracks?limit=10')
       const max_tokens = 500;
 
       // Fetch call with error message
-       fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
-      // fetch(`/.netlify/functions/getOpenAIBonkers?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
+       fetch(`/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
+      // fetch(`/getOpenAIBonkers?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
         .then(async response => {
           if (!response.ok) {
             const errorJson = await response.json();

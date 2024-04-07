@@ -22,7 +22,7 @@ function removeUnwantedText(text) {
 
 async function fetchData(endpoint, params = {}) {
   const urlParams = new URLSearchParams(params).toString();
-  const url = `/.netlify/functions/${endpoint}?${urlParams}`;
+  const url = `/${endpoint}?${urlParams}`;
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -36,7 +36,7 @@ async function performSearch(albumName) {
   searchResults.innerHTML = `<p style="text-align: center">Searching for ${albumName}...</p>`;
 
   // Call the Netlify function with the artist name
-  const response = await fetch(`/.netlify/functions/getSpotifySearchResults?type=getAlbum&q=${encodeURIComponent(albumName)}`);
+  const response = await fetch(`/getSpotifySearchResults?type=getAlbum&q=${encodeURIComponent(albumName)}`);
 
   if (!response.ok) {
     // Display an error message if the response is not successful

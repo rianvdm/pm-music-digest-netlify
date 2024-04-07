@@ -43,7 +43,7 @@ function fetchUserRecentTracks() {
         const fullPrompt = `${prompt}\n\n${trackList}`;
         const max_tokens = 500;
 
-        fetch(`/.netlify/functions/getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
+        fetch(`//getOpenAI?prompt=${encodeURIComponent(fullPrompt)}&max_tokens=${max_tokens}`)
           .then(response => response.json())
           .then(openaiDataResponse => {
             const openaiTextResponse = openaiDataResponse.data.choices[0].message['content'];

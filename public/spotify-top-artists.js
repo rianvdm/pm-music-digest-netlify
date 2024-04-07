@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getSpotifyTopItems?type=artists')
+fetch('/getSpotifyTopItems?type=artists')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-spotify-top-artists');

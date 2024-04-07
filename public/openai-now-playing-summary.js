@@ -17,7 +17,7 @@ fetch(`/getRecentTracks?limit=1`)
     const prompt = `Write a summary to help someone decide if they might like the song ${encodedName} by ${encodedArtist}. Include information about the song/artist’s genres as well as similar artists. Write no more than two sentences.`;
     const max_tokens = 100;
 
-    fetch(`/.netlify/functions/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
+    fetch(`/getOpenAI?prompt=${prompt}&max_tokens=${max_tokens}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`${response.statusText}`);

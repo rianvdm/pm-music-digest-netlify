@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getUserInfo')
+fetch('/getUserInfo')
   .then(response => response.json())
   .then(data => {
     const dataContainer = document.querySelector('.js-user-info');

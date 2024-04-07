@@ -34,7 +34,7 @@ async function getRecentTracks() {
       .replace(/\+/g, '%2B');
     const encodedName = encodeURIComponent(artistName);
 
-    const lastFmData = await fetchJSON(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedName}`);
+    const lastFmData = await fetchJSON(`/getLastfmData?type=getArtistInfo&artist=${encodedName}`);
 
     let additionalInfo = '';
     if (typeof lastFmData.artist.tags.tag[1] !== 'undefined') {

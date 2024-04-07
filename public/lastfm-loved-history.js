@@ -1,6 +1,6 @@
 const encodeName = (name) => encodeURIComponent(name.replace(/&/g, '%26').replace(/\+/g, '%2B').replace(/\./g, '%2E'));
 
-fetch('/.netlify/functions/getLovedTracks?limit=12')
+fetch('/getLovedTracks?limit=12')
   .then(response => response.json())
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-loved-history');
@@ -10,7 +10,7 @@ fetch('/.netlify/functions/getLovedTracks?limit=12')
       const encodedArtist = encodeName(track.artist.name);
       const encodedTrack = encodeName(track.name);
 
-      const lastfmPromise = fetch(`/.netlify/functions/getLastfmData?type=getArtistInfo&artist=${encodedArtist}`)
+      const lastfmPromise = fetch(`/getLastfmData?type=getArtistInfo&artist=${encodedArtist}`)
         .then(response => response.json())
         .catch(error => {
           console.error(error);
@@ -18,7 +18,7 @@ fetch('/.netlify/functions/getLovedTracks?limit=12')
         });
 
       const q = `${encodedTrack} ${encodedArtist}`;
-      const spotifySearchPromise = fetch(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`)
+      const spotifySearchPromise = fetch(`/getSpotifySearchResults?type=getTrack&q=${q}`)
         .then(response => response.json());
 
       const [lastfmData, spotifyData] = await Promise.allSettled([lastfmPromise, spotifySearchPromise]);
@@ -43,7 +43,7 @@ fetch('/.netlify/functions/getLovedTracks?limit=12')
       const spotifyReleased = spotifyData.value.data.items[0].album.release_date;
       const spotifyYear = spotifyReleased.length === 4 ? spotifyReleased : spotifyReleased.substring(0, 4);
 
-      const spotifyRecoPromise = fetch(`/.netlify/functions/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${lastfmGenres}&seed_tracks=${spotifyID}`)
+      const spotifyRecoPromise = fetch(`/getSpotifyRecommendations?seed_artists=${spotifyArtistID}&seed_genres=${lastfmGenres}&seed_tracks=${spotifyID}`)
         .then(response => response.json());
 
       const [spotifyRecoData] = await Promise.allSettled([spotifyRecoPromise]);

@@ -15,7 +15,7 @@ const handleTopAlbumsError = (error, container) => {
 
 const fetchAlbumData = async (album) => {
   try {
-    const url = `/.netlify/functions/getSpotifySearchResults?type=getAlbum&q=${encodeURIComponent(`${album.name} ${album.artist.name}`)}`;
+    const url = `/getSpotifySearchResults?type=getAlbum&q=${encodeURIComponent(`${album.name} ${album.artist.name}`)}`;
     console.log(`fetchAlbumData called with URL: ${url}`);
     const spotifyData = await fetchTopAlbumsJSON(url);
     const spotifyAlbumUrl = spotifyData.data.items[0].external_urls.spotify;
@@ -27,7 +27,7 @@ const fetchAlbumData = async (album) => {
 };
 
 document.querySelector('.js-lastfm-top-albums').innerHTML = `<p style="text-align: center;">Loading...</p>`;
-fetchTopAlbumsJSON('/.netlify/functions/getTopAlbums?period=1month&limit=6')
+fetchTopAlbumsJSON('/getTopAlbums?period=1month&limit=6')
   .then(async data => {
     const dataContainer = document.querySelector('.js-lastfm-top-albums');
     const topAlbums = data.topalbums.album.slice(0, 6);

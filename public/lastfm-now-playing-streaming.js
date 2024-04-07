@@ -16,7 +16,7 @@ async function fetchAndDisplayTrack() {
     const album = nowPlaying[0].album['#text'];
     const q = `${sanitizeInput(title)} ${sanitizeInput(artist)} ${sanitizeInput(album)}`;
 
-    const spotifyData = await fetchData(`/.netlify/functions/getSpotifySearchResults?type=getTrack&q=${q}`);
+    const spotifyData = await fetchData(`/getSpotifySearchResults?type=getTrack&q=${q}`);
 
     const dataContainer = document.querySelector('.js-spotify-song');
     const spotifyUrl = spotifyData.data.items[0].external_urls.spotify;
@@ -31,7 +31,7 @@ async function fetchAndDisplayTrack() {
     `;
     dataContainer.innerHTML = html;
 
-    const songLinkData = await fetchData(`/.netlify/functions/getSongLink?spotifyUrl=${spotifyUrl}`);
+    const songLinkData = await fetchData(`/getSongLink?spotifyUrl=${spotifyUrl}`);
     const songLinkUrl = songLinkData.pageUrl;
 
     const placeholderElement = document.querySelector('#placeholder');
