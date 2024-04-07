@@ -3,8 +3,8 @@
 
 
 export async function onRequest(context) {
-  console.log(`Context: ${context.request}`);
-  console.log(`Username: ${context.env}`);
+  console.log(`Context: ${context.request.url}`);
+  console.log(`Username: ${context.env.LASTFM_USERNAME}`);
   return new Response("Hi");
   // const { urlParams } = new URL(context.request.url);
   // let limit = urlParams.get('limit');
