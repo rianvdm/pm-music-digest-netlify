@@ -1,4 +1,4 @@
-fetch(`/.netlify/functions/getRecentTracks?limit=1`)
+fetch(`/getRecentTracks?limit=1`)
   .then(response => response.json())
   .then(data => {
     const nowPlaying = [data.recenttracks.track[0]];

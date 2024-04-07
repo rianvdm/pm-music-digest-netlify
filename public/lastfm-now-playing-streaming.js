@@ -8,7 +8,7 @@ async function fetchData(url) {
 
 async function fetchAndDisplayTrack() {
   try {
-    const recentTracksData = await fetchData('/.netlify/functions/getRecentTracks?limit=1');
+    const recentTracksData = await fetchData('/getRecentTracks?limit=1');
     const nowPlaying = [recentTracksData.recenttracks.track[0]];
 
     const artist = nowPlaying[0].artist['#text'];

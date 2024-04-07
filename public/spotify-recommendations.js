@@ -10,7 +10,7 @@ async function fetchData(url) {
 
 async function getRecentTracks() {
   try {
-    const data = await fetchData('/.netlify/functions/getRecentTracks?limit=1');
+    const data = await fetchData('/getRecentTracks?limit=1');
     const dataContainer = document.querySelector('.js-spotify-recommendations');
     const nowPlaying = [data.recenttracks.track[0]];
 

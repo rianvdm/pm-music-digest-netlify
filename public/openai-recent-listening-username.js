@@ -9,7 +9,7 @@ function fetchUserRecentTracks() {
   const dataContainer = document.querySelector('.js-lastfm-recent');
   dataContainer.innerHTML = '<p style="text-align: center;">Loading... (please be patient, it can take up to 10 seconds for ChatGPT to generate this text)</p>';
 
-  fetch(`/.netlify/functions/getRecentTracksUserName?user=${encodeURIComponent(username)}&limit=10`)
+  fetch(`/getRecentTracksUserName?user=${encodeURIComponent(username)}&limit=10`)
     .then(response => response.json())
     .then(data => {
       const recentTracks = data.recenttracks.track.slice(0, 10);

@@ -25,7 +25,7 @@ const handleError = (error, container) => {
 
 async function getRecentTracks() {
   try {
-    const data = await fetchJSON('/.netlify/functions/getRecentTracks?limit=1');
+    const data = await fetchJSON('/getRecentTracks?limit=1');
     const nowPlaying = [data.recenttracks.track[0]];
     const dataContainer = document.querySelector('.js-now-playing');
     

@@ -1,4 +1,4 @@
-fetch('/.netlify/functions/getRecentTracks')
+fetch('/getRecentTracks')
   .then(response => response.json())
   .then(data => {
     const dataContainer = document.querySelector('.js-now-playing');

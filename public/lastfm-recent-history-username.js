@@ -5,7 +5,7 @@ function fetchUserRecentTracks() {
     return; // Exit the function if no username is provided
   }
 
-  fetch(`/.netlify/functions/getRecentTracksUserName?user=${encodeURIComponent(username)}&limit=10`)
+  fetch(`/getRecentTracksUserName?user=${encodeURIComponent(username)}&limit=10`)
 
   .then(response => response.json())
   .then(data => {
