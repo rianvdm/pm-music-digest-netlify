@@ -20,7 +20,7 @@ exports.handler = async function(event, context) {
       },
       body: JSON.stringify({
        // model: "gpt-3.5-turbo",
-        model: "gpt-4",
+        model: "gpt-4-turbo",
         messages: [
 //          {role: "system", content: "You are a friendly assistant who wants to help people find music they will love."},
           {role: "system", content: "You use succinct, plain language focused on accuracy and professionalism."},
