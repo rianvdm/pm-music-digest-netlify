@@ -51,7 +51,7 @@ exports.handler = async function(event, context) {
       const openAIJsonResponse = await openAIResponse.json();
       albumSummary = openAIJsonResponse.choices[0].message.content; // Depending on the response structure
 
-      await client.set(albumName, albumSummary, 'EX', 30 * 24 * 60 * 60);  // Set timeout while setting key
+      await client.set(albumName, albumSummary, 'EX', 180 * 24 * 60 * 60);  // Set timeout while setting key
 
       return {
         statusCode: 200,

@@ -51,7 +51,7 @@ exports.handler = async function(event, context) {
       artistSummary = openAIJsonResponse.choices[0].message.content; // Depending on the response structure
 
       // await client.set(artistName, artistSummary);
-      await client.set(artistName, artistSummary, 'EX', 30 * 24 * 60 * 60);  // Set timeout while setting key
+      await client.set(artistName, artistSummary, 'EX', 90 * 24 * 60 * 60);  // Set timeout while setting key
 
       return {
         statusCode: 200,
