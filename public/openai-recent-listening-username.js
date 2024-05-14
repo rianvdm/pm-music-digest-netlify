@@ -38,7 +38,7 @@ function fetchUserRecentTracks() {
         then recommend two albums that I might want to listen to next to reflect my current mood. 
         Recommend albums by artists that are NOT on the list of the last 10 songs.
         Avoid albums that are very popular and mainstream, instead recommending what could be considered "hidden gems".
-        Use proper paragraph spacing. Display the artist and album names as **<album> by <artist>**.
+        Use proper paragraph spacing. Display the artist and album names as **album by artist**.
         `;
         const fullPrompt = `${prompt}\n\n${trackList}`;
         const max_tokens = 500;
