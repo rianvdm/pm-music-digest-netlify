@@ -29,7 +29,7 @@ exports.handler = async function(event, context) {
         },
         body: JSON.stringify({
           // model: "gpt-3.5-turbo",
-          model: "gpt-4-turbo",
+          model: "gpt-4o",
           // frequency_penalty: 0.8,
           messages: [
             {role: "system", content: "You use succinct, plain language focused on accuracy and professionalism."},
